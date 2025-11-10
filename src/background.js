@@ -58,11 +58,28 @@ function createWindow() {
     createProtocol('app')
     // Load the index.html when not in development
     mainWindow.loadURL('app://./index.html')
-    autoUpdater.checkForUpdates()
+    // 啟動時檢查更新
+    autoUpdater.checkForUpdatesAndNotify()
   }
 
-  autoUpdater.on('update-downloaded', () => {
-    mainWindow.webContents.send('update_downloaded')
+  // 轉發更新事件到 Renderer
+  autoUpdater.on('checking-for-update', () => {
+    mainWindow && mainWindow.webContents.send('update_checking')
+  })
+  autoUpdater.on('update-available', (info) => {
+    mainWindow && mainWindow.webContents.send('update_available', info)
+  })
+  autoUpdater.on('update-not-available', (info) => {
+    mainWindow && mainWindow.webContents.send('update_not_available', info)
+  })
+  autoUpdater.on('download-progress', (progress) => {
+    mainWindow && mainWindow.webContents.send('update_download_progress', progress)
+  })
+  autoUpdater.on('update-downloaded', (info) => {
+    mainWindow && mainWindow.webContents.send('update_downloaded', info)
+  })
+  autoUpdater.on('error', (err) => {
+    mainWindow && mainWindow.webContents.send('update_error', err == null ? 'unknown' : (err.stack || err).toString())
   })
 
   ipcMain.on('restart_app', () => {

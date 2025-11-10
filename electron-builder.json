@@ -5,5 +5,12 @@
             "nsis",
             "portable"
         ]
-    }
+    },
+    "publish": [
+        {
+            "provider": "github",
+            "owner": "a80093119",
+            "repo": "rchin-poe-trade"
+        }
+    ]
 }

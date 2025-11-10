@@ -84,14 +84,21 @@
               <b-col sm="5">
                 <multiselect :options="leagues.option" v-model="leagues.chosenL" :showLabels="false" :searchable="false" :allow-empty="false"></multiselect>
               </b-col>
+              <b-col sm="4">
+                <multiselect
+                  :options="onlineSet.option"
+                  v-model="onlineSet.chosenObj"
+                  @input="onlineStatusChange"
+                  :disabled="isCounting"
+                  label="label"
+                  :clearable="false"
+                  :filterable="false"
+                  :showLabels="false"
+                ></multiselect>
+              </b-col>
             </b-row>
             <b-row class="lesspadding" style="padding-top: 5px; padding-left: 2px;">
               <b-col sm="3">
-                <b-form-checkbox class="float-right" style="padding-top: 5px;" v-model="isOnline" :disabled="isCounting" switch :inline="false">
-                  <b>只顯示線上</b>
-                </b-form-checkbox>
-              </b-col>
-              <b-col sm="2">
                 <b-form-checkbox class="float-right" style="padding-top: 5px;" v-model="isPriced" :disabled="true" switch>
                   <b>{{ pricedText }}</b>
                 </b-form-checkbox>
@@ -459,7 +466,6 @@ export default {
       isApiError: false,
       apiErrorStr: '',
       isCounting: false,
-      isOnline: true,
       isPriced: true,
       isItem: false,
       isMap: false,
@@ -517,6 +523,15 @@ export default {
           label: "與混沌石等值",
           prop: ''
         }
+      },
+      onlineSet: { // 線上狀態設定
+        option: [
+          { label: "即刻購買以及面交", prop: 'available' },
+          { label: "僅限即刻購買", prop: 'securable' },
+          { label: "僅限面交", prop: 'online' },
+          { label: "任何", prop: 'any' },
+        ],
+        chosenObj: { label: "僅限即刻購買", prop: 'securable' }
       },
       leagues: { // 搜尋聯盟
         option: [],
@@ -848,6 +863,8 @@ export default {
       this.cleanClipboard()
     }
     this.initLocalStorage()
+    // 同步線上狀態預設值到查詢 JSON
+    this.onlineStatusChange()
     this.isTwServer = this.storeServerString === '台服' ? true : false
     this.baseUrl = this.isTwServer ? 'https://pathofexile.tw' : 'https://www.pathofexile.com'
     this.poedbTWItems = this.poedbTWJson.data.filter(item => item.type !== "Class")
@@ -859,6 +876,18 @@ export default {
     this.getAllAPI();
   },
   methods: {
+    onlineStatusChange() {
+      const option = this.onlineSet.chosenObj?.prop || 'any'
+      // Update defaults so subsequent deep copies inherit the selection
+      this.searchJson_Def.query.status.option = option
+      // If a search JSON exists and differs, update live query and trigger search
+      if (this.isSearchJson && JSON.stringify(this.searchJson_Def) !== JSON.stringify(this.searchJson)) {
+        if (this.searchJson.query?.status) {
+          this.searchJson.query.status.option = option
+        }
+        this.searchTrade(this.searchJson)
+      }
+    },
     initLocalStorage() {
       this.isPriceCollapse = localStorage.getItem('isPriceCollapse') ? JSON.parse(localStorage.getItem('isPriceCollapse')) : true
       if (this.isPriceCollapse) {
@@ -1089,7 +1118,7 @@ export default {
           if (error.response.status === 429) {
             errMsg += `\n被 Server 限制發送需求了，請等待後再重試`
           }
-          vm.issueText = `Version: v1.326.1, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+          vm.issueText = `Version: v1.327.1, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
           vm.itemsAPI()
           vm.isSupported = false
           vm.isStatsCollapse = false
@@ -1529,6 +1558,16 @@ export default {
           this.categorizedItems.push(element)
         }
       });
+      // 新增：接肢 (graft) 類別支援
+      if (result.findIndex(e => e.id === "graft") > -1) {
+        result[result.findIndex(e => e.id === "graft")].entries.forEach(element => { // "id": "graft", "label": "接肢"
+          if (_.isUndefined(element.flags)) {
+            element.name = "接肢"
+            element.option = "graft"
+            this.categorizedItems.push(element)
+          }
+        });
+      }
       result[result.findIndex(e => e.id === "sanctum")].entries.forEach(element => { // "id": "sanctum"
         const basetype = ["香爐聖物", "聖域寶庫研究"]
         if (_.isUndefined(element.flags)) {
@@ -2991,6 +3030,18 @@ export default {
       let itemNameString = itemArray[2] === "--------" ? itemArray[1] : `${itemArray[1]} ${itemArray[2]}`
       let itemBasicCount = 0
 
+      // 先處理地圖/類地圖類型，避免名稱子字串誤判為其他類別（例如：九頭蛇冰窟 vs 九頭蛇屍體）
+      if (
+        item.indexOf('物品種類: 異界地圖') > -1 ||
+        item.indexOf('釋界之邀：') > -1 ||
+        item.indexOf('物品種類: 契約書') > -1 ||
+        item.indexOf('物品種類: 藍圖') > -1 ||
+        item.indexOf('物品種類: 聖域研究') > -1
+      ) {
+        this.mapAnalysis(item, itemArray, Rarity)
+        return
+      }
+
       this.categorizedItems.some(element => {
         let itemNameStringIndex = itemNameString.indexOf(element.text || element.type)
         console.log(itemNameString, itemNameStringIndex)
@@ -3002,9 +3053,7 @@ export default {
           return true
         }
       });
-      if (item.indexOf('物品種類: 異界地圖') > -1 || item.indexOf('釋界之邀：') > -1 || item.indexOf('物品種類: 契約書') > -1 || item.indexOf('物品種類: 藍圖') > -1 || item.indexOf('物品種類: 聖域研究') > -1) { // 類地圖搜尋
-        this.mapAnalysis(item, itemArray, Rarity)
-      } else if ((Rarity === "稀有" || Rarity === "傳奇") && item.indexOf('點擊右鍵將此加入你的獸獵寓言。') > -1) { // 獸獵（物品化怪物）
+      if ((Rarity === "稀有" || Rarity === "傳奇") && item.indexOf('點擊右鍵將此加入你的獸獵寓言。') > -1) { // 獸獵（物品化怪物）
         let monstersCount = 0
         this.monstersItems.some(element => {
           if (itemNameString.indexOf(element.text) > -1 && !monstersCount) {
@@ -3121,7 +3170,7 @@ export default {
         return
       } else {
         this.itemsAPI()
-        this.issueText = `Version: v1.326.1\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+        this.issueText = `Version: v1.327.1\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
         this.isSupported = false
         this.isStatsCollapse = false
         return
@@ -3148,14 +3197,7 @@ export default {
         this.searchTrade(this.searchJson)
       }
     },
-    isOnline: _.debounce(function () {
-      let option = this.isOnline ? 'online' : 'any'
-      this.searchJson_Def.query.status.option = option
-      if (this.isSearchJson && JSON.stringify(this.searchJson_Def) !== JSON.stringify(this.searchJson)) {
-        this.searchJson.query.status.option = option
-        this.searchTrade(this.searchJson)
-      }
-    }, 500),
+    // 由 onlineStatusChange 方法處理線上狀態的更新
     isPriced: function () {
       this.fetchID.length = 0
       let option = this.isPriced ? 'priced' : 'unpriced'
