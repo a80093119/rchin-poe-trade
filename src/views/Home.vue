@@ -1118,7 +1118,7 @@ export default {
           if (error.response.status === 429) {
             errMsg += `\n被 Server 限制發送需求了，請等待後再重試`
           }
-          vm.issueText = `Version: v1.327.1, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+          vm.issueText = `Version: v1.327.2, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
           vm.itemsAPI()
           vm.isSupported = false
           vm.isStatsCollapse = false
@@ -1207,6 +1207,8 @@ export default {
         }
         this.implicitStats.push(text, element.id)
       })
+      // 自訂中文別名/修正：將包含「近戰擊中有 #% 機率護體」的敘述映射到 explicit 版本，避免辨識錯誤
+      this.implicitStats.push('近戰擊中有 #% 機率護體', 'explicit.stat_1166417447')
       result[result.findIndex(e => e.id === "fractured")].entries.forEach((element, index) => { // 破裂
         let text = element.text
         if (text.indexOf(' (部分)') > -1) { // 刪除(部分)字串
@@ -1816,7 +1818,7 @@ export default {
       for (let index = itemStatStart; index < itemStatEnd; index++) {
         if (itemArray[index] !== "--------" && itemArray[index]) {
           let text = itemArray[index]
-          itemDisplayStats.push(itemArray[index])
+          itemDisplayStats.push(text)
           if (itemArray[index].indexOf('(implicit)') > -1) { // 固定屬性
             text = text.substring(0, text.indexOf('(implicit)')) // 刪除(implicit)字串
             tempStat.push(this.findBestStat(text, this.implicitStats))
@@ -1850,7 +1852,7 @@ export default {
           }
         }
       }
-      // console.log(itemDisplayStats)
+      console.log(itemDisplayStats)
       // console.log(tempStat)
       let elementalResistanceTotal = 0
       let spellDamageTotal = 0
@@ -1866,6 +1868,13 @@ export default {
               statID = `${statID.split('.')[0]}.stat_1940865751`
             } else { // 非武器
               statID = `${statID.split('.')[0]}.stat_960081730`
+            }
+            break;
+          case statID.indexOf('stat_1166417447') > -1: // 近戰擊中護體 - 若物品行文字包含機率護體，修正為 explicit 版本
+            // 避免 "近戰擊中有 11% 機率護體 (implicit)" 被誤判成無數值的 implicit.stat_1166417447
+            // 當實際文字出現 "機率護體" 並含有數值時，使用 explicit.stat_1166417447 以啟用 min/max 輸入
+            if (/機率護體/.test(itemStatText) && /\d+%/.test(itemStatText)) {
+              statID = 'explicit.stat_1166417447'
             }
             break;
           case statID.indexOf('stat_321077055') > -1 || statID.indexOf('stat_709508406') > -1: // 附加 # 至 # 火焰傷害 (部分)
@@ -3074,6 +3083,8 @@ export default {
           }
         }
         if (item.indexOf('未鑑定') === -1) { // 已鑑定傳奇
+          // 3.27 台服傳奇詞綴可能夾帶「穢生」字樣，移除後再進行匹配以維持精準
+          searchName = searchName.replace(/穢生/g, '').replace(/\s{2,}/g, ' ').trim()
           this.searchJson.query.name = this.replaceString(searchName)
           this.searchJson.query.type = this.replaceString(itemBasic)
           this.raritySet.isSearch = true
@@ -3170,7 +3181,7 @@ export default {
         return
       } else {
         this.itemsAPI()
-        this.issueText = `Version: v1.327.1\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+        this.issueText = `Version: v1.327.2\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
         this.isSupported = false
         this.isStatsCollapse = false
         return
