@@ -4,7 +4,14 @@
         "target": [
             "nsis",
             "portable"
-        ]
+        ],
+        "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+        "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "portable": {
+        "artifactName": "${productName}-Portable-${version}.${ext}"
     },
     "publish": [
         {
