@@ -201,44 +201,6 @@
       <b-container class="bv-example-row">
         <b-collapse :visible="isMap && isMapCollapse" class="mt-2">
           <b-card>
-            <b-row class="lesspadding">
-              <b-col sm="3" style="padding-top: 6px;">
-                <b-form-checkbox class="float-right" v-model="areaLevel.isSearch" @input="isAreaLevelSearch" switch>區域等級</b-form-checkbox>
-              </b-col>
-              <b-col sm="1" style="padding-top: 3px;">
-                <b-form-input v-model.number="areaLevel.min" @dblclick="areaLevel.min = null" @update="isAreaLevelSearch" :disabled="!areaLevel.isSearch" size="sm" type="number"></b-form-input>
-              </b-col>
-              <b-col sm="1" style="padding-top: 3px;">
-                <b-form-input v-model.number="areaLevel.max" @dblclick="areaLevel.max = null" @update="isAreaLevelSearch" :disabled="!areaLevel.isSearch" :style="areaLevel.max && (areaLevel.max < areaLevel.min) ? 'color: #fc3232; font-weight:bold;' : ''" size="sm" type="number"></b-form-input>
-              </b-col>
-              <b-col sm="1"></b-col>
-              <b-col sm="2" style="padding-top: 6px;">
-                <b-form-checkbox class="float-right" v-model="raritySet.isSearch" @input="isRaritySearch" switch>稀有度</b-form-checkbox>
-              </b-col>
-              <b-col sm="3">
-                <v-select :options="raritySet.option" v-model="raritySet.chosenObj" @input="isRaritySearch" label="label" :disabled="!raritySet.isSearch" :clearable="false" :filterable="false"></v-select>
-              </b-col>
-            </b-row>
-            <b-row class="lesspadding" style="padding-top: 5px;">
-              <b-col sm="3" style="padding-top: 6px;">
-                <b-form-checkbox class="float-right" v-model="mapLevel.isSearch" @input="isMapLevelSearch" switch>地圖階級</b-form-checkbox>
-              </b-col>
-              <b-col sm="1" style="padding-top: 3px;">
-                <b-form-input v-model.number="mapLevel.min" @dblclick="mapLevel.min = null" @update="isMapLevelSearch" :disabled="!mapLevel.isSearch" size="sm" type="number"></b-form-input>
-              </b-col>
-              <b-col sm="1" style="padding-top: 3px;">
-                <b-form-input v-model.number="mapLevel.max" @dblclick="mapLevel.max = null" @update="isMapLevelSearch" :disabled="!mapLevel.isSearch" :style="mapLevel.max && (mapLevel.max < mapLevel.min) ? 'color: #fc3232; font-weight:bold;' : ''" size="sm" type="number"></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row class="lesspadding" style="padding-top: 8px;">
-              <b-col sm="3" style="margin-top: 10px;">
-                <b-form-checkbox class="float-right" v-model="mapBasic.isSearch" @input="isMapBasicSearch" switch>地圖基底</b-form-checkbox>
-              </b-col>
-              <b-col sm="6">
-                <multiselect :options="mapBasic.option" v-model="mapBasic.chosenM" @input="isMapBasicSearch" :disabled="!mapBasic.isSearch" :showLabels="false" :searchable="true" :allow-empty="false"></multiselect>
-                <!-- <v-select :options="mapBasic.option" v-model="mapBasic.chosenM" @input="isMapBasicSearch" label="label" :disabled="!mapBasic.isSearch" :clearable="false" :filterable="true"></v-select> -->
-              </b-col>
-            </b-row>
             <b-collapse :visible="raritySet.chosenObj.label !== '傳奇' && isNormalMap">
               <b-row class="lesspadding" style="padding-top: 10px;">
                 <b-col sm="4">
@@ -437,6 +399,12 @@ import statsData from "../assets/poe/stats.json";
 import duplicateStatsData from "../assets/poe/duplicateStats.json";
 // import usStatsData from "../assets/poe/stats_us.json";
 import poedbTWJson from "../assets/poe/poedb-tw.json";
+import {
+  analyzeMapCopyText,
+  GENERIC_MAP_BASE_TYPES,
+  MAP_BASE_TYPE_FALLBACKS,
+  MAP_QUERY_STAT_IDS
+} from "../utils/mapSearch";
 
 const _ = require('lodash');
 const stringSimilarity = require('string-similarity');
@@ -485,6 +453,7 @@ export default {
       enchantStats: [], // 附魔
       scourgeStats: [], // 災魘詞綴
       craftedStats: [], // 已工藝
+      imbuedStats: [], // 技能寶石內建輔助/注能詞綴
       clusterJewelStats: [], // 星團珠寶附魔詞綴
       allocatesStats: [], // 項鍊塗油配置附魔詞綴
       forbiddenZoneStats: [], // 禁忌烈焰/血肉配置詞綴
@@ -922,7 +891,7 @@ export default {
       }
       // 3.17 中文化更動，改為判斷 poedb 提供之物品翻譯表
       if (!this.isTwServer) {
-        let baseTypeLang = this.poedbTWItems.find(data => data.lang === string)?.us
+        let baseTypeLang = this.poedbTWItems.find(data => data.lang === string)?.us || MAP_BASE_TYPE_FALLBACKS[string]
         if (this.isItem && this.raritySet.chosenObj.prop == 'unique') {
           let uniqueLang = this.poedbTWItems.filter(data => data.type == 'Unique').find(data => data.lang === string)?.us
           string = uniqueLang ? uniqueLang : baseTypeLang
@@ -931,6 +900,31 @@ export default {
         }
       }
       return string
+    },
+    getQueryStatFilters() {
+      if (!this.searchJson.query.stats.length) {
+        this.searchJson.query.stats = [{ "type": "and", "filters": [] }]
+      }
+      return this.searchJson.query.stats[0].filters
+    },
+    setQueryStatFilter(statId, value) {
+      const filters = this.getQueryStatFilters()
+      const nextFilter = { id: statId, value }
+      const currentIndex = filters.findIndex(filter => filter.id === statId)
+
+      if (currentIndex > -1) {
+        filters.splice(currentIndex, 1, nextFilter)
+      } else {
+        filters.push(nextFilter)
+      }
+    },
+    removeQueryStatFilter(statId) {
+      const filters = this.getQueryStatFilters()
+      const currentIndex = filters.findIndex(filter => filter.id === statId)
+
+      if (currentIndex > -1) {
+        filters.splice(currentIndex, 1)
+      }
     },
     resetSearchData() {
       this.searchName = ''
@@ -949,6 +943,24 @@ export default {
       this.areaLevel.isSearch = false
       this.areaLevel.min = ''
       this.areaLevel.max = ''
+      this.mapCategory = {
+        isShaper: false,
+        isElder: false,
+        isCitadel: false,
+        isBlighted: false
+      }
+      this.mapElderGuard.chosenObj = {
+        label: "無",
+        prop: ''
+      }
+      this.mapElderGuard.isSearch = false
+      this.mapCitadelGuard.chosenObj = {
+        label: "無",
+        prop: ''
+      }
+      this.mapCitadelGuard.isSearch = false
+      this.mapBasic.chosenM = '無'
+      this.mapBasic.isSearch = false
       this.itemLinked.isSearch = false
       this.itemLinked.min = ''
       this.itemLinked.max = ''
@@ -1076,6 +1088,7 @@ export default {
         })
       }
       this.fetchQueryID = ''
+      console.log('trade searchJson', JSON.stringify(obj, null, 2))
       this.axios.post(`http://localhost:3031/trade`, {
         searchJson: obj,
         baseUrl: this.baseUrl,
@@ -1118,7 +1131,7 @@ export default {
           if (error.response.status === 429) {
             errMsg += `\n被 Server 限制發送需求了，請等待後再重試`
           }
-          vm.issueText = `Version: v1.328.0, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+          vm.issueText = `Version: v1.328.1, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
           vm.itemsAPI()
           vm.isSupported = false
           vm.isStatsCollapse = false
@@ -1258,6 +1271,9 @@ export default {
           this.wrapStats.push(text)
         }
         this.craftedStats.push(text, element.id)
+      })
+      result[result.findIndex(e => e.id === "imbued")].entries.forEach((element) => { // 技能寶石內建輔助
+        this.imbuedStats.push(element.text, element.id)
       })
       result[result.findIndex(e => e.id === "veiled")].entries.forEach((element, index) => { // 隱匿屬性
         let text = element.text
@@ -1499,6 +1515,8 @@ export default {
         const basetype = ["惡靈學院"] // 地圖起始點 { "type": "惡靈學院", "text": "惡靈學院" }
         if (_.isUndefined(element.flags) && element.disc === "warfortheatlas") { // 只抓 {"disc": "warfortheatlas"} 一般地圖基底
           this.mapBasic.option.push(element.type)
+        } else if (_.isUndefined(element.flags) && element.type.indexOf('地圖') > -1 && !GENERIC_MAP_BASE_TYPES.includes(element.type)) {
+          this.mapBasic.option.push(element.type)
         } else if (element.type.indexOf('釋界之邀：') > -1) { // 3.13 釋界之邀
           this.mapBasic.option.push(element.type)
         }
@@ -1508,6 +1526,7 @@ export default {
           this.mapBasic.option.push(element.type)
         }
       });
+      this.mapBasic.option = _.uniq(this.mapBasic.option)
       result[result.findIndex(e => e.id === "gem")].entries.forEach(element => { // "id": "gems", "label": "技能寶石"
         if (element.hasOwnProperty('disc')) {
           if (element.disc === "alt_x" || element.disc === "alt_y" || element.disc === "alt_z") { // 抓出 3.23 變異寶石資料
@@ -1701,7 +1720,7 @@ export default {
       });
     },
     clickToSearch: _.debounce(function () { // TODO: 重構物品/地圖交替搜尋時邏輯 stats: [{type: "and", filters: [], disabled: true(?)}]
-      if (this.isItem) {
+      if (this.isItem || this.isGem) {
         this.searchJson.query.stats = [{ "type": "and", "filters": [] }]
       }
       if (this.isMap && this.mapBasic.isSearch) {
@@ -2424,6 +2443,52 @@ export default {
       })
       this.searchTrade(this.searchJson)
     },
+    gemStatsAnalysis(itemArray) {
+      let gemStats = []
+      let gemStatIds = new Set()
+
+      itemArray.forEach((element) => {
+        if (!element || element === '--------') {
+          return
+        }
+
+        let text = element.replace(/\s+\((augmented|implicit|enchant|crafted|fractured|scourge)\)$/, '').trim()
+        if (text.indexOf('被等級') === -1 || text.indexOf('輔助') === -1) {
+          return
+        }
+
+        let matchedStat = this.findBestStat(text, this.imbuedStats)
+        console.log(text, matchedStat)
+        if (!matchedStat.bestMatch || matchedStat.bestMatch.rating < 0.9) {
+          return
+        }
+
+        let bestIndex = (matchedStat.bestMatchIndex % 2 === 0) ? matchedStat.bestMatchIndex + 1 : matchedStat.bestMatchIndex
+        let statID = matchedStat.ratings[bestIndex]?.target
+
+        if (!statID || gemStatIds.has(statID)) {
+          return
+        }
+
+        gemStatIds.add(statID)
+        gemStats.push({
+          "id": statID,
+          "text": matchedStat.bestMatch.target,
+          "option": '',
+          "min": '',
+          "max": '',
+          "isValue": false,
+          "isNegative": false,
+          "isSearch": true,
+          "type": "注能"
+        })
+      })
+
+      if (gemStats.length > 0) {
+        this.searchStats.push(...gemStats)
+        this.isStatsCollapse = false
+      }
+    },
     findBestStat(text, stats) { // 物品上原先詞綴 與 原先詞綴數值用 '#' 取代的兩種字串皆判斷並取最符合那一筆
       let floatValue = []
       let reference = []
@@ -2462,6 +2527,9 @@ export default {
             isCitadel: false,
             isBlighted: false
           }
+          this.removeQueryStatFilter(MAP_QUERY_STAT_IDS.control)
+          this.removeQueryStatFilter(MAP_QUERY_STAT_IDS.elderGuard)
+          this.removeQueryStatFilter(MAP_QUERY_STAT_IDS.citadelGuard)
         }
       }
     },
@@ -2731,7 +2799,6 @@ export default {
     },
     mapAnalysis(item, itemArray, Rarity) {
       // this.itemStatsAnalysis(itemArray, 1) 地圖先不加入詞綴判斷
-      const NL = this.newLine
       this.isMap = true
       this.isMapCollapse = true
       this.mapCategory = {
@@ -2746,37 +2813,29 @@ export default {
       }
       this.raritySet.isSearch = true
       this.isRaritySearch()
-      let mapPos = item.indexOf('地圖階級:') > -1 ? item.substring(item.indexOf('地圖階級:') + 5) : 0 // 地圖階級截斷字串
-      let areaPos = item.indexOf('地區等級:') > -1 ? item.substring(item.indexOf('地區等級:') + 5) : 0 // 地區等級截斷字串
-      if (!areaPos)
-        areaPos = item.indexOf('區域等級:') > -1 ? item.substring(item.indexOf('區域等級:') + 5) : 0 // 區域等級截斷字串
-      if (mapPos) {
-        let mapPosEnd = mapPos.indexOf(NL) // 地圖階級換行定位點
-        let mapTier = parseInt(mapPos.substring(0, mapPosEnd).trim(), 10)
-        this.mapLevel.min = mapTier
-        this.mapLevel.max = mapTier
+      const mapInfo = analyzeMapCopyText({
+        item,
+        itemArray,
+        mapBasicOptions: this.mapBasic.option,
+        allStats: this.allStats,
+        newLine: this.newLine
+      })
+
+      if (_.isNumber(mapInfo.mapTier)) {
+        this.mapLevel.min = mapInfo.mapTier
+        this.mapLevel.max = mapInfo.mapTier
         this.mapLevel.isSearch = true
         this.isMapLevelSearch()
-      } else if (areaPos) {
-        let areaPosEnd = areaPos.indexOf(NL) // 地區等級換行定位點
-        let areaTier = parseInt(areaPos.substring(0, areaPosEnd).trim(), 10)
-        this.areaLevel.min = areaTier
+      } else if (_.isNumber(mapInfo.areaTier)) {
+        this.areaLevel.min = mapInfo.areaTier
         this.areaLevel.isSearch = true
         this.isAreaLevelSearch()
       }
 
-      let itemNameString = itemArray[2] === "--------" ? itemArray[1] : `${itemArray[1]} ${itemArray[2]}`
-      let mapBasicCount = 0
-
-      this.mapBasic.option.some(element => {
-        let itemNameStringIndex = itemNameString.indexOf(element.replace(/[^\u4e00-\u9fa5|．|：]/gi, "")) // 比對 mapBasic.option 時只比對中文字串
-        if (itemNameStringIndex > -1 && !mapBasicCount) {
-          mapBasicCount++
-          this.mapBasic.chosenM = this.isTwServer ? element.replace(/[^\u4e00-\u9fa5|．|：]/gi, "") : itemNameString.slice(itemNameStringIndex)
-          return true
-        }
-      });
-      this.mapBasic.isSearch = true
+      this.mapBasic.chosenM = mapInfo.matchedMapBasic
+        ? (this.isTwServer ? mapInfo.matchedMapBasic.replace(/[^\u4e00-\u9fa5|．|：]/gi, '') : mapInfo.matchedMapBasic)
+        : '無'
+      this.mapBasic.isSearch = Boolean(mapInfo.matchedMapBasic)
       this.isMapBasicSearch()
       this.searchJson.query.filters.map_filters.filters.map_blighted = { // 過濾凋落圖
         "option": "false"
@@ -2791,84 +2850,31 @@ export default {
         }
         this.raritySet.isSearch = true
         this.isRaritySearch()
-      } else if (item.indexOf('區域被塑界者控制 (implicit)') > -1) { // 塑界者地圖
-        this.mapCategory.isShaper = true
-        this.searchJson.query.stats[0].filters[0] = {
-          "id": "implicit.stat_1792283443",
-          "value": {
-            "option": "1"
-          }
+      } else {
+        if (mapInfo.mapControlOption?.prop) {
+          this.setQueryStatFilter(MAP_QUERY_STAT_IDS.control, {
+            option: mapInfo.mapControlOption.prop
+          })
+          this.mapCategory.isShaper = mapInfo.mapControlOption.prop === '1'
+          this.mapCategory.isElder = mapInfo.mapControlOption.prop === '2'
+        } else {
+          this.removeQueryStatFilter(MAP_QUERY_STAT_IDS.control)
         }
-      } else if (item.indexOf('區域被異界尊師控制 (implicit)') > -1) { // 尊師地圖
-        this.mapCategory.isElder = true
-        this.searchJson.query.stats[0].filters[0] = {
-          "id": "implicit.stat_1792283443",
-          "value": {
-            "option": "2"
-          }
-        }
-        if (item.indexOf('地圖被異界．奴役佔據 (implicit)') > -1) { // 尊師守衛地圖
-          this.mapElderGuard.chosenObj = {
-            label: "異界．奴役",
-            prop: "1"
-          }
+
+        if (this.mapCategory.isElder && mapInfo.elderGuardOption?.prop) {
+          this.mapElderGuard.chosenObj = mapInfo.elderGuardOption
           this.mapElderGuard.isSearch = true
-          this.isMapElderGuardSearch()
-        } else if (item.indexOf('地圖被異界．根除佔據 (implicit)') > -1) {
-          this.mapElderGuard.chosenObj = {
-            label: "異界．根除",
-            prop: "2"
-          }
-          this.mapElderGuard.isSearch = true
-          this.isMapElderGuardSearch()
-        } else if (item.indexOf('地圖被異界．干擾佔據 (implicit)') > -1) {
-          this.mapElderGuard.chosenObj = {
-            label: "異界．干擾",
-            prop: "3"
-          }
-          this.mapElderGuard.isSearch = true
-          this.isMapElderGuardSearch()
-        } else if (item.indexOf('地圖被異界．淨化佔據 (implicit)') > -1) {
-          this.mapElderGuard.chosenObj = {
-            label: "異界．淨化",
-            prop: "4"
-          }
-          this.mapElderGuard.isSearch = true
-          this.isMapElderGuardSearch()
         }
-      } else if (item.indexOf('地圖含有巴倫的壁壘 (implicit)') > -1) { // 壁壘守衛地圖
-        this.mapCategory.isCitadel = true
-        this.mapCitadelGuard.chosenObj = {
-          label: "聖戰軍王．巴倫",
-          prop: "1"
+        this.isMapElderGuardSearch()
+
+        if (mapInfo.citadelGuardOption?.prop) {
+          this.mapCategory.isCitadel = true
+          this.mapCitadelGuard.chosenObj = this.mapCitadelGuard.option.find(option => option.prop === mapInfo.citadelGuardOption.prop) || mapInfo.citadelGuardOption
+          this.mapCitadelGuard.isSearch = true
         }
-        this.mapCitadelGuard.isSearch = true
         this.isMapCitadelGuardSearch()
-      } else if (item.indexOf('地圖含有維羅提尼亞的壁壘 (implicit)') > -1) {
-        this.mapCategory.isCitadel = true
-        this.mapCitadelGuard.chosenObj = {
-          label: "救贖者．維羅提尼亞",
-          prop: "2"
-        }
-        this.mapCitadelGuard.isSearch = true
-        this.isMapCitadelGuardSearch()
-      } else if (item.indexOf('地圖含有奧赫茲明的壁壘 (implicit)') > -1) {
-        this.mapCategory.isCitadel = true
-        this.mapCitadelGuard.chosenObj = {
-          label: "狩獵者．奧赫茲明",
-          prop: "3"
-        }
-        this.mapCitadelGuard.isSearch = true
-        this.isMapCitadelGuardSearch()
-      } else if (item.indexOf('地圖含有圖拉克斯的壁壘 (implicit)') > -1) {
-        this.mapCategory.isCitadel = true
-        this.mapCitadelGuard.chosenObj = {
-          label: "總督軍．圖拉克斯",
-          prop: "4"
-        }
-        this.mapCitadelGuard.isSearch = true
-        this.isMapCitadelGuardSearch()
-      } else if (item.indexOf('凋落的') > -1 || item.indexOf('Blighted') > -1) {
+      }
+      if (mapInfo.isBlighted) {
         this.mapCategory.isBlighted = true
         this.searchJson.query.filters.map_filters.filters.map_blighted = {
           "option": "true"
@@ -2908,27 +2914,27 @@ export default {
       }
     },
     isMapElderGuardSearch() {
-      if (this.mapCategory.isElder && !this.mapElderGuard.isSearch && this.isSearchJson) {
-        this.searchJson.query.stats[0].filters.length = 1
-      } else if (this.mapElderGuard.isSearch && this.mapElderGuard.chosenObj.prop && this.isSearchJson) {
-        this.searchJson.query.stats[0].filters[1] = {
-          "id": "implicit.stat_3624393862",
-          "value": {
-            "option": this.mapElderGuard.chosenObj.prop
-          }
-        }
+      if (!this.isSearchJson) {
+        return
+      }
+      if (this.mapCategory.isElder && this.mapElderGuard.isSearch && this.mapElderGuard.chosenObj.prop) {
+        this.setQueryStatFilter(MAP_QUERY_STAT_IDS.elderGuard, {
+          option: this.mapElderGuard.chosenObj.prop
+        })
+      } else {
+        this.removeQueryStatFilter(MAP_QUERY_STAT_IDS.elderGuard)
       }
     },
     isMapCitadelGuardSearch() {
-      if (this.mapCategory.isCitadel && !this.mapCitadelGuard.isSearch && this.isSearchJson) {
-        this.searchJson.query.stats[0].filters.length = 1
-      } else if (this.mapCitadelGuard.isSearch && this.mapCitadelGuard.chosenObj.prop && this.isSearchJson) {
-        this.searchJson.query.stats[0].filters[1] = {
-          "id": "implicit.stat_2563183002",
-          "value": {
-            "option": this.mapCitadelGuard.chosenObj.prop
-          }
-        }
+      if (!this.isSearchJson) {
+        return
+      }
+      if (this.mapCategory.isCitadel && this.mapCitadelGuard.isSearch && this.mapCitadelGuard.chosenObj.prop) {
+        this.setQueryStatFilter(MAP_QUERY_STAT_IDS.citadelGuard, {
+          option: this.mapCitadelGuard.chosenObj.prop
+        })
+      } else {
+        this.removeQueryStatFilter(MAP_QUERY_STAT_IDS.citadelGuard)
       }
     },
     isGemBasicSearch() {
@@ -3024,6 +3030,7 @@ export default {
       this.searchJson = JSON.parse(JSON.stringify(this.searchJson_Def)); // Deep Copy：用JSON.stringify把物件轉成字串 再用JSON.parse把字串轉成新的物件
       const NL = this.newLine
       let itemArray = item.split(NL); // 以行數拆解複製物品文字
+      console.log(itemArray);
       itemArray.splice(0, 1); // 暫時移除 3.14 增加 物品種類 的資訊以符合原先邏輯
       if (itemArray[1].indexOf('你無法使用這項裝備，它的數值將被忽略') > -1) {
         itemArray.splice(1, 2);
@@ -3042,6 +3049,7 @@ export default {
       // 先處理地圖/類地圖類型，避免名稱子字串誤判為其他類別（例如：九頭蛇冰窟 vs 九頭蛇屍體）
       if (
         item.indexOf('物品種類: 異界地圖') > -1 ||
+        item.indexOf('物品種類: 地圖') > -1 ||
         item.indexOf('釋界之邀：') > -1 ||
         item.indexOf('物品種類: 契約書') > -1 ||
         item.indexOf('物品種類: 藍圖') > -1 ||
@@ -3160,6 +3168,7 @@ export default {
         }
         this.gemQuality.min = minQuality
         this.isGemQualitySearch()
+        this.gemStatsAnalysis(itemArray)
       } else if (Rarity === "普通" && !this.isItem) {
         // } else if (Rarity === "普通" && (item.indexOf('透過聖殿實驗室或個人') > -1 || item.indexOf('可以使用於個人的地圖裝置來增加地圖的詞綴') > -1 || item.indexOf('放置兩個以上不同的徽印在地圖裝置中') > -1 || item.indexOf('你必須完成異界地圖中出現的全部六種試煉才能進入此區域') > -1 || item.indexOf('擊殺指定數量的怪物後會掉落培育之物') > -1 || item.indexOf('將你之前祭祀神壇保存的怪物加入至該地圖的祭祀神壇中') > -1 || item.indexOf('使用此物品開啟前往無悲憫與同情之地的時空之門') > -1 || item.indexOf('在個人地圖裝置使用此物品開啟譫妄異域時空之門') > -1 || item.indexOf('地圖裝置來使用此物品以前往進入瓦爾寶庫') > -1)) {
         // 地圖碎片、裂痕石、徽印、聖甲蟲、眾神聖器、女神祭品、培育器、浸血碑器、釋界之令、幻像異界、瓦爾遺鑰
@@ -3181,7 +3190,7 @@ export default {
         return
       } else {
         this.itemsAPI()
-        this.issueText = `Version: v1.328.0\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+        this.issueText = `Version: v1.328.1\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
         this.isSupported = false
         this.isStatsCollapse = false
         return
@@ -3367,6 +3376,7 @@ export default {
             }
           case '羅盤':
           case '附魔':
+          case '注能':
             return {
               'color': '#8181ff'
             }

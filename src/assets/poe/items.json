@@ -944,14 +944,14 @@
           "flags": { "unique": true }
         },
         {
-          "type": "雙玉戒指",
-          "text": "先引之征 雙玉戒指",
+          "type": "紅玉戒指",
+          "text": "先引之征 紅玉戒指",
           "name": "先引之征",
           "flags": { "unique": true }
         },
         {
-          "type": "紅玉戒指",
-          "text": "先引之征 紅玉戒指",
+          "type": "雙玉戒指",
+          "text": "先引之征 雙玉戒指",
           "name": "先引之征",
           "flags": { "unique": true }
         },
@@ -1367,6 +1367,12 @@
           "type": "瑪瑙護身符",
           "text": "艾拉黛絲 瑪瑙護身符",
           "name": "艾拉黛絲",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "金光戒指",
+          "text": "盜賊頭目的綁帶 金光戒指",
+          "name": "盜賊頭目的綁帶",
           "flags": { "unique": true }
         },
         {
@@ -3012,14 +3018,14 @@
           "flags": { "unique": true }
         },
         {
-          "type": "巨人脛甲",
-          "text": "多里亞尼的幻想 巨人脛甲",
+          "type": "迷蹤短靴",
+          "text": "多里亞尼的幻想 迷蹤短靴",
           "name": "多里亞尼的幻想",
           "flags": { "unique": true }
         },
         {
-          "type": "迷蹤短靴",
-          "text": "多里亞尼的幻想 迷蹤短靴",
+          "type": "巨人脛甲",
+          "text": "多里亞尼的幻想 巨人脛甲",
           "name": "多里亞尼的幻想",
           "flags": { "unique": true }
         },
@@ -5538,6 +5544,7 @@
         { "type": "母親的禮物" },
         { "type": "混亂代價" },
         { "type": "隨風飄記" },
+        { "type": "天啟" },
         { "type": "瓦爾之傲" },
         { "type": "藍海" },
         { "type": "刺客恩惠" },
@@ -5657,6 +5664,7 @@
         { "type": "失落帝國" },
         { "type": "冰冷愛戀" },
         { "type": "忠誠" },
+        { "type": "幸運壁壘" },
         { "type": "好運連連" },
         { "type": "幸運牌組" },
         { "type": "輝煌寶藏" },
@@ -5907,6 +5915,7 @@
         { "type": "傻男孩" },
         { "type": "海妖" },
         { "type": "骷髏頭" },
+        { "type": "沉眠之獸" },
         { "type": "靈魂" },
         { "type": "雷火" },
         { "type": "驕縱皇子" },
@@ -6111,6 +6120,7 @@
         { "type": "永恆星盤" },
         { "type": "無名星盤" },
         { "type": "混沌星盤" },
+        { "type": "敬畏之記憶" },
         { "type": "簡易套索捕獸網" },
         { "type": "幻術捕獸網" },
         { "type": "亡靈捕獸網" },
@@ -6336,6 +6346,7 @@
         { "type": "淬鍊石" },
         { "type": "玷污的崇高石" },
         { "type": "玷污的護甲片" },
+        { "type": "易變瓦爾寶珠" },
         { "type": "玷污的混沌石" },
         { "type": "玷污的幻色石" },
         { "type": "玷污的鏈結石" },
@@ -6360,7 +6371,9 @@
         { "type": "聖者的培育器" },
         { "type": "低語的培育器" },
         { "type": "注能的培育器" },
+        { "type": "神聖的培育器" },
         { "type": "榮耀的培育器" },
+        { "type": "蜃景的培育器" },
         { "type": "化石的培育器" },
         { "type": "碎片培育器" },
         { "type": "幻術師的培育器" },
@@ -6479,12 +6492,14 @@
         { "type": "知識之硬幣" },
         { "type": "技巧之硬幣" },
         { "type": "力量之硬幣" },
+        { "type": "創傷之記憶" },
         { "type": "黃金" },
         { "type": "原始結晶生靈之力" },
         { "type": "神聖結晶生靈之力" },
         { "type": "晶化仇怨" },
         { "type": "靈現結晶生靈之力" },
         { "type": "野性結晶生靈之力" },
+        { "type": "孤獨之記憶" },
         { "type": "太陽符文" },
         { "type": "能量符文" },
         { "type": "邊界符文" },
@@ -7467,6 +7482,7 @@
         { "type": "死亡時施放輔助" },
         { "type": "近戰擊殺時施放輔助" },
         { "type": "暈眩時施放輔助" },
+        { "type": "保護破碎時施放輔助" },
         { "type": "引導時施放輔助" },
         { "type": "覺醒．引導時施放輔助" },
         { "type": "連鎖輔助" },
@@ -7481,13 +7497,17 @@
         { "type": "冰冷穿透輔助" },
         { "type": "覺醒．冰冷穿透輔助" },
         { "type": "寒冰轉烈焰輔助" },
+        { "type": "羈絆輔助" },
         { "type": "集中效應輔助" },
+        { "type": "聚眾輔助" },
         { "type": "精準烈火輔助" },
         { "type": "精準破壞輔助" },
         { "type": "覺醒．精準破壞輔助" },
+        { "type": "冷卻恢復輔助" },
         { "type": "汙染戰吼輔助" },
         { "type": "殘酷輔助" },
         { "type": "撲殺輔助" },
+        { "type": "弱者撲殺輔助" },
         { "type": "詛咒地面輔助" },
         { "type": "咒術降臨輔助" },
         { "type": "覺醒．咒術降臨輔助" },
@@ -7498,7 +7518,9 @@
         { "type": "腐化輔助" },
         { "type": "吞噬輔助" },
         { "type": "神聖祝福輔助" },
+        { "type": "聖潔守望輔助" },
         { "type": "地破輔助" },
+        { "type": "朔望輔助" },
         { "type": "效能輔助" },
         { "type": "異界詛咒光環輔助" },
         { "type": "元素集中輔助" },
@@ -7546,6 +7568,8 @@
         { "type": "覺醒．高階多重投射輔助" },
         { "type": "高階多重打擊輔助" },
         { "type": "高階秘能爆發輔助" },
+        { "type": "高階施放迴響輔助" },
+        { "type": "高階釋放輔助" },
         { "type": "高階齊射輔助" },
         { "type": "守護者的祝福輔助" },
         { "type": "聖徒輔助" },
@@ -7585,6 +7609,7 @@
         { "type": "覺醒．閃電穿透輔助" },
         { "type": "活體閃電輔助" },
         { "type": "定位地雷輔助" },
+        { "type": "詭計輔助" },
         { "type": "癱瘓輔助" },
         { "type": "魔改箭矢輔助" },
         { "type": "魔力偷取輔助" },
@@ -7614,6 +7639,7 @@
         { "type": "竭盡全力輔助" },
         { "type": "過熱輔助" },
         { "type": "超載強化輔助" },
+        { "type": "和平輔助" },
         { "type": "齊射輔助" },
         { "type": "猛毒投射物輔助" },
         { "type": "物理轉閃電輔助" },
@@ -7662,9 +7688,11 @@
         { "type": "三體輔助" },
         { "type": "無邊異能輔助" },
         { "type": "覺醒．無邊異能輔助" },
+        { "type": "不潔三體輔助" },
         { "type": "覺醒．釋放輔助" },
         { "type": "緊急詔令輔助" },
         { "type": "瓦爾犧牲輔助" },
+        { "type": "瓦爾誘惑輔助" },
         { "type": "覺醒．猛毒投射物輔助" },
         { "type": "罪惡毒素輔助" },
         { "type": "虛空操縱輔助" },
@@ -8615,8 +8643,8 @@
         },
         {
           "type": "永恆珠寶",
-          "text": "英勇悲劇 永恆珠寶",
-          "name": "英勇悲劇",
+          "text": "英勇的悲劇 永恆珠寶",
+          "name": "英勇的悲劇",
           "flags": { "unique": true }
         },
         {
@@ -9474,7 +9502,7 @@
         { "type": "夢魘地圖" },
         { "type": "瓦爾多的地圖" },
         { "type": "塑界守護者地圖" },
-        { "type": "Map", "disc": "map" },
+        { "type": "地圖", "disc": "map" },
         { "type": "瓦爾密殿地圖" },
         { "type": "聖甲蟲：鏽蝕深淵" },
         { "type": "聖甲蟲：圓滑深淵" },
@@ -9670,948 +9698,878 @@
         { "type": "聖甲蟲：傳說泰坦" },
         { "type": "最後通牒雕刻" },
         { "type": "雕塑的 驚懼樹叢" },
+        { "type": "10021", "text": "凋落地圖 (致命岩灘)", "disc": "blighted" },
         {
           "type": "10021",
-          "text": "Blighted Map (致命岩灘)",
-          "disc": "blighted"
-        },
-        {
-          "type": "10021",
-          "text": "Blight-ravaged Map (致命岩灘)",
+          "text": "凋落蔓延地圖 (致命岩灘)",
           "disc": "uberblighted"
         },
-        {
-          "type": "10211",
-          "text": "Blighted Map (硫磺荒漠)",
-          "disc": "blighted"
-        },
+        { "type": "10211", "text": "凋落地圖 (硫磺荒漠)", "disc": "blighted" },
+        { "type": "10687", "text": "凋落地圖 (緋紅之鎮)", "disc": "blighted" },
         {
           "type": "10687",
-          "text": "Blighted Map (緋紅之鎮)",
-          "disc": "blighted"
-        },
-        {
-          "type": "10687",
-          "text": "Blight-ravaged Map (緋紅之鎮)",
+          "text": "凋落蔓延地圖 (緋紅之鎮)",
           "disc": "uberblighted"
         },
-        { "type": "11490", "text": "Blighted Map (巨坑)", "disc": "blighted" },
+        { "type": "11490", "text": "凋落地圖 (巨坑)", "disc": "blighted" },
         {
           "type": "11490",
-          "text": "Blight-ravaged Map (巨坑)",
+          "text": "凋落蔓延地圖 (巨坑)",
           "disc": "uberblighted"
         },
+        { "type": "11533", "text": "凋落地圖 (迷宮花園)", "disc": "blighted" },
         {
           "type": "11533",
-          "text": "Blighted Map (迷宮花園)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (迷宮花園)",
+          "disc": "uberblighted"
         },
+        { "type": "11724", "text": "凋落地圖 (熾炎船塢)", "disc": "blighted" },
         {
           "type": "11724",
-          "text": "Blighted Map (熾炎船塢)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (熾炎船塢)",
+          "disc": "uberblighted"
         },
+        { "type": "1215", "text": "凋落地圖 (幽魂宅邸)", "disc": "blighted" },
         {
           "type": "1215",
-          "text": "Blighted Map (幽魂宅邸)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (幽魂宅邸)",
+          "disc": "uberblighted"
         },
+        { "type": "12635", "text": "凋落地圖 (晨曦墓地)", "disc": "blighted" },
         {
           "type": "12635",
-          "text": "Blighted Map (晨曦墓地)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (晨曦墓地)",
+          "disc": "uberblighted"
         },
-        { "type": "1371", "text": "Blighted Map (競技場)", "disc": "blighted" },
+        { "type": "1371", "text": "凋落地圖 (競技場)", "disc": "blighted" },
         {
           "type": "1371",
-          "text": "Blight-ravaged Map (競技場)",
+          "text": "凋落蔓延地圖 (競技場)",
           "disc": "uberblighted"
         },
+        { "type": "14879", "text": "凋落地圖 (赤貧居所)", "disc": "blighted" },
         {
           "type": "14879",
-          "text": "Blighted Map (赤貧居所)",
-          "disc": "blighted"
-        },
-        {
-          "type": "14879",
-          "text": "Blight-ravaged Map (赤貧居所)",
+          "text": "凋落蔓延地圖 (赤貧居所)",
           "disc": "uberblighted"
         },
+        { "type": "15108", "text": "凋落地圖 (軍械庫)", "disc": "blighted" },
+        { "type": "15595", "text": "凋落地圖 (血腥陣地)", "disc": "blighted" },
         {
           "type": "15595",
-          "text": "Blighted Map (血腥陣地)",
-          "disc": "blighted"
-        },
-        {
-          "type": "15595",
-          "text": "Blight-ravaged Map (血腥陣地)",
+          "text": "凋落蔓延地圖 (血腥陣地)",
           "disc": "uberblighted"
         },
-        {
-          "type": "16355",
-          "text": "Blighted Map (大決鬥場)",
-          "disc": "blighted"
-        },
+        { "type": "16355", "text": "凋落地圖 (大決鬥場)", "disc": "blighted" },
+        { "type": "16982", "text": "凋落地圖 (象牙神殿)", "disc": "blighted" },
         {
           "type": "16982",
-          "text": "Blighted Map (象牙神殿)",
-          "disc": "blighted"
-        },
-        {
-          "type": "16982",
-          "text": "Blight-ravaged Map (象牙神殿)",
+          "text": "凋落蔓延地圖 (象牙神殿)",
           "disc": "uberblighted"
         },
-        { "type": "17533", "text": "Blighted Map (荒地)", "disc": "blighted" },
+        { "type": "17533", "text": "凋落地圖 (荒地)", "disc": "blighted" },
+        {
+          "type": "17533",
+          "text": "凋落蔓延地圖 (荒地)",
+          "disc": "uberblighted"
+        },
+        { "type": "18545", "text": "凋落地圖 (濱海幽穴)", "disc": "blighted" },
         {
           "type": "18545",
-          "text": "Blighted Map (濱海幽穴)",
-          "disc": "blighted"
-        },
-        {
-          "type": "19420",
-          "text": "Blighted Map (幽暗地穴)",
-          "disc": "blighted"
-        },
-        {
-          "type": "19776",
-          "text": "Blighted Map (濱海山丘)",
-          "disc": "blighted"
-        },
-        {
-          "type": "19776",
-          "text": "Blight-ravaged Map (濱海山丘)",
+          "text": "凋落蔓延地圖 (濱海幽穴)",
           "disc": "uberblighted"
         },
+        { "type": "18547", "text": "凋落地圖 (惡臭屍域)", "disc": "blighted" },
+        { "type": "19420", "text": "凋落地圖 (幽暗地穴)", "disc": "blighted" },
+        { "type": "19776", "text": "凋落地圖 (濱海山丘)", "disc": "blighted" },
+        {
+          "type": "19776",
+          "text": "凋落蔓延地圖 (濱海山丘)",
+          "disc": "uberblighted"
+        },
+        { "type": "19828", "text": "凋落地圖 (穢陰獄牢)", "disc": "blighted" },
         {
           "type": "19828",
-          "text": "Blighted Map (穢陰獄牢)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (穢陰獄牢)",
+          "disc": "uberblighted"
         },
+        { "type": "19999", "text": "凋落地圖 (平頂荒漠)", "disc": "blighted" },
         {
           "type": "19999",
-          "text": "Blighted Map (平頂荒漠)",
-          "disc": "blighted"
-        },
-        {
-          "type": "20216",
-          "text": "Blighted Map (地底之河)",
-          "disc": "blighted"
-        },
-        {
-          "type": "20216",
-          "text": "Blight-ravaged Map (地底之河)",
+          "text": "凋落蔓延地圖 (平頂荒漠)",
           "disc": "uberblighted"
         },
+        { "type": "20216", "text": "凋落地圖 (地底之河)", "disc": "blighted" },
+        {
+          "type": "20216",
+          "text": "凋落蔓延地圖 (地底之河)",
+          "disc": "uberblighted"
+        },
+        { "type": "20343", "text": "凋落地圖 (岩漿熔湖)", "disc": "blighted" },
         {
           "type": "20343",
-          "text": "Blighted Map (岩漿熔湖)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (岩漿熔湖)",
+          "disc": "uberblighted"
         },
+        { "type": "21257", "text": "凋落地圖 (酸岩酸嶼)", "disc": "blighted" },
         {
           "type": "21257",
-          "text": "Blighted Map (酸岩酸嶼)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (酸岩酸嶼)",
+          "disc": "uberblighted"
         },
-        {
-          "type": "22278",
-          "text": "Blighted Map (秘密通道)",
-          "disc": "blighted"
-        },
-        {
-          "type": "22593",
-          "text": "Blighted Map (暮光海灘)",
-          "disc": "blighted"
-        },
+        { "type": "2144", "text": "凋落地圖 (魅影別墅)", "disc": "blighted" },
+        { "type": "22278", "text": "凋落地圖 (秘密通道)", "disc": "blighted" },
+        { "type": "22593", "text": "凋落地圖 (暮光海灘)", "disc": "blighted" },
+        { "type": "2279", "text": "凋落地圖 (魔影墓場)", "disc": "blighted" },
         {
           "type": "2279",
-          "text": "Blighted Map (魔影墓場)",
-          "disc": "blighted"
-        },
-        {
-          "type": "2279",
-          "text": "Blight-ravaged Map (魔影墓場)",
+          "text": "凋落蔓延地圖 (魔影墓場)",
           "disc": "uberblighted"
         },
-        {
-          "type": "23253",
-          "text": "Blighted Map (骨跡陵墓)",
-          "disc": "blighted"
-        },
+        { "type": "23253", "text": "凋落地圖 (骨跡陵墓)", "disc": "blighted" },
+        { "type": "2336", "text": "凋落地圖 (炙陽峽谷)", "disc": "blighted" },
         {
           "type": "2336",
-          "text": "Blighted Map (炙陽峽谷)",
-          "disc": "blighted"
-        },
-        {
-          "type": "2336",
-          "text": "Blight-ravaged Map (炙陽峽谷)",
+          "text": "凋落蔓延地圖 (炙陽峽谷)",
           "disc": "uberblighted"
         },
+        { "type": "24414", "text": "凋落地圖 (病疫林谷)", "disc": "blighted" },
+        {
+          "type": "24414",
+          "text": "凋落蔓延地圖 (病疫林谷)",
+          "disc": "uberblighted"
+        },
+        { "type": "24497", "text": "凋落地圖 (儲物倉)", "disc": "blighted" },
         {
           "type": "24497",
-          "text": "Blighted Map (儲物倉)",
-          "disc": "blighted"
-        },
-        {
-          "type": "24497",
-          "text": "Blight-ravaged Map (儲物倉)",
+          "text": "凋落蔓延地圖 (儲物倉)",
           "disc": "uberblighted"
         },
+        { "type": "25202", "text": "凋落地圖 (古兵工廠)", "disc": "blighted" },
         {
           "type": "25202",
-          "text": "Blighted Map (古兵工廠)",
-          "disc": "blighted"
-        },
-        {
-          "type": "25202",
-          "text": "Blight-ravaged Map (古兵工廠)",
+          "text": "凋落蔓延地圖 (古兵工廠)",
           "disc": "uberblighted"
         },
+        { "type": "25302", "text": "凋落地圖 (血腥沼澤)", "disc": "blighted" },
         {
           "type": "25302",
-          "text": "Blighted Map (血腥沼澤)",
-          "disc": "blighted"
-        },
-        {
-          "type": "25302",
-          "text": "Blight-ravaged Map (血腥沼澤)",
+          "text": "凋落蔓延地圖 (血腥沼澤)",
           "disc": "uberblighted"
         },
+        { "type": "25370", "text": "凋落地圖 (奇術之庭)", "disc": "blighted" },
         {
           "type": "25370",
-          "text": "Blighted Map (奇術之庭)",
+          "text": "凋落蔓延地圖 (奇術之庭)",
+          "disc": "uberblighted"
+        },
+        { "type": "2545", "text": "凋落地圖 (遠古危城)", "disc": "blighted" },
+        {
+          "type": "25747",
+          "text": "凋落地圖 (腐敗下水道)",
           "disc": "blighted"
         },
+        {
+          "type": "25747",
+          "text": "凋落蔓延地圖 (腐敗下水道)",
+          "disc": "uberblighted"
+        },
+        { "type": "26156", "text": "凋落地圖 (禁忌之森)", "disc": "blighted" },
+        {
+          "type": "26156",
+          "text": "凋落蔓延地圖 (禁忌之森)",
+          "disc": "uberblighted"
+        },
+        { "type": "26468", "text": "凋落地圖 (密草神殿)", "disc": "blighted" },
         {
           "type": "26468",
-          "text": "Blighted Map (密草神殿)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (密草神殿)",
+          "disc": "uberblighted"
         },
+        { "type": "26732", "text": "凋落地圖 (長草遺跡)", "disc": "blighted" },
+        { "type": "27716", "text": "凋落地圖 (陰暗墓塚)", "disc": "blighted" },
         {
           "type": "27716",
-          "text": "Blighted Map (陰暗墓塚)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (陰暗墓塚)",
+          "disc": "uberblighted"
         },
+        { "type": "27782", "text": "凋落地圖 (乾枯湖岸)", "disc": "blighted" },
         {
           "type": "27782",
-          "text": "Blighted Map (乾枯湖岸)",
-          "disc": "blighted"
-        },
-        {
-          "type": "28402",
-          "text": "Blighted Map (危機水道)",
-          "disc": "blighted"
-        },
-        { "type": "29382", "text": "Blighted Map (岔河)", "disc": "blighted" },
-        {
-          "type": "30639",
-          "text": "Blighted Map (火山炎域)",
-          "disc": "blighted"
-        },
-        {
-          "type": "30639",
-          "text": "Blight-ravaged Map (火山炎域)",
+          "text": "凋落蔓延地圖 (乾枯湖岸)",
           "disc": "uberblighted"
         },
+        { "type": "27821", "text": "凋落地圖 (聖殿)", "disc": "blighted" },
+        { "type": "28402", "text": "凋落地圖 (危機水道)", "disc": "blighted" },
+        { "type": "29382", "text": "凋落地圖 (岔河)", "disc": "blighted" },
+        {
+          "type": "29382",
+          "text": "凋落蔓延地圖 (岔河)",
+          "disc": "uberblighted"
+        },
+        { "type": "30639", "text": "凋落地圖 (火山炎域)", "disc": "blighted" },
+        {
+          "type": "30639",
+          "text": "凋落蔓延地圖 (火山炎域)",
+          "disc": "uberblighted"
+        },
+        { "type": "31349", "text": "凋落地圖 (激戰柱廊)", "disc": "blighted" },
+        { "type": "31509", "text": "凋落地圖 (鍊金房)", "disc": "blighted" },
         {
           "type": "31509",
-          "text": "Blighted Map (鍊金房)",
-          "disc": "blighted"
-        },
-        {
-          "type": "32613",
-          "text": "Blighted Map (園林苑)",
-          "disc": "blighted"
-        },
-        {
-          "type": "32613",
-          "text": "Blight-ravaged Map (園林苑)",
+          "text": "凋落蔓延地圖 (鍊金房)",
           "disc": "uberblighted"
         },
+        { "type": "3182", "text": "凋落地圖 (淤塞水道)", "disc": "blighted" },
+        { "type": "32613", "text": "凋落地圖 (園林苑)", "disc": "blighted" },
+        {
+          "type": "32613",
+          "text": "凋落蔓延地圖 (園林苑)",
+          "disc": "uberblighted"
+        },
+        { "type": "33220", "text": "凋落地圖 (古博物館)", "disc": "blighted" },
+        {
+          "type": "33220",
+          "text": "凋落蔓延地圖 (古博物館)",
+          "disc": "uberblighted"
+        },
+        { "type": "3421", "text": "凋落地圖 (畸形亡域)", "disc": "blighted" },
+        { "type": "34447", "text": "凋落地圖 (夜語幽林)", "disc": "blighted" },
         {
           "type": "34447",
-          "text": "Blighted Map (夜語幽林)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (夜語幽林)",
+          "disc": "uberblighted"
         },
+        { "type": "34760", "text": "凋落地圖 (墓地谷)", "disc": "blighted" },
         {
           "type": "34760",
-          "text": "Blighted Map (墓地谷)",
-          "disc": "blighted"
-        },
-        {
-          "type": "34832",
-          "text": "Blighted Map (海風高原)",
-          "disc": "blighted"
-        },
-        {
-          "type": "34832",
-          "text": "Blight-ravaged Map (海風高原)",
+          "text": "凋落蔓延地圖 (墓地谷)",
           "disc": "uberblighted"
         },
+        { "type": "34832", "text": "凋落地圖 (海風高原)", "disc": "blighted" },
         {
-          "type": "34997",
-          "text": "Blighted Map (貧瘠之地)",
-          "disc": "blighted"
+          "type": "34832",
+          "text": "凋落蔓延地圖 (海風高原)",
+          "disc": "uberblighted"
         },
-        { "type": "35076", "text": "Blighted Map (廣場)", "disc": "blighted" },
+        { "type": "34997", "text": "凋落地圖 (貧瘠之地)", "disc": "blighted" },
+        { "type": "35076", "text": "凋落地圖 (廣場)", "disc": "blighted" },
+        {
+          "type": "35076",
+          "text": "凋落蔓延地圖 (廣場)",
+          "disc": "uberblighted"
+        },
+        { "type": "35162", "text": "凋落地圖 (古典密室)", "disc": "blighted" },
         {
           "type": "35162",
-          "text": "Blighted Map (古典密室)",
-          "disc": "blighted"
-        },
-        {
-          "type": "36207",
-          "text": "Blighted Map (無疆田野)",
-          "disc": "blighted"
-        },
-        {
-          "type": "36207",
-          "text": "Blight-ravaged Map (無疆田野)",
+          "text": "凋落蔓延地圖 (古典密室)",
           "disc": "uberblighted"
         },
+        { "type": "35484", "text": "凋落地圖 (核心)", "disc": "blighted" },
+        { "type": "36207", "text": "凋落地圖 (無疆田野)", "disc": "blighted" },
+        {
+          "type": "36207",
+          "text": "凋落蔓延地圖 (無疆田野)",
+          "disc": "uberblighted"
+        },
+        { "type": "36357", "text": "凋落地圖 (遺跡廢墟)", "disc": "blighted" },
         {
           "type": "36357",
-          "text": "Blighted Map (遺跡廢墟)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (遺跡廢墟)",
+          "disc": "uberblighted"
         },
-        {
-          "type": "36556",
-          "text": "Blighted Map (遠古市集)",
-          "disc": "blighted"
-        },
+        { "type": "36556", "text": "凋落地圖 (遠古市集)", "disc": "blighted" },
+        { "type": "36866", "text": "凋落地圖 (異蛛巢穴)", "disc": "blighted" },
         {
           "type": "36866",
-          "text": "Blighted Map (異蛛巢穴)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (異蛛巢穴)",
+          "disc": "uberblighted"
         },
+        { "type": "36946", "text": "凋落地圖 (陰晦泥灘)", "disc": "blighted" },
         {
           "type": "36946",
-          "text": "Blighted Map (陰晦泥灘)",
-          "disc": "blighted"
-        },
-        {
-          "type": "3756",
-          "text": "Blighted Map (禁斷圍城)",
-          "disc": "blighted"
-        },
-        {
-          "type": "3756",
-          "text": "Blight-ravaged Map (禁斷圍城)",
+          "text": "凋落蔓延地圖 (陰晦泥灘)",
           "disc": "uberblighted"
         },
+        { "type": "3756", "text": "凋落地圖 (禁斷圍城)", "disc": "blighted" },
+        {
+          "type": "3756",
+          "text": "凋落蔓延地圖 (禁斷圍城)",
+          "disc": "uberblighted"
+        },
+        { "type": "3775", "text": "凋落地圖 (幽魂監牢)", "disc": "blighted" },
         {
           "type": "3775",
-          "text": "Blighted Map (幽魂監牢)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (幽魂監牢)",
+          "disc": "uberblighted"
         },
-        { "type": "38080", "text": "Blighted Map (寒河)", "disc": "blighted" },
+        { "type": "38080", "text": "凋落地圖 (寒河)", "disc": "blighted" },
         {
           "type": "38080",
-          "text": "Blight-ravaged Map (寒河)",
+          "text": "凋落蔓延地圖 (寒河)",
           "disc": "uberblighted"
         },
+        { "type": "3883", "text": "凋落地圖 (羈破牢籠)", "disc": "blighted" },
         {
           "type": "3883",
-          "text": "Blighted Map (羈破牢籠)",
-          "disc": "blighted"
-        },
-        {
-          "type": "38855",
-          "text": "Blighted Map (密林果園)",
-          "disc": "blighted"
-        },
-        {
-          "type": "38855",
-          "text": "Blight-ravaged Map (密林果園)",
+          "text": "凋落蔓延地圖 (羈破牢籠)",
           "disc": "uberblighted"
         },
-        { "type": "39459", "text": "Blighted Map (古堡)", "disc": "blighted" },
+        { "type": "38855", "text": "凋落地圖 (密林果園)", "disc": "blighted" },
+        {
+          "type": "38855",
+          "text": "凋落蔓延地圖 (密林果園)",
+          "disc": "uberblighted"
+        },
+        { "type": "39459", "text": "凋落地圖 (古堡)", "disc": "blighted" },
+        {
+          "type": "39459",
+          "text": "凋落蔓延地圖 (古堡)",
+          "disc": "uberblighted"
+        },
+        { "type": "4003", "text": "凋落地圖 (劇毒林谷)", "disc": "blighted" },
         {
           "type": "4003",
-          "text": "Blighted Map (劇毒林谷)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (劇毒林谷)",
+          "disc": "uberblighted"
         },
+        { "type": "40753", "text": "凋落地圖 (熔火岩灘)", "disc": "blighted" },
         {
           "type": "40753",
-          "text": "Blighted Map (熔火岩灘)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (熔火岩灘)",
+          "disc": "uberblighted"
         },
+        { "type": "41363", "text": "凋落地圖 (破碎堡礁)", "disc": "blighted" },
         {
           "type": "41363",
-          "text": "Blighted Map (破碎堡礁)",
-          "disc": "blighted"
-        },
-        {
-          "type": "41751",
-          "text": "Blighted Map (嬋娟神殿)",
-          "disc": "blighted"
-        },
-        {
-          "type": "41751",
-          "text": "Blight-ravaged Map (嬋娟神殿)",
+          "text": "凋落蔓延地圖 (破碎堡礁)",
           "disc": "uberblighted"
         },
+        { "type": "41751", "text": "凋落地圖 (嬋娟神殿)", "disc": "blighted" },
         {
-          "type": "41763",
-          "text": "Blighted Map (鐵鏽工廠)",
-          "disc": "blighted"
-        },
-        {
-          "type": "42115",
-          "text": "Blighted Map (惡臭沼地)",
-          "disc": "blighted"
-        },
-        {
-          "type": "42115",
-          "text": "Blight-ravaged Map (惡臭沼地)",
+          "type": "41751",
+          "text": "凋落蔓延地圖 (嬋娟神殿)",
           "disc": "uberblighted"
         },
+        { "type": "41763", "text": "凋落地圖 (鐵鏽工廠)", "disc": "blighted" },
+        { "type": "42115", "text": "凋落地圖 (惡臭沼地)", "disc": "blighted" },
+        {
+          "type": "42115",
+          "text": "凋落蔓延地圖 (惡臭沼地)",
+          "disc": "uberblighted"
+        },
+        { "type": "42556", "text": "凋落地圖 (死寂泥溝)", "disc": "blighted" },
         {
           "type": "42556",
-          "text": "Blighted Map (死寂泥溝)",
-          "disc": "blighted"
-        },
-        {
-          "type": "42968",
-          "text": "Blighted Map (危城巷弄)",
-          "disc": "blighted"
-        },
-        {
-          "type": "42968",
-          "text": "Blight-ravaged Map (危城巷弄)",
+          "text": "凋落蔓延地圖 (死寂泥溝)",
           "disc": "uberblighted"
         },
+        { "type": "42558", "text": "凋落地圖 (露台花園)", "disc": "blighted" },
+        { "type": "42968", "text": "凋落地圖 (危城巷弄)", "disc": "blighted" },
+        {
+          "type": "42968",
+          "text": "凋落蔓延地圖 (危城巷弄)",
+          "disc": "uberblighted"
+        },
+        { "type": "43016", "text": "凋落地圖 (旱地墓室)", "disc": "blighted" },
         {
           "type": "43016",
-          "text": "Blighted Map (旱地墓室)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (旱地墓室)",
+          "disc": "uberblighted"
         },
+        { "type": "43308", "text": "凋落地圖 (絕望燈塔)", "disc": "blighted" },
         {
           "type": "43308",
-          "text": "Blighted Map (絕望燈塔)",
-          "disc": "blighted"
-        },
-        {
-          "type": "43432",
-          "text": "Blighted Map (違禁掘坑)",
-          "disc": "blighted"
-        },
-        {
-          "type": "43432",
-          "text": "Blight-ravaged Map (違禁掘坑)",
+          "text": "凋落蔓延地圖 (絕望燈塔)",
           "disc": "uberblighted"
         },
+        { "type": "43432", "text": "凋落地圖 (違禁掘坑)", "disc": "blighted" },
         {
-          "type": "43927",
-          "text": "Blighted Map (旱木林地)",
-          "disc": "blighted"
-        },
-        {
-          "type": "43927",
-          "text": "Blight-ravaged Map (旱木林地)",
+          "type": "43432",
+          "text": "凋落蔓延地圖 (違禁掘坑)",
           "disc": "uberblighted"
         },
+        { "type": "43561", "text": "凋落地圖 (實驗居所)", "disc": "blighted" },
+        { "type": "43927", "text": "凋落地圖 (旱木林地)", "disc": "blighted" },
+        {
+          "type": "43927",
+          "text": "凋落蔓延地圖 (旱木林地)",
+          "disc": "uberblighted"
+        },
+        { "type": "44170", "text": "凋落地圖 (荊棘谷)", "disc": "blighted" },
         {
           "type": "44170",
-          "text": "Blighted Map (荊棘谷)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (荊棘谷)",
+          "disc": "uberblighted"
         },
+        { "type": "44259", "text": "凋落地圖 (崩壞長廊)", "disc": "blighted" },
         {
           "type": "44259",
-          "text": "Blighted Map (崩壞長廊)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (崩壞長廊)",
+          "disc": "uberblighted"
         },
+        { "type": "44313", "text": "凋落地圖 (濕地礦山)", "disc": "blighted" },
         {
           "type": "44313",
-          "text": "Blighted Map (濕地礦山)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (濕地礦山)",
+          "disc": "uberblighted"
         },
+        { "type": "44762", "text": "凋落地圖 (危城廣場)", "disc": "blighted" },
         {
           "type": "44762",
-          "text": "Blighted Map (危城廣場)",
-          "disc": "blighted"
-        },
-        {
-          "type": "45792",
-          "text": "Blighted Map (奪魂之殿)",
-          "disc": "blighted"
-        },
-        {
-          "type": "45792",
-          "text": "Blight-ravaged Map (奪魂之殿)",
+          "text": "凋落蔓延地圖 (危城廣場)",
           "disc": "uberblighted"
         },
+        { "type": "45792", "text": "凋落地圖 (奪魂之殿)", "disc": "blighted" },
         {
-          "type": "4592",
-          "text": "Blighted Map (冰川山丘)",
-          "disc": "blighted"
+          "type": "45792",
+          "text": "凋落蔓延地圖 (奪魂之殿)",
+          "disc": "uberblighted"
         },
+        { "type": "4592", "text": "凋落地圖 (冰川山丘)", "disc": "blighted" },
+        { "type": "4651", "text": "凋落地圖 (巨蛛之林)", "disc": "blighted" },
         {
           "type": "4651",
-          "text": "Blighted Map (巨蛛之林)",
-          "disc": "blighted"
-        },
-        {
-          "type": "46524",
-          "text": "Blighted Map (冥神之域)",
-          "disc": "blighted"
-        },
-        {
-          "type": "46524",
-          "text": "Blight-ravaged Map (冥神之域)",
+          "text": "凋落蔓延地圖 (巨蛛之林)",
           "disc": "uberblighted"
         },
+        { "type": "46524", "text": "凋落地圖 (冥神之域)", "disc": "blighted" },
+        {
+          "type": "46524",
+          "text": "凋落蔓延地圖 (冥神之域)",
+          "disc": "uberblighted"
+        },
+        { "type": "46612", "text": "凋落地圖 (緋紅神殿)", "disc": "blighted" },
         {
           "type": "46612",
-          "text": "Blighted Map (緋紅神殿)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (緋紅神殿)",
+          "disc": "uberblighted"
         },
+        { "type": "47088", "text": "凋落地圖 (失落城塢)", "disc": "blighted" },
         {
           "type": "47088",
-          "text": "Blighted Map (失落城塢)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (失落城塢)",
+          "disc": "uberblighted"
         },
-        {
-          "type": "4755",
-          "text": "Blighted Map (神主居所)",
-          "disc": "blighted"
-        },
+        { "type": "4755", "text": "凋落地圖 (神主居所)", "disc": "blighted" },
+        { "type": "47614", "text": "凋落地圖 (瘴氣泥沼)", "disc": "blighted" },
         {
           "type": "47614",
-          "text": "Blighted Map (瘴氣泥沼)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (瘴氣泥沼)",
+          "disc": "uberblighted"
         },
-        {
-          "type": "47634",
-          "text": "Blighted Map (魔靈幻獄)",
-          "disc": "blighted"
-        },
+        { "type": "47634", "text": "凋落地圖 (魔靈幻獄)", "disc": "blighted" },
+        { "type": "47897", "text": "凋落地圖 (不潔教堂)", "disc": "blighted" },
         {
           "type": "47897",
-          "text": "Blighted Map (不潔教堂)",
-          "disc": "blighted"
-        },
-        {
-          "type": "48831",
-          "text": "Blighted Map (如履危牆)",
-          "disc": "blighted"
-        },
-        {
-          "type": "48831",
-          "text": "Blight-ravaged Map (如履危牆)",
+          "text": "凋落蔓延地圖 (不潔教堂)",
           "disc": "uberblighted"
         },
+        { "type": "48831", "text": "凋落地圖 (如履危牆)", "disc": "blighted" },
+        {
+          "type": "48831",
+          "text": "凋落蔓延地圖 (如履危牆)",
+          "disc": "uberblighted"
+        },
+        { "type": "49159", "text": "凋落地圖 (疾風峽灣)", "disc": "blighted" },
         {
           "type": "49159",
-          "text": "Blighted Map (疾風峽灣)",
-          "disc": "blighted"
-        },
-        {
-          "type": "49777",
-          "text": "Blighted Map (失序教院)",
-          "disc": "blighted"
-        },
-        {
-          "type": "49777",
-          "text": "Blight-ravaged Map (失序教院)",
+          "text": "凋落蔓延地圖 (疾風峽灣)",
           "disc": "uberblighted"
         },
+        { "type": "49687", "text": "凋落地圖 (熱林塚墓)", "disc": "blighted" },
         {
-          "type": "5132",
-          "text": "Blighted Map (殘破殞坑)",
-          "disc": "blighted"
+          "type": "49687",
+          "text": "凋落蔓延地圖 (熱林塚墓)",
+          "disc": "uberblighted"
         },
+        { "type": "49777", "text": "凋落地圖 (失序教院)", "disc": "blighted" },
         {
-          "type": "51403",
-          "text": "Blighted Map (凍原小屋)",
-          "disc": "blighted"
+          "type": "49777",
+          "text": "凋落蔓延地圖 (失序教院)",
+          "disc": "uberblighted"
         },
+        { "type": "5132", "text": "凋落地圖 (殘破殞坑)", "disc": "blighted" },
+        { "type": "51403", "text": "凋落地圖 (凍原小屋)", "disc": "blighted" },
+        { "type": "51878", "text": "凋落地圖 (神域之殿)", "disc": "blighted" },
         {
           "type": "51878",
-          "text": "Blighted Map (神域之殿)",
-          "disc": "blighted"
-        },
-        {
-          "type": "52736",
-          "text": "Blighted Map (濱海堡壘)",
-          "disc": "blighted"
-        },
-        {
-          "type": "53116",
-          "text": "Blighted Map (暮色沙丘)",
-          "disc": "blighted"
-        },
-        {
-          "type": "53116",
-          "text": "Blight-ravaged Map (暮色沙丘)",
+          "text": "凋落蔓延地圖 (神域之殿)",
           "disc": "uberblighted"
         },
-        { "type": "53637", "text": "Blighted Map (乾海)", "disc": "blighted" },
+        { "type": "52736", "text": "凋落地圖 (濱海堡壘)", "disc": "blighted" },
+        { "type": "53075", "text": "凋落地圖 (墓影書坊)", "disc": "blighted" },
+        { "type": "53116", "text": "凋落地圖 (暮色沙丘)", "disc": "blighted" },
         {
-          "type": "53902",
-          "text": "Blighted Map (墮影墓場)",
-          "disc": "blighted"
-        },
-        {
-          "type": "53902",
-          "text": "Blight-ravaged Map (墮影墓場)",
+          "type": "53116",
+          "text": "凋落蔓延地圖 (暮色沙丘)",
           "disc": "uberblighted"
         },
+        { "type": "53637", "text": "凋落地圖 (乾海)", "disc": "blighted" },
+        {
+          "type": "53637",
+          "text": "凋落蔓延地圖 (乾海)",
+          "disc": "uberblighted"
+        },
+        { "type": "53902", "text": "凋落地圖 (墮影墓場)", "disc": "blighted" },
+        {
+          "type": "53902",
+          "text": "凋落蔓延地圖 (墮影墓場)",
+          "disc": "uberblighted"
+        },
+        { "type": "53973", "text": "凋落地圖 (危機海礁)", "disc": "blighted" },
         {
           "type": "53973",
-          "text": "Blighted Map (危機海礁)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (危機海礁)",
+          "disc": "uberblighted"
         },
+        { "type": "54239", "text": "凋落地圖 (毒牙海港)", "disc": "blighted" },
         {
           "type": "54239",
-          "text": "Blighted Map (毒牙海港)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (毒牙海港)",
+          "disc": "uberblighted"
         },
+        { "type": "54446", "text": "凋落地圖 (闇獄尖塔)", "disc": "blighted" },
         {
           "type": "54446",
-          "text": "Blighted Map (闇獄尖塔)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (闇獄尖塔)",
+          "disc": "uberblighted"
         },
+        { "type": "54575", "text": "凋落地圖 (惡靈學院)", "disc": "blighted" },
+        { "type": "54757", "text": "凋落地圖 (月色迴廊)", "disc": "blighted" },
         {
           "type": "54757",
-          "text": "Blighted Map (月色迴廊)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (月色迴廊)",
+          "disc": "uberblighted"
         },
+        { "type": "5647", "text": "凋落地圖 (晴空幽島)", "disc": "blighted" },
         {
           "type": "5647",
-          "text": "Blighted Map (晴空幽島)",
-          "disc": "blighted"
-        },
-        {
-          "type": "57536",
-          "text": "Blighted Map (古競速場)",
-          "disc": "blighted"
-        },
-        {
-          "type": "57536",
-          "text": "Blight-ravaged Map (古競速場)",
+          "text": "凋落蔓延地圖 (晴空幽島)",
           "disc": "uberblighted"
         },
+        { "type": "57536", "text": "凋落地圖 (古競速場)", "disc": "blighted" },
+        {
+          "type": "57536",
+          "text": "凋落蔓延地圖 (古競速場)",
+          "disc": "uberblighted"
+        },
+        { "type": "57690", "text": "凋落地圖 (乾潮林地)", "disc": "blighted" },
+        { "type": "57831", "text": "凋落地圖 (靜縊陵墓)", "disc": "blighted" },
         {
           "type": "57831",
-          "text": "Blighted Map (靜縊陵墓)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (靜縊陵墓)",
+          "disc": "uberblighted"
         },
-        {
-          "type": "58250",
-          "text": "Blighted Map (苦行之域)",
-          "disc": "blighted"
-        },
+        { "type": "57839", "text": "凋落地圖 (魔金寶庫)", "disc": "blighted" },
+        { "type": "58250", "text": "凋落地圖 (苦行之域)", "disc": "blighted" },
+        { "type": "58981", "text": "凋落地圖 (詭譎晶洞)", "disc": "blighted" },
+        { "type": "59084", "text": "凋落地圖 (極原冰帽)", "disc": "blighted" },
         {
           "type": "59084",
-          "text": "Blighted Map (極原冰帽)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (極原冰帽)",
+          "disc": "uberblighted"
         },
+        { "type": "59460", "text": "凋落地圖 (雲頂鐘樓)", "disc": "blighted" },
         {
           "type": "59460",
-          "text": "Blighted Map (雲頂鐘樓)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (雲頂鐘樓)",
+          "disc": "uberblighted"
         },
+        { "type": "60607", "text": "凋落地圖 (巨蛛巢穴)", "disc": "blighted" },
         {
           "type": "60607",
-          "text": "Blighted Map (巨蛛巢穴)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (巨蛛巢穴)",
+          "disc": "uberblighted"
         },
+        { "type": "60634", "text": "凋落地圖 (寒頂之巔)", "disc": "blighted" },
         {
           "type": "60634",
-          "text": "Blighted Map (寒頂之巔)",
-          "disc": "blighted"
-        },
-        {
-          "type": "60634",
-          "text": "Blight-ravaged Map (寒頂之巔)",
+          "text": "凋落蔓延地圖 (寒頂之巔)",
           "disc": "uberblighted"
         },
+        { "type": "60732", "text": "凋落地圖 (怒浪之港)", "disc": "blighted" },
+        { "type": "6074", "text": "凋落地圖 (硫磺蝕岸)", "disc": "blighted" },
         {
           "type": "6074",
-          "text": "Blighted Map (硫磺蝕岸)",
-          "disc": "blighted"
-        },
-        {
-          "type": "6074",
-          "text": "Blight-ravaged Map (硫磺蝕岸)",
+          "text": "凋落蔓延地圖 (硫磺蝕岸)",
           "disc": "uberblighted"
         },
+        { "type": "62685", "text": "凋落地圖 (白沙灘頭)", "disc": "blighted" },
         {
           "type": "62685",
-          "text": "Blighted Map (白沙灘頭)",
-          "disc": "blighted"
-        },
-        {
-          "type": "62685",
-          "text": "Blight-ravaged Map (白沙灘頭)",
+          "text": "凋落蔓延地圖 (白沙灘頭)",
           "disc": "uberblighted"
         },
+        { "type": "63065", "text": "凋落地圖 (洪災礦坑)", "disc": "blighted" },
         {
           "type": "63065",
-          "text": "Blighted Map (洪災礦坑)",
-          "disc": "blighted"
-        },
-        {
-          "type": "63065",
-          "text": "Blight-ravaged Map (洪災礦坑)",
+          "text": "凋落蔓延地圖 (洪災礦坑)",
           "disc": "uberblighted"
         },
+        { "type": "64256", "text": "凋落地圖 (禁魂炎獄)", "disc": "blighted" },
         {
           "type": "64256",
-          "text": "Blighted Map (禁魂炎獄)",
-          "disc": "blighted"
-        },
-        {
-          "type": "64256",
-          "text": "Blight-ravaged Map (禁魂炎獄)",
+          "text": "凋落蔓延地圖 (禁魂炎獄)",
           "disc": "uberblighted"
         },
+        { "type": "64414", "text": "凋落地圖 (火山炎口)", "disc": "blighted" },
+        { "type": "64812", "text": "凋落地圖 (奇術秘殿)", "disc": "blighted" },
         {
           "type": "64812",
-          "text": "Blighted Map (奇術秘殿)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (奇術秘殿)",
+          "disc": "uberblighted"
         },
+        { "type": "6755", "text": "凋落地圖 (寧逸溫房)", "disc": "blighted" },
+        { "type": "7088", "text": "凋落地圖 (熔岩之室)", "disc": "blighted" },
         {
           "type": "7088",
-          "text": "Blighted Map (熔岩之室)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (熔岩之室)",
+          "disc": "uberblighted"
         },
+        { "type": "737", "text": "凋落地圖 (驚懼樹叢)", "disc": "blighted" },
         {
           "type": "737",
-          "text": "Blighted Map (驚懼樹叢)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (驚懼樹叢)",
+          "disc": "uberblighted"
         },
+        { "type": "7465", "text": "凋落地圖 (異蛛墓塚)", "disc": "blighted" },
         {
           "type": "7465",
-          "text": "Blighted Map (異蛛墓塚)",
-          "disc": "blighted"
-        },
-        {
-          "type": "7465",
-          "text": "Blight-ravaged Map (異蛛墓塚)",
+          "text": "凋落蔓延地圖 (異蛛墓塚)",
           "disc": "uberblighted"
         },
+        { "type": "8544", "text": "凋落地圖 (惡咒陵墓)", "disc": "blighted" },
         {
           "type": "8544",
-          "text": "Blighted Map (惡咒陵墓)",
-          "disc": "blighted"
+          "text": "凋落蔓延地圖 (惡咒陵墓)",
+          "disc": "uberblighted"
         },
+        { "type": "8823", "text": "凋落地圖 (餓獸巢穴)", "disc": "blighted" },
         {
-          "type": "8544",
-          "text": "Blight-ravaged Map (惡咒陵墓)",
+          "type": "8823",
+          "text": "凋落蔓延地圖 (餓獸巢穴)",
           "disc": "uberblighted"
         },
         {
-          "type": "8823",
-          "text": "Blighted Map (餓獸巢穴)",
-          "disc": "blighted"
-        },
-        {
-          "type": "8823",
-          "text": "Blight-ravaged Map (餓獸巢穴)",
-          "disc": "uberblighted"
-        },
-        {
-          "type": "Map",
-          "text": "輪迴的夢魘 Map",
+          "type": "地圖",
+          "text": "輪迴的夢魘 地圖",
           "name": "輪迴的夢魘",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "遙遠記憶：編造 Map",
+          "type": "地圖",
+          "text": "遙遠記憶：編造 地圖",
           "name": "遙遠記憶：編造",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "遙遠記憶：增幅 Map",
+          "type": "地圖",
+          "text": "遙遠記憶：增幅 地圖",
           "name": "遙遠記憶：增幅",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "塞爾．佈雷德狼穴 Map",
+          "type": "地圖",
+          "text": "塞爾．佈雷德狼穴 地圖",
           "name": "塞爾．佈雷德狼穴",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "深沉記憶 Map",
+          "type": "地圖",
+          "text": "深沉記憶 地圖",
           "name": "深沉記憶",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "亡者之財 Map",
+          "type": "地圖",
+          "text": "亡者之財 地圖",
           "name": "亡者之財",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "多里亞尼的機械迷城 Map",
+          "type": "地圖",
+          "text": "多里亞尼的機械迷城 地圖",
           "name": "多里亞尼的機械迷城",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "元帥殿堂 Map",
+          "type": "地圖",
+          "text": "元帥殿堂 地圖",
           "name": "元帥殿堂",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "萬聖之地 Map",
+          "type": "地圖",
+          "text": "萬聖之地 地圖",
           "name": "萬聖之地",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "神域之殿．煉獄 Map",
+          "type": "地圖",
+          "text": "神域之殿．煉獄 地圖",
           "name": "神域之殿．煉獄",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "混沌之淵 Map",
+          "type": "地圖",
+          "text": "混沌之淵 地圖",
           "name": "混沌之淵",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "賊窩 Map",
+          "type": "地圖",
+          "text": "賊窩 地圖",
           "name": "賊窩",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "歐霸的咒怨寶庫 Map",
+          "type": "地圖",
+          "text": "歐霸的咒怨寶庫 地圖",
           "name": "歐霸的咒怨寶庫",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "遠古之印 Map",
+          "type": "地圖",
+          "text": "遠古之印 地圖",
           "name": "遠古之印",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "艾倫之柱 Map",
+          "type": "地圖",
+          "text": "艾倫之柱 地圖",
           "name": "艾倫之柱",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "沉淪之間 Map",
+          "type": "地圖",
+          "text": "沉淪之間 地圖",
           "name": "沉淪之間",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "贗品．深沉記憶 Map",
+          "type": "地圖",
+          "text": "贗品．深沉記憶 地圖",
           "name": "贗品．深沉記憶",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "贗品．艾倫之柱 Map",
+          "type": "地圖",
+          "text": "贗品．艾倫之柱 地圖",
           "name": "贗品．艾倫之柱",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "贗品．沉淪之間 Map",
+          "type": "地圖",
+          "text": "贗品．沉淪之間 地圖",
           "name": "贗品．沉淪之間",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "遙遠記憶：改寫 Map",
+          "type": "地圖",
+          "text": "遙遠記憶：改寫 地圖",
           "name": "遙遠記憶：改寫",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "神諭之殿 Map",
+          "type": "地圖",
+          "text": "神諭之殿 地圖",
           "name": "神諭之殿",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "懦者的試驗 Map",
+          "type": "地圖",
+          "text": "懦者的試驗 地圖",
           "name": "懦者的試驗",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "普蘭德斯莊園 Map",
+          "type": "地圖",
+          "text": "普蘭德斯莊園 地圖",
           "name": "普蘭德斯莊園",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "腐臭迴廊 Map",
+          "type": "瓦爾多的地圖",
+          "text": "普蘭德斯莊園 瓦爾多的地圖",
+          "name": "普蘭德斯莊園",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "地圖",
+          "text": "腐臭迴廊 地圖",
           "name": "腐臭迴廊",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "暮色神廟 Map",
+          "type": "地圖",
+          "text": "磨難之塔 地圖",
+          "name": "磨難之塔",
+          "disc": "map",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "地圖",
+          "text": "暮色神廟 地圖",
           "name": "暮色神廟",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "維克塔廣場 Map",
+          "type": "地圖",
+          "text": "維克塔廣場 地圖",
           "name": "維克塔廣場",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "遙遠記憶：扭曲 Map",
+          "type": "地圖",
+          "text": "遙遠記憶：扭曲 地圖",
           "name": "遙遠記憶：扭曲",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "阿茲里的秘寶庫 Map",
+          "type": "地圖",
+          "text": "純淨樂園 地圖",
+          "name": "純淨樂園",
+          "disc": "map",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "地圖",
+          "text": "阿茲里的秘寶庫 地圖",
           "name": "阿茲里的秘寶庫",
           "disc": "map",
           "flags": { "unique": true }
         },
         {
-          "type": "Map",
-          "text": "禁閉祭壇 Map",
+          "type": "地圖",
+          "text": "禁閉祭壇 地圖",
           "name": "禁閉祭壇",
           "disc": "map",
           "flags": { "unique": true }
