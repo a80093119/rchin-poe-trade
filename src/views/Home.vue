@@ -332,10 +332,10 @@
             <tbody class="searchStats">
               <tr v-for="(item, index) in searchStats" :key="index" style="padding-top: 5px;" :style="item.isSearch ? 'font-weight:bold;' : 'color: #AAACAD'">
                 <td style="width: 45px;">
-                  <b-form-checkbox v-model="item.isSearch"></b-form-checkbox>
+                  <b-form-checkbox v-model="item.isSearch" :disabled="item.isLocked"></b-form-checkbox>
                 </td>
-                <td style="width: 70px; cursor: pointer; user-select:none;" :style="statsFontColor(item.type)" @click="item.isSearch = !item.isSearch">{{ item.type }} </td>
-                <td style="cursor: pointer; user-select:none; white-space:pre-wrap;" @click="item.isSearch = !item.isSearch">{{ item.text }} </td>
+                <td style="width: 70px; cursor: pointer; user-select:none;" :style="statsFontColor(item.type)" @click="item.isLocked ? '' : item.isSearch = !item.isSearch">{{ item.type }} </td>
+                <td style="cursor: pointer; user-select:none; white-space:pre-wrap;" @click="item.isLocked ? '' : item.isSearch = !item.isSearch">{{ item.text }} </td>
                 <td style="width: 64px; padding-top: 5px !important;">
                   <div style="padding:0px 4px 0px 6px;">
                     <b-form-input v-if="item.isValue" v-model.number="item.min" @dblclick="item.min = null" :disabled="!item.isSearch" size="sm" type="number" style="text-align: center;"></b-form-input>
@@ -405,6 +405,7 @@ import {
   MAP_BASE_TYPE_FALLBACKS,
   MAP_QUERY_STAT_IDS
 } from "../utils/mapSearch";
+import { buildBlueprintSearch } from "../utils/heistSearch";
 
 const _ = require('lodash');
 const stringSimilarity = require('string-similarity');
@@ -909,8 +910,12 @@ export default {
     },
     setQueryStatFilter(statId, value) {
       const filters = this.getQueryStatFilters()
-      const nextFilter = { id: statId, value }
+      const nextFilter = { id: statId }
       const currentIndex = filters.findIndex(filter => filter.id === statId)
+
+      if (_.isPlainObject(value) && Object.keys(value).length > 0) {
+        nextFilter.value = value
+      }
 
       if (currentIndex > -1) {
         filters.splice(currentIndex, 1, nextFilter)
@@ -1026,67 +1031,136 @@ export default {
           console.log(error);
         })
     }, 500),
+    buildSearchStatValue(element) {
+      let value = {}
+      let min = element.min
+      let max = element.max
+
+      if (element.isNegative && _.isNumber(min)) {
+        value.max = -min
+      } else if (_.isNumber(min)) {
+        value.min = min
+      }
+      if (element.isNegative && _.isNumber(max)) {
+        value.min = -max
+      } else if (_.isNumber(max)) {
+        value.max = max
+      }
+      if (element.option) {
+        value.option = element.option
+      }
+
+      return value
+    },
+    syncSearchStatsToQuery() {
+      const skippedIds = ["memory_level", 'misc.ilvl', 'heist.heist_wings', 'heist.heist_max_wings']
+      const searchStatIds = [...new Set(this.searchStats.map(element => element.id).filter(id => !skippedIds.includes(id)))]
+
+      if (!this.searchJson.query.stats.length) {
+        this.searchJson.query.stats = [{ "type": "and", "filters": [] }]
+      }
+
+      if (!searchStatIds.length) {
+        return
+      }
+
+      const searchStatIdSet = new Set(searchStatIds)
+      this.searchJson.query.stats = this.searchJson.query.stats.filter(group => {
+        if (group.type === 'count') {
+          return !(group.filters || []).some(filter => searchStatIdSet.has(filter.id))
+        }
+
+        group.filters = (group.filters || []).filter(filter => !searchStatIdSet.has(filter.id))
+        return true
+      })
+
+      let andGroup = this.searchJson.query.stats.find(group => group.type === 'and')
+      if (!andGroup) {
+        andGroup = { type: 'and', filters: [] }
+        this.searchJson.query.stats.unshift(andGroup)
+      }
+
+      this.searchStats.forEach((element) => {
+        if (skippedIds.includes(element.id)) {
+          return
+        }
+
+        const value = this.buildSearchStatValue(element)
+        const isCountType = this.duplicateStats.allIds.find(data => data.includes(element.id))
+
+        if (isCountType) {
+          let matchedItem = this.duplicateStats.result.find(item => item.ids.includes(isCountType));
+          let filters = matchedItem.ids.map(id => ({
+            id: id,
+            disabled: element.isSearch ? false : true,
+          }));
+
+          this.searchJson.query.stats.push({
+            "type": "count",
+            filters,
+            "value": {
+              "min": 1
+            }
+          });
+        } else {
+          andGroup.filters.push({
+            "id": element.id,
+            "disabled": element.isSearch ? false : true,
+            "value": value
+          })
+        }
+      })
+    },
     searchTrade: _.debounce(function (obj) {
       let vm = this
       this.isSupported = true
-      if (this.searchJson.query.stats[0].filters.length === 0) {
-        this.searchStats.forEach((element, index, array) => {
-          let value = {}
-          let min = element.min
-          let max = element.max
-          if (element.isNegative && _.isNumber(min)) {
-            value.max = -min
-          } else if (_.isNumber(min)) {
-            value.min = min
-          }
-          if (element.isNegative && _.isNumber(max)) {
-            value.min = -max
-          } else if (_.isNumber(max)) {
-            value.max = max
-          }
-          if (element.option) {
-            value.option = element.option
-          }
-          
-          // 特殊處理記憶絲縷
-          if (element.id === "memory_level") {
-            if (element.isSearch) {
-              this.searchJson.query.filters.misc_filters.filters.memory_level = {
-                "min": element.min ? element.min : null,
-                "max": element.max ? element.max : null
-              }
-            } else {
-              delete this.searchJson.query.filters.misc_filters.filters.memory_level
+      this.searchStats.forEach((element) => {
+        if (element.id === 'memory_level') {
+          if (element.isSearch) {
+            this.searchJson.query.filters.misc_filters.filters.memory_level = {
+              "min": _.isNumber(element.min) ? element.min : null,
+              "max": _.isNumber(element.max) ? element.max : null
             }
-            return // 跳過後續的stats處理
-          }
-          
-          // 比較 element.id 與 duplicateStats 內的 allIds 陣列，如果 element.id 有包含在內，則搜尋詞綴時就改為 type: "count"
-          let isCountType = this.duplicateStats.allIds.find(data => data.includes(element.id))
-
-          if (isCountType) {
-            let matchedItem = this.duplicateStats.result.find(item => item.ids.includes(isCountType));
-            let filters = matchedItem.ids.map(id => ({
-              id: id,
-              disabled: element.isSearch ? false : true,
-            }));
-
-            this.searchJson.query.stats.push({
-              "type": "count",
-              filters,
-              "value": {
-                "min": 1
-              }
-            });
           } else {
-            this.searchJson.query.stats[0].filters.push({
-              "id": element.id,
-              "disabled": element.isSearch ? false : true,
-              "value": value
-            })
+            delete this.searchJson.query.filters.misc_filters.filters.memory_level
           }
-        })
-      }
+          return
+        }
+
+        if (element.id === 'misc.ilvl') {
+          if (element.isSearch) {
+            this.searchJson.query.filters.misc_filters.filters.ilvl = {
+              "min": _.isNumber(element.min) ? element.min : null,
+              "max": _.isNumber(element.max) ? element.max : null
+            }
+          } else {
+            delete this.searchJson.query.filters.misc_filters.filters.ilvl
+          }
+          return
+        }
+
+        if (element.id === 'heist.heist_wings' || element.id === 'heist.heist_max_wings') {
+          if (!this.searchJson.query.filters.heist_filters) {
+            this.searchJson.query.filters.heist_filters = {
+              filters: {},
+              disabled: false
+            }
+          }
+
+          const filterKey = element.id.replace('heist.', '')
+
+          if (element.isSearch) {
+            this.searchJson.query.filters.heist_filters.filters[filterKey] = {
+              "min": _.isNumber(element.min) ? element.min : null,
+              "max": _.isNumber(element.max) ? element.max : null
+            }
+          } else {
+            delete this.searchJson.query.filters.heist_filters.filters[filterKey]
+          }
+          return
+        }
+      })
+      this.syncSearchStatsToQuery()
       this.fetchQueryID = ''
       console.log('trade searchJson', JSON.stringify(obj, null, 2))
       this.axios.post(`http://localhost:3031/trade`, {
@@ -1131,7 +1205,7 @@ export default {
           if (error.response.status === 429) {
             errMsg += `\n被 Server 限制發送需求了，請等待後再重試`
           }
-          vm.issueText = `Version: v1.328.1, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+          vm.issueText = `Version: v1.328.2, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
           vm.itemsAPI()
           vm.isSupported = false
           vm.isStatsCollapse = false
@@ -1220,8 +1294,8 @@ export default {
         }
         this.implicitStats.push(text, element.id)
       })
-      // 自訂中文別名/修正：將包含「近戰擊中有 #% 機率護體」的敘述映射到 explicit 版本，避免辨識錯誤
-      this.implicitStats.push('近戰擊中有 #% 機率護體', 'explicit.stat_1166417447')
+      // 自訂中文別名/修正：將包含「近戰擊中有 #% 機率護體」的敘述映射回 stats.json 的正式 implicit 詞綴
+      this.implicitStats.push('近戰擊中有 #% 機率護體', 'implicit.stat_1166417447')
       result[result.findIndex(e => e.id === "fractured")].entries.forEach((element, index) => { // 破裂
         let text = element.text
         if (text.indexOf(' (部分)') > -1) { // 刪除(部分)字串
@@ -1731,6 +1805,43 @@ export default {
       }
       this.searchTrade(this.searchJson)
     }, 500),
+    isTimelessJewel() {
+      return this.itemCategory.chosenObj.prop === 'jewel' && ['永恆珠寶', 'Timeless Jewel'].includes(this.itemBasic.text)
+    },
+    mapFixedStatsAnalysis(itemArray) {
+      const fixedLines = itemArray.filter(line => line && (line.includes('(implicit)') || line.includes('(enchant)')))
+      const processedIds = new Set()
+
+      fixedLines.forEach((line) => {
+        const isImplicit = line.includes('(implicit)')
+        const statText = line.replace(/\s+\((implicit|enchant)\)$/, '').trim()
+        const matchedStat = this.findBestStat(statText, isImplicit ? this.implicitStats : this.enchantStats)
+
+        if (!matchedStat.bestMatch || matchedStat.bestMatch.rating < 0.9) {
+          return
+        }
+
+        const bestIndex = (matchedStat.bestMatchIndex % 2 === 0) ? matchedStat.bestMatchIndex + 1 : matchedStat.bestMatchIndex
+        const statID = matchedStat.ratings[bestIndex]?.target
+
+        if (!statID || processedIds.has(statID)) {
+          return
+        }
+
+        processedIds.add(statID)
+        this.searchStats.push({
+          "id": statID,
+          "text": statText,
+          "option": '',
+          "min": '',
+          "max": '',
+          "isValue": false,
+          "isNegative": false,
+          "isSearch": true,
+          "type": isImplicit ? '固定' : '附魔'
+        })
+      })
+    },
     itemStatsAnalysis(itemArray, rarityFlag) {
       let priceText = itemArray[itemArray.length - 2]
       if (priceText.indexOf(': ~b/o') > -1 || priceText.indexOf(': ~price') > -1 || priceText.indexOf('Note:') > -1) {
@@ -1758,6 +1869,7 @@ export default {
         itemArray.splice(clusterA, 1)
 
       this.isStatsCollapse = rarityFlag ? false : true
+  const isTimelessJewel = this.isTimelessJewel()
       let tempStat = []
       let itemDisplayStats = [] // 該物品顯示的詞綴陣列
       let itemStatStart = 0 // 物品隨機詞綴初始位置
@@ -1889,12 +2001,9 @@ export default {
               statID = `${statID.split('.')[0]}.stat_960081730`
             }
             break;
-          case statID.indexOf('stat_1166417447') > -1: // 近戰擊中護體 - 若物品行文字包含機率護體，修正為 explicit 版本
-            // 避免 "近戰擊中有 11% 機率護體 (implicit)" 被誤判成無數值的 implicit.stat_1166417447
-            // 當實際文字出現 "機率護體" 並含有數值時，使用 explicit.stat_1166417447 以啟用 min/max 輸入
-            if (/機率護體/.test(itemStatText) && /\d+%/.test(itemStatText)) {
-              statID = 'explicit.stat_1166417447'
-            }
+          case statID.indexOf('stat_1166417447') > -1: // 近戰擊中護體 - 無論遊戲內是否帶機率描述，統一回寫 stats.json 正式文案
+            statID = 'implicit.stat_1166417447'
+            apiStatText = '近戰擊中護體'
             break;
           case statID.indexOf('stat_321077055') > -1 || statID.indexOf('stat_709508406') > -1: // 附加 # 至 # 火焰傷害 (部分)
             if (this.itemCategory.chosenObj.prop.indexOf('weapon') > -1) {
@@ -2097,6 +2206,10 @@ export default {
           isStatSearch = true
           this.isStatsCollapse = true
         }
+        if (isTimelessJewel) {
+          isStatSearch = true
+          this.isStatsCollapse = true
+        }
         const grandSpectrumStats = ["stat_3163738488", "stat_2948375275", "stat_242161915", "stat_611279043", "stat_482240997", "stat_308799121", "stat_2276643899", "stat_596758264", "stat_332217711"]
         if (grandSpectrumStats.some(stat => statID.includes(stat))) { // 巨光譜詞綴自動打勾
           isStatSearch = true
@@ -2146,6 +2259,9 @@ export default {
         } else if (randomMaxValue) { // 物品中包含 "# 至 #" 的詞綴，在官方市集搜尋中皆以相加除二作搜尋
           randomMinValue = (randomMinValue + randomMaxValue) / 2
           randomMaxValue = ''
+        }
+        if (isTimelessJewel && _.isNumber(randomMinValue) && !_.isNumber(randomMaxValue)) {
+          randomMaxValue = randomMinValue
         }
         switch (true) { // 計算三元素抗性至偽屬性
           case statID.indexOf('stat_3372524247') > -1 || statID.indexOf('stat_1671376347') > -1 || statID.indexOf('stat_4220027924') > -1:
@@ -2880,6 +2996,7 @@ export default {
           "option": "true"
         }
       }
+      this.mapFixedStatsAnalysis(itemArray)
       // else { // error handle
       //   this.status = `Oops! 尚未支援搜尋此種地圖`
       //   return
@@ -3047,12 +3164,38 @@ export default {
       let itemBasicCount = 0
 
       // 先處理地圖/類地圖類型，避免名稱子字串誤判為其他類別（例如：九頭蛇冰窟 vs 九頭蛇屍體）
+      if (item.indexOf('物品種類: 藍圖') > -1) {
+        const blueprintSearch = buildBlueprintSearch({
+          searchJson: this.searchJson,
+          item,
+          itemArray,
+          allStats: this.allStats,
+          mapBasicOptions: this.mapBasic.option,
+          newLine: this.newLine,
+          isTwServer: this.isTwServer,
+          translateType: this.replaceString
+        })
+
+        this.isMap = blueprintSearch.uiState.isMap
+        this.isMapCollapse = blueprintSearch.uiState.isMapCollapse
+        this.raritySet.chosenObj = blueprintSearch.uiState.raritySet.chosenObj
+        this.raritySet.isSearch = blueprintSearch.uiState.raritySet.isSearch
+        this.itemLevel.min = blueprintSearch.uiState.itemLevel.min
+        this.itemLevel.max = blueprintSearch.uiState.itemLevel.max
+        this.itemLevel.isSearch = blueprintSearch.uiState.itemLevel.isSearch
+        this.mapBasic.chosenM = blueprintSearch.uiState.mapBasic.chosenM
+        this.mapBasic.isSearch = blueprintSearch.uiState.mapBasic.isSearch
+        this.searchJson = blueprintSearch.searchJson
+        this.searchStats = blueprintSearch.searchStats
+        this.searchTrade(this.searchJson)
+        return
+      }
+
       if (
         item.indexOf('物品種類: 異界地圖') > -1 ||
         item.indexOf('物品種類: 地圖') > -1 ||
         item.indexOf('釋界之邀：') > -1 ||
         item.indexOf('物品種類: 契約書') > -1 ||
-        item.indexOf('物品種類: 藍圖') > -1 ||
         item.indexOf('物品種類: 聖域研究') > -1
       ) {
         this.mapAnalysis(item, itemArray, Rarity)
@@ -3190,7 +3333,7 @@ export default {
         return
       } else {
         this.itemsAPI()
-        this.issueText = `Version: v1.328.1\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+        this.issueText = `Version: v1.328.2\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
         this.isSupported = false
         this.isStatsCollapse = false
         return
