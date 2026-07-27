@@ -50,6 +50,7 @@ const LOCAL_STAT_IDS = [
   { id: 'stat_1334060246', localId: 'stat_3336890334', scopes: ['weapon'] }, // 附加 # 至 # 閃電傷害
   { id: 'stat_2387423236', localId: 'stat_1037193709', scopes: ['weapon'] }, // 附加 # 至 # 冰冷傷害
   { id: 'stat_681332047', localId: 'stat_210067635', scopes: ['weapon'] }, // 增加 #% 攻擊速度
+  { id: 'stat_803737631', localId: 'stat_691932474', scopes: ['weapon'] }, // +# 命中值
   { id: 'stat_3593843976', localId: 'stat_55876295', scopes: ['weapon'] }, // #% 的物理攻擊傷害偷取生命
   { id: 'stat_3237948413', localId: 'stat_669069897', scopes: ['weapon'] }, // #% 所造成的物理攻擊傷害偷取魔力
   { id: 'stat_2144192055', localId: 'stat_53045048', scopes: ['armour'] }, // # 點閃避值
