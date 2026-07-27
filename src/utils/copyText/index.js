@@ -1,6 +1,7 @@
 export {
   normalizeCopyLine,
   parseAdvancedModHeader,
+  splitHybridStatLines,
   stripRollRanges,
   stripStatTags
 } from './statText'

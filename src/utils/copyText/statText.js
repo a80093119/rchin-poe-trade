@@ -62,6 +62,33 @@ export function stripStatTags(text) {
     .join('\n')
 }
 
+// 合成詞綴（hybrid mod）會把同一條 mod 的多行敘述以 \n 併在同一行，
+// 但 stats.json 只收錄各自獨立的詞綴（例如「增加 #% 物理傷害」與「+# 命中值 (部分)」），
+// 併著比對必定失敗，需先拆回單行。
+// stats.json 本身就是多行的折行詞綴則要保持原樣：拆掉後得靠 wrapStats 重組，
+// 而短句在相似度門檻下重組不回來，因此由 isFoldedStat 判斷後跳過。
+export function splitHybridStatLines(lines, isFoldedStat = () => false) {
+  return (lines || []).reduce((result, line) => {
+    if (typeof line !== 'string' || line.indexOf('\n') === -1 || isFoldedStat(line)) {
+      result.push(line)
+
+      return result
+    }
+
+    const subLines = line.split('\n')
+    // 進階敘述（Ctrl + Alt + C）只在整段結尾補一次 (crafted) 這類標記，
+    // 拆行後需補回每一行，否則前面幾行會被當成隨機詞綴
+    const tagMatch = subLines[subLines.length - 1].match(STAT_TAG)
+    const tag = tagMatch ? tagMatch[0].trim() : ''
+
+    subLines.forEach(subLine => {
+      result.push(subLine && tag && !STAT_TAG.test(subLine) ? `${subLine} ${tag}` : subLine)
+    })
+
+    return result
+  }, [])
+}
+
 export function isDescriptionLine(line) {
   return DESCRIPTION_LINE.test((line || '').replace(STAT_TAG, '').trim())
 }

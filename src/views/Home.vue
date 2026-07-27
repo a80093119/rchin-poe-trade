@@ -419,6 +419,7 @@ import {
   isOptionStatId,
   parseItemCopyText,
   resolveLocalStatId,
+  splitHybridStatLines,
   stripStatTags
 } from "../utils/copyText";
 
@@ -1884,6 +1885,14 @@ export default {
         itemArray.splice(clusterB, 1)
       if (clusterA > -1)
         itemArray.splice(clusterA, 1)
+
+      // 合成詞綴（hybrid mod）與同一條 mod 的其他敘述併在同一行時無法比對，先拆回單行；
+      // stats.json 收錄的折行詞綴維持原樣，拆開後靠 wrapStats 重組短句會失敗
+      itemArray = splitHybridStatLines(itemArray, line => {
+        const foldedText = stripStatTags(line)
+
+        return this.wrapStats.some(wrapStat => stringSimilarity.compareTwoStrings(wrapStat, foldedText) > 0.7)
+      })
 
       this.isStatsCollapse = rarityFlag ? false : true
   const isTimelessJewel = this.isTimelessJewel()
