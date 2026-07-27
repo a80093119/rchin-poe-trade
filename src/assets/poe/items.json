@@ -12,6 +12,7 @@
         { "type": "黃晶護身符" },
         { "type": "血色護身符" },
         { "type": "夕暮護身符" },
+        { "type": "珠光項鍊" },
         { "type": "珊瑚護身符" },
         { "type": "琥珀護身符" },
         { "type": "翠玉護身符" },
@@ -51,6 +52,40 @@
         { "type": "猴掌魔符" },
         { "type": "三手魔符" },
         { "type": "狼王魔符" },
+        { "type": "龐然魔符" },
+        { "type": "金牛人魔符" },
+        { "type": "食腐蟲后魔符" },
+        { "type": "酋長魔符" },
+        { "type": "殘暴蟹魔符" },
+        { "type": "蛛蛛蟹魔符" },
+        { "type": "吞噬者魔符" },
+        { "type": "眼鏡蛇魔符" },
+        { "type": "鳴蛙魔符" },
+        { "type": "羊人魔符" },
+        { "type": "巨狼魔符" },
+        { "type": "烈炎地獄犬魔符" },
+        { "type": "冰霜犬魔符" },
+        { "type": "熔犬魔符" },
+        { "type": "龍蜥魔符" },
+        { "type": "反芻鳥魔符" },
+        { "type": "山貓魔符" },
+        { "type": "靈猴魔符" },
+        { "type": "鬥牛犬魔符" },
+        { "type": "瘟疫毒蛛魔符" },
+        { "type": "混血蜘蛛魔符" },
+        { "type": "雛鳥魔符" },
+        { "type": "恐喙鳥魔符" },
+        { "type": "搗亂者魔符" },
+        { "type": "血蛇魔符" },
+        { "type": "噴砂爪蟹魔符" },
+        { "type": "毒蠍魔符" },
+        { "type": "盾螯魔符" },
+        { "type": "烏賊魔符" },
+        { "type": "黑寡婦魔符" },
+        { "type": "巨人魔符" },
+        { "type": "觀察者魔符" },
+        { "type": "墮落之爪魔符" },
+        { "type": "禿鷹魔符" },
         { "type": "素布腰帶" },
         { "type": "扣鏈腰帶" },
         { "type": "皮革腰帶" },
@@ -282,9 +317,16 @@
           "flags": { "unique": true }
         },
         {
-          "type": "咒箍魔符",
-          "text": "枯井 咒箍魔符",
+          "type": "盾螯魔符",
+          "text": "枯井 盾螯魔符",
           "name": "枯井",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "咒箍魔符",
+          "text": "枯井 咒箍魔符 (舊版)",
+          "name": "枯井",
+          "disc": "legacy",
           "flags": { "unique": true }
         },
         {
@@ -554,9 +596,16 @@
           "flags": { "unique": true }
         },
         {
-          "type": "狼王魔符",
-          "text": "巨狼之眼 狼王魔符",
+          "type": "巨狼魔符",
+          "text": "巨狼之眼 巨狼魔符",
           "name": "巨狼之眼",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "狼王魔符",
+          "text": "巨狼之眼 狼王魔符 (舊版)",
+          "name": "巨狼之眼",
+          "disc": "legacy",
           "flags": { "unique": true }
         },
         {
@@ -849,8 +898,9 @@
         },
         {
           "type": "死羽魔符",
-          "text": "自然組織 死羽魔符",
+          "text": "自然組織 死羽魔符 (舊版)",
           "name": "自然組織",
+          "disc": "legacy",
           "flags": { "unique": true }
         },
         {
@@ -873,8 +923,9 @@
         },
         {
           "type": "黑牙魔符",
-          "text": "夜守 黑牙魔符",
+          "text": "夜守 黑牙魔符 (舊版)",
           "name": "夜守",
+          "disc": "legacy",
           "flags": { "unique": true }
         },
         {
@@ -893,6 +944,12 @@
           "type": "紫晶戒指",
           "text": "原罪 紫晶戒指",
           "name": "原罪",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "三相戒指",
+          "text": "特索塔之珠 三相戒指",
+          "name": "特索塔之珠",
           "flags": { "unique": true }
         },
         {
@@ -1148,9 +1205,16 @@
           "flags": { "unique": true }
         },
         {
-          "type": "亡爪魔符",
-          "text": "瑞佛詛咒 亡爪魔符",
+          "type": "狼王魔符",
+          "text": "瑞佛詛咒 狼王魔符",
           "name": "瑞佛詛咒",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "亡爪魔符",
+          "text": "瑞佛詛咒 亡爪魔符 (舊版)",
+          "name": "瑞佛詛咒",
+          "disc": "legacy",
           "flags": { "unique": true }
         },
         {
@@ -1163,6 +1227,12 @@
           "type": "潛能之戒",
           "text": "敗血承諾 潛能之戒",
           "name": "敗血承諾",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "珠光項鍊",
+          "text": "腐母的暴亂 珠光項鍊",
+          "name": "腐母的暴亂",
           "flags": { "unique": true }
         },
         {
@@ -1778,6 +1848,12 @@
           "flags": { "unique": true }
         },
         {
+          "type": "三相戒指",
+          "text": "札娜的獨創 三相戒指",
+          "name": "札娜的獨創",
+          "flags": { "unique": true }
+        },
+        {
           "type": "海靈護身符",
           "text": "澤佛伊之心 海靈護身符",
           "name": "澤佛伊之心",
@@ -2030,6 +2106,7 @@
         { "type": "繡布手套" },
         { "type": "咒者手套" },
         { "type": "秘術手套" },
+        { "type": "術者手套" },
         { "type": "荒野手套" },
         { "type": "乙太之風手套" },
         { "type": "核心手套" },
@@ -2349,8 +2426,8 @@
           "flags": { "unique": true }
         },
         {
-          "type": "術士手套",
-          "text": "相生相剋 術士手套 (舊版)",
+          "type": "術者手套",
+          "text": "相生相剋 術者手套 (舊版)",
           "name": "相生相剋",
           "disc": "legacy",
           "flags": { "unique": true }
@@ -3012,21 +3089,30 @@
           "flags": { "unique": true }
         },
         {
-          "type": "術士長靴",
-          "text": "多里亞尼的幻想 術士長靴",
+          "type": "絲絨長靴",
+          "text": "多里亞尼的幻想 絲絨長靴",
           "name": "多里亞尼的幻想",
           "flags": { "unique": true }
         },
         {
           "type": "迷蹤短靴",
-          "text": "多里亞尼的幻想 迷蹤短靴",
+          "text": "多里亞尼的幻想 迷蹤短靴 (舊版)",
           "name": "多里亞尼的幻想",
+          "disc": "legacy",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "術士長靴",
+          "text": "多里亞尼的幻想 術士長靴 (舊版)",
+          "name": "多里亞尼的幻想",
+          "disc": "legacy",
           "flags": { "unique": true }
         },
         {
           "type": "巨人脛甲",
-          "text": "多里亞尼的幻想 巨人脛甲",
+          "text": "多里亞尼的幻想 巨人脛甲 (舊版)",
           "name": "多里亞尼的幻想",
+          "disc": "legacy",
           "flags": { "unique": true }
         },
         {
@@ -4188,8 +4274,8 @@
           "flags": { "unique": true }
         },
         {
-          "type": "術士手套",
-          "text": "贗品．相生相剋 術士手套 (舊版)",
+          "type": "術者手套",
+          "text": "贗品．相生相剋 術者手套 (舊版)",
           "name": "贗品．相生相剋",
           "disc": "legacy",
           "flags": { "unique": true }
@@ -4505,6 +4591,12 @@
           "flags": { "unique": true }
         },
         {
+          "type": "棘刺圓盾",
+          "text": "潮壺絞者 棘刺圓盾",
+          "name": "潮壺絞者",
+          "flags": { "unique": true }
+        },
+        {
           "type": "銅鍛魔盾",
           "text": "山特立的回應 銅鍛魔盾",
           "name": "山特立的回應",
@@ -4750,6 +4842,12 @@
           "type": "刺殺者護手",
           "text": "風暴之贈 刺殺者護手",
           "name": "風暴之贈",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "信仰頭盔",
+          "text": "歸入起源 信仰頭盔",
+          "name": "歸入起源",
           "flags": { "unique": true }
         },
         {
@@ -5179,6 +5277,12 @@
           "flags": { "unique": true }
         },
         {
+          "type": "鷹喙之面",
+          "text": "不眨之眼 鷹喙之面",
+          "name": "不眨之眼",
+          "flags": { "unique": true }
+        },
+        {
           "type": "威能鳶盾",
           "text": "不滅意志 威能鳶盾",
           "name": "不滅意志",
@@ -5359,14 +5463,21 @@
           "flags": { "unique": true }
         },
         {
-          "type": "始祖箭袋",
-          "text": "虛眼箭矢 始祖箭袋",
+          "type": "華麗箭袋",
+          "text": "虛眼箭矢 華麗箭袋",
           "name": "虛眼箭矢",
           "flags": { "unique": true }
         },
         {
           "type": "穿射箭袋",
           "text": "虛眼箭矢 穿射箭袋 (舊版)",
+          "name": "虛眼箭矢",
+          "disc": "legacy",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "始祖箭袋",
+          "text": "虛眼箭矢 始祖箭袋 (舊版)",
           "name": "虛眼箭矢",
           "disc": "legacy",
           "flags": { "unique": true }
@@ -5417,6 +5528,12 @@
           "type": "羊毛之鞋",
           "text": "苦行之履 羊毛之鞋",
           "name": "苦行之履",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "聖者鏈甲",
+          "text": "熔燭之魂 聖者鏈甲",
+          "name": "熔燭之魂",
           "flags": { "unique": true }
         },
         {
@@ -5576,7 +5693,7 @@
         { "type": "畫筆、顏料和調色盤" },
         { "type": "深埋祕寶" },
         { "type": "燃燒之血" },
-        { "type": "先人召喚" },
+        { "type": "呼喚初始者" },
         { "type": "卡麥歷亞之割" },
         { "type": "製圖師之喜悅" },
         { "type": "渾沌性情" },
@@ -5603,6 +5720,7 @@
         { "type": "蔑視" },
         { "type": "神聖之美" },
         { "type": "神判" },
+        { "type": "神聖碎片" },
         { "type": "德瑞競之狂" },
         { "type": "多里亞尼的頓悟" },
         { "type": "披夢" },
@@ -5671,7 +5789,7 @@
         { "type": "莉莎之息" },
         { "type": "巨著" },
         { "type": "熊男" },
-        { "type": "俄羅斯娃娃" },
+        { "type": "套娃" },
         { "type": "茂爾．佈雷德" },
         { "type": "無情軍械" },
         { "type": "正氣" },
@@ -5748,7 +5866,7 @@
         { "type": "製圖師" },
         { "type": "巨變" },
         { "type": "災變" },
-        { "type": "姜太公釣魚" },
+        { "type": "垂釣" },
         { "type": "天堂執法官" },
         { "type": "璀璨之石" },
         { "type": "束縛之鍊" },
@@ -5862,6 +5980,7 @@
         { "type": "傳訊者" },
         { "type": "鐵匠的贈禮" },
         { "type": "心靈之眼" },
+        { "type": "奇蹟" },
         { "type": "神山" },
         { "type": "護理師" },
         { "type": "誓言" },
@@ -6002,7 +6121,7 @@
         { "type": "總督軍的崇高石" },
         { "type": "喚醒者之玉" },
         { "type": "財富之預兆" },
-        { "type": "白化之預兆" },
+        { "type": "三色之預兆" },
         { "type": "死舞之預兆" },
         { "type": "腎上腺素之預兆" },
         { "type": "死者大門之預兆" },
@@ -6015,7 +6134,7 @@
         { "type": "連結之預兆" },
         { "type": "工匠之預兆" },
         { "type": "光輝之預兆" },
-        { "type": "嗜魂者之預兆" },
+        { "type": "噬魂者之預兆" },
         { "type": "加速之預兆" },
         { "type": "艾蘿紅薇月護衛的紋身" },
         { "type": "艾蘿紅薇哨兵的紋身" },
@@ -6082,6 +6201,13 @@
         { "type": "心智的歷練紋身" },
         { "type": "靈魂的歷練紋身" },
         { "type": "馬卡努伊的歷練紋身" },
+        { "type": "決鬥者的禁忌紋身" },
+        { "type": "野蠻人的禁忌紋身" },
+        { "type": "遊俠的禁忌紋身" },
+        { "type": "貴族的禁忌紋身" },
+        { "type": "暗影刺客的禁忌紋身" },
+        { "type": "聖堂武僧的禁忌紋身" },
+        { "type": "女巫的禁忌紋身" },
         { "type": "塔薩里奧舞劍者的紋身" },
         { "type": "塔薩里奧潮汐變幻者的紋身" },
         { "type": "塔薩里奧薩滿的紋身" },
@@ -6113,7 +6239,7 @@
         { "type": "無光星盤" },
         { "type": "菌群星盤" },
         { "type": "執掌星盤" },
-        { "type": "壟罩星盤" },
+        { "type": "幻象星盤" },
         { "type": "符文星盤" },
         { "type": "聖堂星盤" },
         { "type": "碩果星盤" },
@@ -6166,6 +6292,7 @@
         { "type": "鐵匠之譫妄玉" },
         { "type": "折射之霧" },
         { "type": "幻像斷片" },
+        { "type": "銀幣" },
         { "type": "護甲片" },
         { "type": "撤銷石" },
         { "type": "夏烏拉裂片" },
@@ -6183,6 +6310,7 @@
         { "type": "重鑄石" },
         { "type": "瓦爾寶珠" },
         { "type": "遺忘的污染器皿" },
+        { "type": "亡者硫酸" },
         { "type": "鏤空化石" },
         { "type": "利齒化石" },
         { "type": "斑駁化石" },
@@ -6210,6 +6338,7 @@
         { "type": "血漬化石" },
         { "type": "卡蘭德的魔鏡" },
         { "type": "魔鏡碎片" },
+        { "type": "碎裂的卡蘭德魔鏡" },
         { "type": "異能崇高石" },
         { "type": "低階異能灰燼" },
         { "type": "高階異能灰燼" },
@@ -6462,9 +6591,10 @@
         { "type": "古變石" },
         { "type": "古變石碎片" },
         { "type": "還原玉" },
-        { "type": "白化的羽毛" },
+        { "type": "白化恐喙鳥羽毛" },
         { "type": "祭祀裂片" },
         { "type": "祭祀碑器" },
+        { "type": "占卜寶珠" },
         { "type": "製圖封印．大師" },
         { "type": "製圖封印．見習" },
         { "type": "製圖封印．學者" },
@@ -6510,6 +6640,11 @@
         { "type": "旅途符文" },
         { "type": "山脊符文" },
         { "type": "時間符文" },
+        { "type": "馬拉克斯壟罩晶石" },
+        { "type": "永恆壟罩晶石" },
+        { "type": "卡魯壟罩晶石" },
+        { "type": "瓦爾壟罩晶石" },
+        { "type": "聖宗壟罩晶石" },
         { "type": "清透油瓶" },
         { "type": "乳白油瓶" },
         { "type": "純銀油瓶" },
@@ -6573,6 +6708,17 @@
         { "type": "改造動力核心" },
         { "type": "增強動力核心" },
         { "type": "武器重組裝置" },
+        { "type": "莫里克的達克特" },
+        { "type": "文雅者的達克特" },
+        { "type": "變形靈的達克特" },
+        { "type": "瓶中信" },
+        { "type": "特雷西亞的達克特" },
+        { "type": "薩摩特的達克特" },
+        { "type": "奇夏拉的達克特" },
+        { "type": "塞亞珊的達克特" },
+        { "type": "布琳霍克的達克特" },
+        { "type": "腐母的達克特" },
+        { "type": "卡塔科希的達克特" },
         { "type": "原始混沌鑄新儀" },
         { "type": "增幅混沌鑄新儀" },
         { "type": "強力混沌鑄新儀" },
@@ -6655,6 +6801,218 @@
         { "type": "威能鳶盾碎片" },
         { "type": "帝國長杖碎片" },
         { "type": "軍團長劍碎片" },
+        {
+          "type": "10021",
+          "text": "占卜寶珠 (致命岩灘)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "10211",
+          "text": "占卜寶珠 (硫磺荒漠)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "1215",
+          "text": "占卜寶珠 (幽魂宅邸)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "12635",
+          "text": "占卜寶珠 (晨曦墓地)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "14879",
+          "text": "占卜寶珠 (赤貧居所)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "19776",
+          "text": "占卜寶珠 (濱海山丘)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "19999",
+          "text": "占卜寶珠 (平頂荒漠)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "24414",
+          "text": "占卜寶珠 (病疫林谷)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "25747",
+          "text": "占卜寶珠 (腐敗下水道)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "27782",
+          "text": "占卜寶珠 (乾枯湖岸)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "28018",
+          "text": "占卜寶珠 (瓦爾金字塔)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "28402",
+          "text": "占卜寶珠 (危機水道)",
+          "disc": "scrying_orb"
+        },
+        { "type": "29382", "text": "占卜寶珠 (岔河)", "disc": "scrying_orb" },
+        {
+          "type": "30639",
+          "text": "占卜寶珠 (火山炎域)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "33220",
+          "text": "占卜寶珠 (古博物館)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "34447",
+          "text": "占卜寶珠 (夜語幽林)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "34997",
+          "text": "占卜寶珠 (貧瘠之地)",
+          "disc": "scrying_orb"
+        },
+        { "type": "35076", "text": "占卜寶珠 (廣場)", "disc": "scrying_orb" },
+        {
+          "type": "35162",
+          "text": "占卜寶珠 (古典密室)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "36556",
+          "text": "占卜寶珠 (遠古市集)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "3756",
+          "text": "占卜寶珠 (禁斷圍城)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "3883",
+          "text": "占卜寶珠 (羈破牢籠)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "4003",
+          "text": "占卜寶珠 (劇毒林谷)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "41363",
+          "text": "占卜寶珠 (破碎堡礁)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "43016",
+          "text": "占卜寶珠 (旱地墓室)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "44259",
+          "text": "占卜寶珠 (崩壞長廊)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "44313",
+          "text": "占卜寶珠 (濕地礦山)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "44762",
+          "text": "占卜寶珠 (危城廣場)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "45792",
+          "text": "占卜寶珠 (奪魂之殿)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "4755",
+          "text": "占卜寶珠 (神主居所)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "47634",
+          "text": "占卜寶珠 (魔靈幻獄)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "48831",
+          "text": "占卜寶珠 (如履危牆)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "51878",
+          "text": "占卜寶珠 (神域之殿)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "53116",
+          "text": "占卜寶珠 (暮色沙丘)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "53902",
+          "text": "占卜寶珠 (墮影墓場)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "54446",
+          "text": "占卜寶珠 (闇獄尖塔)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "5647",
+          "text": "占卜寶珠 (晴空幽島)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "57831",
+          "text": "占卜寶珠 (靜縊陵墓)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "59460",
+          "text": "占卜寶珠 (雲頂鐘樓)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "60634",
+          "text": "占卜寶珠 (寒頂之巔)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "62685",
+          "text": "占卜寶珠 (白沙灘頭)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "63065",
+          "text": "占卜寶珠 (洪災礦坑)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "6755",
+          "text": "占卜寶珠 (寧逸溫房)",
+          "disc": "scrying_orb"
+        },
+        {
+          "type": "7465",
+          "text": "占卜寶珠 (異蛛墓塚)",
+          "disc": "scrying_orb"
+        },
         {
           "type": "先祖碎片",
           "text": "融合之逸品 先祖碎片",
@@ -7028,6 +7386,18 @@
           "flags": { "unique": true }
         },
         {
+          "type": "黃玉藥劑",
+          "text": "浪潮之血 黃玉藥劑",
+          "name": "浪潮之血",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "藍玉藥劑",
+          "text": "浪潮之血 藍玉藥劑",
+          "name": "浪潮之血",
+          "flags": { "unique": true }
+        },
+        {
           "type": "藍玉藥劑",
           "text": "恨意 藍玉藥劑",
           "name": "恨意",
@@ -7271,12 +7641,17 @@
         { "type": "閃電傳送" },
         { "type": "熔岩翻騰" },
         { "type": "魔能束縛" },
+        { "type": "魔能長杖" },
         { "type": "先祖衛士" },
         { "type": "魅影射擊" },
         { "type": "熔岩護盾" },
         { "type": "熔岩之擊" },
         { "type": "脆弱" },
         { "type": "風暴漩渦" },
+        { "type": "貝達特誓約" },
+        { "type": "戈沃誓約" },
+        { "type": "克塔什誓約" },
+        { "type": "利希亞誓約" },
         { "type": "贖罪烙印" },
         { "type": "裂地刺穿" },
         { "type": "瘟疫打擊" },
@@ -7334,7 +7709,7 @@
         { "type": "狂熱" },
         { "type": "法術回音" },
         { "type": "靈魂奉獻" },
-        { "type": "分裂箭矢" },
+        { "type": "裂化箭矢" },
         { "type": "鋼之裂化" },
         { "type": "充能打擊" },
         { "type": "鋼筋鐵骨" },
@@ -7506,6 +7881,7 @@
         { "type": "冷卻恢復輔助" },
         { "type": "汙染戰吼輔助" },
         { "type": "殘酷輔助" },
+        { "type": "晶墜輔助" },
         { "type": "撲殺輔助" },
         { "type": "弱者撲殺輔助" },
         { "type": "詛咒地面輔助" },
@@ -7624,7 +8000,7 @@
         { "type": "召喚物傷害輔助" },
         { "type": "覺醒．召喚物傷害輔助" },
         { "type": "召喚物生命輔助" },
-        { "type": "召喚契約輔助" },
+        { "type": "共融輔助" },
         { "type": "召喚物速度輔助" },
         { "type": "幻影射手輔助" },
         { "type": "施放迴響輔助" },
@@ -7862,8 +8238,10 @@
         { "type": "爆裂箭雨", "text": "特拉特斯爆裂箭雨", "disc": "alt_x" },
         { "type": "萎滅", "text": "萎滅．瘟疫", "disc": "alt_x" },
         { "type": "閃現射擊", "text": "閃現射擊．炸彈客", "disc": "alt_x" },
+        { "type": "收割", "text": "收割．屠戮", "disc": "alt_x" },
         { "type": "碎骨", "text": "碎骨．創傷", "disc": "alt_x" },
         { "type": "燃燒箭矢", "text": "燃燒箭矢．活力", "disc": "alt_x" },
+        { "type": "奪魂勾索", "text": "奪魂勾索．開釣", "disc": "alt_x" },
         { "type": "刀鋒亂舞", "text": "刀鋒亂舞．切割", "disc": "alt_x" },
         { "type": "雷霆衝鋒", "text": "雷霆衝鋒．投射", "disc": "alt_x" },
         { "type": "劈砍", "text": "劈砍．盛怒", "disc": "alt_x" },
@@ -7878,6 +8256,7 @@
         { "type": "災厄", "text": "災厄．譴責", "disc": "alt_x" },
         { "type": "屍體爆破", "text": "屍體爆破．清洗", "disc": "alt_x" },
         { "type": "解放", "text": "解放．苦痛", "disc": "alt_x" },
+        { "type": "神聖爆破", "text": "神聖爆破．輝耀", "disc": "alt_x" },
         { "type": "聖怒", "text": "聖怒．雷神", "disc": "alt_x" },
         { "type": "霸氣之擊", "text": "霸氣之擊．啟發", "disc": "alt_x" },
         { "type": "雙重打擊", "text": "雙重打擊．穿刺", "disc": "alt_x" },
@@ -7920,11 +8299,12 @@
         { "type": "冰霜之錘", "text": "冰霜之錘．粉碎", "disc": "alt_x" },
         { "type": "裂地之擊", "text": "裂地之擊．地震", "disc": "alt_x" },
         { "type": "咒術枯萎", "text": "咒術枯萎．矛盾", "disc": "alt_x" },
+        { "type": "神聖之錘", "text": "神聖之錘．螺旋", "disc": "alt_x" },
         { "type": "寒冰衝擊", "text": "寒冰衝擊．節奏", "disc": "alt_x" },
         { "type": "冰霜新星", "text": "冰霜新星．寒冰彈", "disc": "alt_x" },
         { "type": "冰霜射擊", "text": "冰霜射擊 ．穿透", "disc": "alt_x" },
         { "type": "虹吸陷阱", "text": "虹吸陷阱．苦痛", "disc": "alt_x" },
-        { "type": "冰矛", "text": "冰矛．分裂", "disc": "alt_x" },
+        { "type": "冰矛", "text": "冰矛．裂化", "disc": "alt_x" },
         { "type": "冰凍陷阱", "text": "冰凍陷阱．空心", "disc": "alt_x" },
         { "type": "燒毀", "text": "燒毀．蔓延", "disc": "alt_x" },
         { "type": "煉獄之擊", "text": "煉獄之擊．自焚", "disc": "alt_x" },
@@ -7971,7 +8351,7 @@
         { "type": "雷鳴重擊", "text": "雷鳴重擊．聖判", "disc": "alt_x" },
         { "type": "靈體撕裂", "text": "靈體撕裂．收割", "disc": "alt_x" },
         { "type": "電球", "text": "電球．新星", "disc": "alt_x" },
-        { "type": "分裂箭矢", "text": "分裂箭矢．分裂", "disc": "alt_x" },
+        { "type": "裂化箭矢", "text": "裂化箭矢．裂化", "disc": "alt_x" },
         { "type": "鋼之裂化", "text": "鋼之裂化．彈藥", "disc": "alt_x" },
         { "type": "充能打擊", "text": "充能打擊．聚雷", "disc": "alt_x" },
         { "type": "風暴術符", "text": "風暴術符．傳送", "disc": "alt_x" },
@@ -8018,6 +8398,7 @@
         },
         { "type": "召喚骷髏", "text": "召喚骷髏．箭術", "disc": "alt_x" },
         { "type": "大地震擊", "text": "大地震擊．地破", "disc": "alt_x" },
+        { "type": "神聖橫掃", "text": "神聖橫掃．錘落", "disc": "alt_x" },
         { "type": "破體之擊", "text": "破體之擊．災變", "disc": "alt_x" },
         { "type": "盾靈投擲", "text": "盾靈投擲．粉碎", "disc": "alt_x" },
         { "type": "靈體投擲", "text": "靈體投擲．具現化", "disc": "alt_x" },
@@ -8204,7 +8585,7 @@
           "disc": "alt_x"
         },
         { "type": "毒蛇打擊", "text": "毒蛇打擊．曼巴", "disc": "alt_x" },
-        { "type": "虛無玉", "text": "虛無玉．分裂", "disc": "alt_x" },
+        { "type": "虛無玉", "text": "虛無玉．撕裂", "disc": "alt_x" },
         { "type": "致命之息", "text": "致命之息．禁閉", "disc": "alt_x" },
         { "type": "炎火脈動", "text": "炎火脈動．蜿蜒", "disc": "alt_x" },
         { "type": "野性打擊", "text": "野性打擊．極致", "disc": "alt_x" }
@@ -9370,6 +9751,10 @@
         { "type": "阿茲瓦特史記" },
         { "type": "鏡像碑牌" },
         { "type": "古朽遺鑰" },
+        { "type": "澤洛斯的無盡之眼" },
+        { "type": "澤洛斯的必然之眼" },
+        { "type": "澤洛斯的惡意之眼" },
+        { "type": "澤洛斯的強權之眼" },
         { "type": "敬畏之迴響" },
         { "type": "創傷之迴響" },
         { "type": "孤獨之迴響" },
@@ -9477,6 +9862,7 @@
         { "type": "釋界之邀：恐懼" },
         { "type": "釋界之邀：尊師殺手" },
         { "type": "不滅之火血肉餘燼" },
+        { "type": "傭兵契約書" },
         { "type": "熾熱之邀" },
         { "type": "極地之邀" },
         { "type": "尖嘯之邀" },
@@ -9511,8 +9897,8 @@
         { "type": "聖甲蟲：深淵" },
         { "type": "聖甲蟲：眾生深淵" },
         { "type": "聖甲蟲：落降深淵" },
-        { "type": "聖甲蟲：宏偉深淵" },
-        { "type": "聖甲蟲：深沉深淵" },
+        { "type": "聖甲蟲：晶石深淵" },
+        { "type": "聖甲蟲：伴侶深淵" },
         { "type": "聖甲蟲：混亂" },
         { "type": "聖甲蟲：浩瀚混亂" },
         { "type": "聖甲蟲：結夥混亂" },
@@ -9624,6 +10010,10 @@
         { "type": "聖甲蟲：極寶製圖" },
         { "type": "聖甲蟲：腐化製圖" },
         { "type": "聖甲蟲：增生製圖" },
+        { "type": "特拉特斯聖甲蟲" },
+        { "type": "聖甲蟲：萬惡傭兵" },
+        { "type": "聖甲蟲：聲名傭兵" },
+        { "type": "聖甲蟲：意外盟友傭兵" },
         { "type": "聖甲蟲：鏽蝕通牒" },
         { "type": "聖甲蟲：圓滑通牒" },
         { "type": "聖甲蟲：鍍金通牒" },
@@ -9705,10 +10095,25 @@
           "disc": "uberblighted"
         },
         { "type": "10211", "text": "凋落地圖 (硫磺荒漠)", "disc": "blighted" },
+        {
+          "type": "10211",
+          "text": "凋落蔓延地圖 (硫磺荒漠)",
+          "disc": "uberblighted"
+        },
         { "type": "10687", "text": "凋落地圖 (緋紅之鎮)", "disc": "blighted" },
         {
           "type": "10687",
           "text": "凋落蔓延地圖 (緋紅之鎮)",
+          "disc": "uberblighted"
+        },
+        {
+          "type": "11215",
+          "text": "凋落地圖 (亞特蘭提斯)",
+          "disc": "blighted"
+        },
+        {
+          "type": "11215",
+          "text": "凋落蔓延地圖 (亞特蘭提斯)",
           "disc": "uberblighted"
         },
         { "type": "11490", "text": "凋落地圖 (巨坑)", "disc": "blighted" },
@@ -9741,6 +10146,12 @@
           "text": "凋落蔓延地圖 (晨曦墓地)",
           "disc": "uberblighted"
         },
+        { "type": "12937", "text": "凋落地圖 (荒涼牧野)", "disc": "blighted" },
+        {
+          "type": "12937",
+          "text": "凋落蔓延地圖 (荒涼牧野)",
+          "disc": "uberblighted"
+        },
         { "type": "1371", "text": "凋落地圖 (競技場)", "disc": "blighted" },
         {
           "type": "1371",
@@ -9754,6 +10165,11 @@
           "disc": "uberblighted"
         },
         { "type": "15108", "text": "凋落地圖 (軍械庫)", "disc": "blighted" },
+        {
+          "type": "15108",
+          "text": "凋落蔓延地圖 (軍械庫)",
+          "disc": "uberblighted"
+        },
         { "type": "15595", "text": "凋落地圖 (血腥陣地)", "disc": "blighted" },
         {
           "type": "15595",
@@ -9761,6 +10177,11 @@
           "disc": "uberblighted"
         },
         { "type": "16355", "text": "凋落地圖 (大決鬥場)", "disc": "blighted" },
+        {
+          "type": "16355",
+          "text": "凋落蔓延地圖 (大決鬥場)",
+          "disc": "uberblighted"
+        },
         { "type": "16982", "text": "凋落地圖 (象牙神殿)", "disc": "blighted" },
         {
           "type": "16982",
@@ -9773,6 +10194,7 @@
           "text": "凋落蔓延地圖 (荒地)",
           "disc": "uberblighted"
         },
+        { "type": "17684", "text": "凋落地圖 (紫晶礦山)", "disc": "blighted" },
         { "type": "18545", "text": "凋落地圖 (濱海幽穴)", "disc": "blighted" },
         {
           "type": "18545",
@@ -9818,8 +10240,23 @@
           "disc": "uberblighted"
         },
         { "type": "2144", "text": "凋落地圖 (魅影別墅)", "disc": "blighted" },
+        {
+          "type": "2144",
+          "text": "凋落蔓延地圖 (魅影別墅)",
+          "disc": "uberblighted"
+        },
         { "type": "22278", "text": "凋落地圖 (秘密通道)", "disc": "blighted" },
+        {
+          "type": "22278",
+          "text": "凋落蔓延地圖 (秘密通道)",
+          "disc": "uberblighted"
+        },
         { "type": "22593", "text": "凋落地圖 (暮光海灘)", "disc": "blighted" },
+        {
+          "type": "22593",
+          "text": "凋落蔓延地圖 (暮光海灘)",
+          "disc": "uberblighted"
+        },
         { "type": "2279", "text": "凋落地圖 (魔影墓場)", "disc": "blighted" },
         {
           "type": "2279",
@@ -9827,6 +10264,11 @@
           "disc": "uberblighted"
         },
         { "type": "23253", "text": "凋落地圖 (骨跡陵墓)", "disc": "blighted" },
+        {
+          "type": "23253",
+          "text": "凋落蔓延地圖 (骨跡陵墓)",
+          "disc": "uberblighted"
+        },
         { "type": "2336", "text": "凋落地圖 (炙陽峽谷)", "disc": "blighted" },
         {
           "type": "2336",
@@ -9865,6 +10307,11 @@
         },
         { "type": "2545", "text": "凋落地圖 (遠古危城)", "disc": "blighted" },
         {
+          "type": "2545",
+          "text": "凋落蔓延地圖 (遠古危城)",
+          "disc": "uberblighted"
+        },
+        {
           "type": "25747",
           "text": "凋落地圖 (腐敗下水道)",
           "disc": "blighted"
@@ -9900,6 +10347,16 @@
           "disc": "uberblighted"
         },
         { "type": "27821", "text": "凋落地圖 (聖殿)", "disc": "blighted" },
+        {
+          "type": "27821",
+          "text": "凋落蔓延地圖 (聖殿)",
+          "disc": "uberblighted"
+        },
+        {
+          "type": "28018",
+          "text": "凋落地圖 (瓦爾金字塔)",
+          "disc": "blighted"
+        },
         { "type": "28402", "text": "凋落地圖 (危機水道)", "disc": "blighted" },
         { "type": "29382", "text": "凋落地圖 (岔河)", "disc": "blighted" },
         {
@@ -9914,6 +10371,11 @@
           "disc": "uberblighted"
         },
         { "type": "31349", "text": "凋落地圖 (激戰柱廊)", "disc": "blighted" },
+        {
+          "type": "31349",
+          "text": "凋落蔓延地圖 (激戰柱廊)",
+          "disc": "uberblighted"
+        },
         { "type": "31509", "text": "凋落地圖 (鍊金房)", "disc": "blighted" },
         {
           "type": "31509",
@@ -9921,12 +10383,18 @@
           "disc": "uberblighted"
         },
         { "type": "3182", "text": "凋落地圖 (淤塞水道)", "disc": "blighted" },
+        {
+          "type": "3182",
+          "text": "凋落蔓延地圖 (淤塞水道)",
+          "disc": "uberblighted"
+        },
         { "type": "32613", "text": "凋落地圖 (園林苑)", "disc": "blighted" },
         {
           "type": "32613",
           "text": "凋落蔓延地圖 (園林苑)",
           "disc": "uberblighted"
         },
+        { "type": "33025", "text": "凋落地圖 (挖掘場)", "disc": "blighted" },
         { "type": "33220", "text": "凋落地圖 (古博物館)", "disc": "blighted" },
         {
           "type": "33220",
@@ -9934,6 +10402,12 @@
           "disc": "uberblighted"
         },
         { "type": "3421", "text": "凋落地圖 (畸形亡域)", "disc": "blighted" },
+        {
+          "type": "3421",
+          "text": "凋落蔓延地圖 (畸形亡域)",
+          "disc": "uberblighted"
+        },
+        { "type": "34425", "text": "凋落地圖 (毒菌魔域)", "disc": "blighted" },
         { "type": "34447", "text": "凋落地圖 (夜語幽林)", "disc": "blighted" },
         {
           "type": "34447",
@@ -9953,6 +10427,11 @@
           "disc": "uberblighted"
         },
         { "type": "34997", "text": "凋落地圖 (貧瘠之地)", "disc": "blighted" },
+        {
+          "type": "34997",
+          "text": "凋落蔓延地圖 (貧瘠之地)",
+          "disc": "uberblighted"
+        },
         { "type": "35076", "text": "凋落地圖 (廣場)", "disc": "blighted" },
         {
           "type": "35076",
@@ -9966,6 +10445,11 @@
           "disc": "uberblighted"
         },
         { "type": "35484", "text": "凋落地圖 (核心)", "disc": "blighted" },
+        {
+          "type": "35484",
+          "text": "凋落蔓延地圖 (核心)",
+          "disc": "uberblighted"
+        },
         { "type": "36207", "text": "凋落地圖 (無疆田野)", "disc": "blighted" },
         {
           "type": "36207",
@@ -9979,6 +10463,11 @@
           "disc": "uberblighted"
         },
         { "type": "36556", "text": "凋落地圖 (遠古市集)", "disc": "blighted" },
+        {
+          "type": "36556",
+          "text": "凋落蔓延地圖 (遠古市集)",
+          "disc": "uberblighted"
+        },
         { "type": "36866", "text": "凋落地圖 (異蛛巢穴)", "disc": "blighted" },
         {
           "type": "36866",
@@ -10065,6 +10554,11 @@
           "disc": "uberblighted"
         },
         { "type": "42558", "text": "凋落地圖 (露台花園)", "disc": "blighted" },
+        {
+          "type": "42558",
+          "text": "凋落蔓延地圖 (露台花園)",
+          "disc": "uberblighted"
+        },
         { "type": "42968", "text": "凋落地圖 (危城巷弄)", "disc": "blighted" },
         {
           "type": "42968",
@@ -10090,6 +10584,11 @@
           "disc": "uberblighted"
         },
         { "type": "43561", "text": "凋落地圖 (實驗居所)", "disc": "blighted" },
+        {
+          "type": "43561",
+          "text": "凋落蔓延地圖 (實驗居所)",
+          "disc": "uberblighted"
+        },
         { "type": "43927", "text": "凋落地圖 (旱木林地)", "disc": "blighted" },
         {
           "type": "43927",
@@ -10127,6 +10626,11 @@
           "disc": "uberblighted"
         },
         { "type": "4592", "text": "凋落地圖 (冰川山丘)", "disc": "blighted" },
+        {
+          "type": "4592",
+          "text": "凋落蔓延地圖 (冰川山丘)",
+          "disc": "uberblighted"
+        },
         { "type": "4651", "text": "凋落地圖 (巨蛛之林)", "disc": "blighted" },
         {
           "type": "4651",
@@ -10152,6 +10656,11 @@
           "disc": "uberblighted"
         },
         { "type": "4755", "text": "凋落地圖 (神主居所)", "disc": "blighted" },
+        {
+          "type": "4755",
+          "text": "凋落蔓延地圖 (神主居所)",
+          "disc": "uberblighted"
+        },
         { "type": "47614", "text": "凋落地圖 (瘴氣泥沼)", "disc": "blighted" },
         {
           "type": "47614",
@@ -10198,6 +10707,11 @@
           "disc": "uberblighted"
         },
         { "type": "52736", "text": "凋落地圖 (濱海堡壘)", "disc": "blighted" },
+        {
+          "type": "52736",
+          "text": "凋落蔓延地圖 (濱海堡壘)",
+          "disc": "uberblighted"
+        },
         { "type": "53075", "text": "凋落地圖 (墓影書坊)", "disc": "blighted" },
         { "type": "53116", "text": "凋落地圖 (暮色沙丘)", "disc": "blighted" },
         {
@@ -10255,6 +10769,11 @@
           "disc": "uberblighted"
         },
         { "type": "57690", "text": "凋落地圖 (乾潮林地)", "disc": "blighted" },
+        {
+          "type": "57690",
+          "text": "凋落蔓延地圖 (乾潮林地)",
+          "disc": "uberblighted"
+        },
         { "type": "57831", "text": "凋落地圖 (靜縊陵墓)", "disc": "blighted" },
         {
           "type": "57831",
@@ -10262,8 +10781,23 @@
           "disc": "uberblighted"
         },
         { "type": "57839", "text": "凋落地圖 (魔金寶庫)", "disc": "blighted" },
+        {
+          "type": "57839",
+          "text": "凋落蔓延地圖 (魔金寶庫)",
+          "disc": "uberblighted"
+        },
         { "type": "58250", "text": "凋落地圖 (苦行之域)", "disc": "blighted" },
+        {
+          "type": "58250",
+          "text": "凋落蔓延地圖 (苦行之域)",
+          "disc": "uberblighted"
+        },
         { "type": "58981", "text": "凋落地圖 (詭譎晶洞)", "disc": "blighted" },
+        {
+          "type": "58981",
+          "text": "凋落蔓延地圖 (詭譎晶洞)",
+          "disc": "uberblighted"
+        },
         { "type": "59084", "text": "凋落地圖 (極原冰帽)", "disc": "blighted" },
         {
           "type": "59084",
@@ -10314,6 +10848,11 @@
           "disc": "uberblighted"
         },
         { "type": "64414", "text": "凋落地圖 (火山炎口)", "disc": "blighted" },
+        {
+          "type": "64414",
+          "text": "凋落蔓延地圖 (火山炎口)",
+          "disc": "uberblighted"
+        },
         { "type": "64812", "text": "凋落地圖 (奇術秘殿)", "disc": "blighted" },
         {
           "type": "64812",
@@ -10321,6 +10860,11 @@
           "disc": "uberblighted"
         },
         { "type": "6755", "text": "凋落地圖 (寧逸溫房)", "disc": "blighted" },
+        {
+          "type": "6755",
+          "text": "凋落蔓延地圖 (寧逸溫房)",
+          "disc": "uberblighted"
+        },
         { "type": "7088", "text": "凋落地圖 (熔岩之室)", "disc": "blighted" },
         {
           "type": "7088",
@@ -10373,11 +10917,71 @@
           "flags": { "unique": true }
         },
         {
+          "type": "AurasMinionsTemplarSmite",
+          "text": "傭兵契約書 (戰爭牧師)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "AurasMinionsTemplarSmiteNoble",
+          "text": "傭兵契約書 (萬惡戰爭牧師)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "AurasMinionsTemplarSpectres",
+          "text": "傭兵契約書 (墮落教士)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "AurasMinionsTemplarSpectresNoble",
+          "text": "傭兵契約書 (萬惡墮落教士)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "AurasMinionsTemplarStaff",
+          "text": "傭兵契約書 (紅衣主教)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "AurasMinionsTemplarStaffNoble",
+          "text": "傭兵契約書 (萬惡紅衣主教)",
+          "disc": "mercenary_warrant"
+        },
+        {
           "type": "地圖",
           "text": "塞爾．佈雷德狼穴 地圖",
           "name": "塞爾．佈雷德狼穴",
           "disc": "map",
           "flags": { "unique": true }
+        },
+        {
+          "type": "ChaosMinionWitchChaosHit",
+          "text": "傭兵契約書 (殘忍女王)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ChaosMinionWitchChaosHitNoble",
+          "text": "傭兵契約書 (萬惡殘忍女王)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ChaosMinionWitchDot",
+          "text": "傭兵契約書 (凋靈之觸)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ChaosMinionWitchDotNoble",
+          "text": "傭兵契約書 (萬惡凋靈之觸)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ChaosMinionWitchInstability",
+          "text": "傭兵契約書 (復生師)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ChaosMinionWitchInstabilityNoble",
+          "text": "傭兵契約書 (萬惡復生師)",
+          "disc": "mercenary_warrant"
         },
         {
           "type": "地圖",
@@ -10387,6 +10991,26 @@
           "flags": { "unique": true }
         },
         {
+          "type": "Crit1HShadowPhysSpell",
+          "text": "傭兵契約書 (刀刃術者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "Crit1HShadowPhysSpellNoble",
+          "text": "傭兵契約書 (萬惡刀刃術者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "Crit1HShadowPoison",
+          "text": "傭兵契約書 (刀刃噬咬者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "Crit1HShadowPoisonNoble",
+          "text": "傭兵契約書 (萬惡刀刃噬咬者)",
+          "disc": "mercenary_warrant"
+        },
+        {
           "type": "地圖",
           "text": "亡者之財 地圖",
           "name": "亡者之財",
@@ -10394,11 +11018,71 @@
           "flags": { "unique": true }
         },
         {
+          "type": "DivingDuelist",
+          "text": "傭兵契約書 (秘潛者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "DivingDuelistNoble",
+          "text": "傭兵契約書 (萬惡秘潛者)",
+          "disc": "mercenary_warrant"
+        },
+        {
           "type": "地圖",
           "text": "多里亞尼的機械迷城 地圖",
           "name": "多里亞尼的機械迷城",
           "disc": "map",
           "flags": { "unique": true }
+        },
+        {
+          "type": "EleBowRangerClones",
+          "text": "傭兵契約書 (暴射者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "EleBowRangerClonesNoble",
+          "text": "傭兵契約書 (萬惡暴射者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "EleBowRangerFire",
+          "text": "傭兵契約書 (炎鏃)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "EleBowRangerFireNoble",
+          "text": "傭兵契約書 (萬惡炎鏃)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "EleBowRangerLightning",
+          "text": "傭兵契約書 (雷鏃)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ElementalWitchCold",
+          "text": "傭兵契約書 (冰霜之手)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ElementalWitchColdNoble",
+          "text": "傭兵契約書 (萬惡冰霜之手)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ElementalWitchFire",
+          "text": "傭兵契約書 (火炎之手)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ElementalWitchLightning",
+          "text": "傭兵契約書 (風暴之手)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "ElementalWitchLightningNoble",
+          "text": "傭兵契約書 (萬惡風暴之手)",
+          "disc": "mercenary_warrant"
         },
         {
           "type": "地圖",
@@ -10436,6 +11120,111 @@
           "flags": { "unique": true }
         },
         {
+          "type": "MeleeAOEMarauderFireSlam",
+          "text": "傭兵契約書 (爆發者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeAOEMarauderFireSlamNoble",
+          "text": "傭兵契約書 (萬惡爆發者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeAOEMarauderNonSlam",
+          "text": "傭兵契約書 (撕裂者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeAOEMarauderNonSlamNoble",
+          "text": "傭兵契約書 (萬惡撕裂者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeAOEMarauderPhysSlam",
+          "text": "傭兵契約書 (裂地者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeAOEMarauderPhysSlamNoble",
+          "text": "傭兵契約書 (萬惡裂地者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeAOEStrikeDuelistCyclone",
+          "text": "傭兵契約書 (迅刃)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeAOEStrikeDuelistCycloneNoble",
+          "text": "傭兵契約書 (萬惡迅刃)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeAOEStrikeDuelistRangeStrikes",
+          "text": "傭兵契約書 (戰鬥者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeAOEStrikeDuelistRangeStrikesNoble",
+          "text": "傭兵契約書 (萬惡戰鬥者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeStrikesMaraduerPhys",
+          "text": "傭兵契約書 (襲擊者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeStrikesMaraduerPhysNoble",
+          "text": "傭兵契約書 (萬惡襲擊者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MeleeStrikesMarauderFire",
+          "text": "傭兵契約書 (熔炎之擊)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MiscScionPhysDot",
+          "text": "傭兵契約書 (腥紅術師)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MiscScionPhysDotNoble",
+          "text": "傭兵契約書 (萬惡腥紅術師)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MiscScionWandAttacks",
+          "text": "傭兵契約書 (動能師)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "MiscScionWandAttacksNoble",
+          "text": "傭兵契約書 (萬惡動能師)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "NonEleBowRangerChaos",
+          "text": "傭兵契約書 (毒師)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "NonEleBowRangerChaosNoble",
+          "text": "傭兵契約書 (萬惡毒師)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "NonEleBowRangerPhys",
+          "text": "傭兵契約書 (狙擊手)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "NonEleBowRangerPhysNoble",
+          "text": "傭兵契約書 (萬惡狙擊手)",
+          "disc": "mercenary_warrant"
+        },
+        {
           "type": "地圖",
           "text": "歐霸的咒怨寶庫 地圖",
           "name": "歐霸的咒怨寶庫",
@@ -10448,6 +11237,51 @@
           "name": "遠古之印",
           "disc": "map",
           "flags": { "unique": true }
+        },
+        {
+          "type": "PhysConvertTemplarCold",
+          "text": "傭兵契約書 (冬之助祭)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "PhysConvertTemplarFire",
+          "text": "傭兵契約書 (烈火詐欺者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "PhysConvertTemplarLightning",
+          "text": "傭兵契約書 (風暴狂熱者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "PhysConvertTemplarLightningNoble",
+          "text": "傭兵契約書 (萬惡風暴狂熱者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "PhysicalDuelistBleed",
+          "text": "傭兵契約書 (放血者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "PhysicalDuelistBleedNoble",
+          "text": "傭兵契約書 (萬惡放血者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "PhysicalDuelistShields",
+          "text": "傭兵契約書 (堅堡)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "PhysicalDuelistShieldsNoble",
+          "text": "傭兵契約書 (萬惡堅堡)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "PhysicalDuelistSteel",
+          "text": "傭兵契約書 (碎鋒之劍)",
+          "disc": "mercenary_warrant"
         },
         {
           "type": "地圖",
@@ -10545,6 +11379,31 @@
           "name": "維克塔廣場",
           "disc": "map",
           "flags": { "unique": true }
+        },
+        {
+          "type": "TrapsMinesShadowAttack",
+          "text": "傭兵契約書 (刀鋒伏擊者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "TrapsMinesShadowAttackNoble",
+          "text": "傭兵契約書 (萬惡刀鋒伏擊者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "TrapsMinesShadowCold",
+          "text": "傭兵契約書 (冰霜伏擊者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "TrapsMinesShadowLightning",
+          "text": "傭兵契約書 (電襲伏擊者)",
+          "disc": "mercenary_warrant"
+        },
+        {
+          "type": "TrapsMinesShadowLightningNoble",
+          "text": "傭兵契約書 (萬惡電襲伏擊者)",
+          "disc": "mercenary_warrant"
         },
         {
           "type": "地圖",
@@ -10746,6 +11605,7 @@
         { "type": "暮色之刃" },
         { "type": "碧銅短劍" },
         { "type": "查蘭之劍" },
+        { "type": "青焰利刃" },
         { "type": "黃金之刃" },
         { "type": "非命魂刃" },
         { "type": "怪談魂刃" },
@@ -11360,6 +12220,12 @@
           "type": "鏽劍",
           "text": "恐懼之喙 鏽劍",
           "name": "恐懼之喙",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "青焰利刃",
+          "text": "滅亡海盜彎刀 青焰利刃",
+          "name": "滅亡海盜彎刀",
           "flags": { "unique": true }
         },
         {
@@ -12198,6 +13064,12 @@
           "flags": { "unique": true }
         },
         {
+          "type": "卡魯權杖",
+          "text": "贗品．瑪塔的教導 卡魯權杖",
+          "name": "贗品．瑪塔的教導",
+          "flags": { "unique": true }
+        },
+        {
           "type": "呼喚法杖",
           "text": "贗品．冥約 呼喚法杖",
           "name": "贗品．冥約",
@@ -12584,6 +13456,12 @@
           "type": "鋼木之弓",
           "text": "緋紅風暴 鋼木之弓",
           "name": "緋紅風暴",
+          "flags": { "unique": true }
+        },
+        {
+          "type": "史典長杖",
+          "text": "甲殼之喚 史典長杖",
+          "name": "甲殼之喚",
           "flags": { "unique": true }
         },
         {
@@ -13339,7 +14217,7 @@
         { "type": "奎爾珊蛛蛛蟹" },
         { "type": "費爾羅暴熊" },
         { "type": "奎爾珊裂齒獸" },
-        { "type": "奎爾珊龍蜥" },
+        { "type": "奎爾珊鳴蛙" },
         { "type": "費爾羅羊人" },
         { "type": "費爾羅烈焰犬幻獸" },
         { "type": "費爾羅冰霜犬幻獸" },
@@ -13789,7 +14667,7 @@
     },
     {
       "id": "sanctum",
-      "label": "聖域研究",
+      "label": "聖域",
       "entries": [
         { "type": "香爐聖物" },
         { "type": "詩歌聖物" },
@@ -14440,6 +15318,96 @@
         { "type": "成長之胎贈" },
         { "type": "神秘之胎贈" },
         { "type": "古老之胎贈" }
+      ]
+    },
+    {
+      "id": "enshrouded",
+      "label": "壟罩物品",
+      "entries": [
+        { "type": "壟罩的胸甲" },
+        { "type": "壟罩的鞋子" },
+        { "type": "壟罩的手套" },
+        { "type": "壟罩的頭盔" },
+        { "type": "壟罩的盾牌" }
+      ]
+    },
+    {
+      "id": "chart",
+      "label": "海圖",
+      "entries": [
+        { "type": "珊瑚林海圖" },
+        { "type": "珊瑚礁海圖" },
+        { "type": "沙質海床海圖" },
+        {
+          "type": "AbyssalPlain",
+          "text": "砂質海床海圖 (深海平原)",
+          "disc": "chart_sandy_seabed"
+        },
+        {
+          "type": "Anchorfield",
+          "text": "砂質海床海圖 (定錨點)",
+          "disc": "chart_sandy_seabed"
+        },
+        {
+          "type": "BrineKingsDomain",
+          "text": "珊瑚礁海圖(海洋王的領域)",
+          "disc": "chart_coral_reef"
+        },
+        {
+          "type": "ClamInfestedShelf",
+          "text": "珊瑚礁海圖(蛤蜊之架)",
+          "disc": "chart_coral_reef"
+        },
+        {
+          "type": "DivingShoals",
+          "text": "珊瑚礁海圖(潛水沙洲)",
+          "disc": "chart_coral_reef"
+        },
+        {
+          "type": "HazardousDepths",
+          "text": "砂質海床海圖 (危機海淵)",
+          "disc": "chart_sandy_seabed"
+        },
+        {
+          "type": "InfestedBathyspheres",
+          "text": "砂質海床海圖 (感染潛水球)",
+          "disc": "chart_sandy_seabed"
+        },
+        {
+          "type": "KisharasRest",
+          "text": "砂質海床海圖 (奇夏拉安眠地)",
+          "disc": "chart_sandy_seabed"
+        },
+        {
+          "type": "LostRuins",
+          "text": "珊瑚森林海圖 (失落遺跡)",
+          "disc": "chart_coral_forest"
+        },
+        {
+          "type": "PelagicAbyss",
+          "text": "珊瑚森林海圖 (遠洋深淵)",
+          "disc": "chart_coral_forest"
+        },
+        {
+          "type": "SeafloorRidges",
+          "text": "珊瑚礁海圖(海底山脊)",
+          "disc": "chart_coral_reef"
+        },
+        {
+          "type": "SeaPillars",
+          "text": "珊瑚森林海圖 (海洋之柱)",
+          "disc": "chart_coral_forest"
+        },
+        {
+          "type": "SunkenTotems",
+          "text": "珊瑚礁海圖(沉沒圖騰)",
+          "disc": "chart_coral_reef"
+        },
+        {
+          "type": "UnderseaGroves",
+          "text": "珊瑚森林海圖 (海底幽林)",
+          "disc": "chart_coral_forest"
+        }
       ]
     }
   ]

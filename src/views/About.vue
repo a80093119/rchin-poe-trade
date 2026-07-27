@@ -2,11 +2,14 @@
 <div class="about" style="padding-top: 5px;">
   <div style="padding:5px 30px;">
     <b-card-group deck>
-      <b-card border-variant="primary" header="POE 查價工具 v1.328.2" header-bg-variant="primary" header-text-variant="white" align="center">
-        <b-card-text>作者：rChinnnn</b-card-text>
+      <b-card border-variant="primary" header="POE 查價工具 v1.329.0" header-bg-variant="primary" header-text-variant="white" align="center">
+        <b-card-text>作者：rChinnnn/a80093119</b-card-text>
         <b-card-text>
           <b-button @click="openLink(`https://github.com/rChinnnn/rchin-poe-trade/releases`)" size="sm" variant="outline-primary" class="mb-2">
-            版本發佈歷史請點我
+            v1.324.0以前版本發佈歷史請點我
+          </b-button>
+          <b-button @click="openLink(`https://github.com/rChinnnn/rchin-poe-trade/releases`)" size="sm" variant="outline-primary" class="mb-2">
+            v1.325.0以後版本發佈歷史請點我
           </b-button>
         </b-card-text>
       </b-card>
