@@ -1976,6 +1976,7 @@ export default {
       // console.log(tempStat)
       let elementalResistanceTotal = 0
       let spellDamageTotal = 0
+      let physicalDamageTotal = 0
       tempStat.forEach((element, idx, array) => { // 比對詞綴，抓出隨機數值與詞綴搜尋 ID
         let isStatSearch = false
         let statID = getStatId(element) // 詞綴ID
@@ -2145,6 +2146,10 @@ export default {
             // "增加 #% 法術傷害"
             spellDamageTotal += randomMinValue
             break;
+          case statID.indexOf('stat_1509134228') > -1:
+            // "增加 #% 物理傷害"：合成詞綴拆行後會出現多筆，需累加才等同市集的偽屬性總和
+            physicalDamageTotal += _.isNumber(randomMinValue) ? randomMinValue : 0
+            break;
           default:
             break;
         }
@@ -2167,6 +2172,19 @@ export default {
             "text": `增加 #% 法術傷害`,
             "option": optionValue,
             "min": spellDamageTotal,
+            "max": '',
+            "isValue": true,
+            "isNegative": false,
+            "isSearch": false,
+            "type": "偽屬性"
+          })
+        }
+        if (physicalDamageTotal && idx === array.length - 1) {
+          this.searchStats.unshift({ // 計算物理傷害偽屬性：單筆詞綴的搜尋值不等於物品總和，總和只能靠偽屬性表達
+            "id": "pseudo.pseudo_increased_physical_damage",
+            "text": `增加 #% 物裡傷害`, // 台服 API 原文即為「物裡」，維持與 stats.json 一致
+            "option": optionValue,
+            "min": physicalDamageTotal,
             "max": '',
             "isValue": true,
             "isNegative": false,
