@@ -412,6 +412,12 @@ import {
 } from "../utils/mapSearch";
 import { buildBlueprintSearch } from "../utils/heistSearch";
 import {
+  applyUltimatumSearchStat,
+  buildUltimatumSearch,
+  ULTIMATUM_DESCRIPTION,
+  ULTIMATUM_SEARCH_STAT_IDS
+} from "../utils/ultimatumSearch";
+import {
   findBestStat,
   findLabelNumber,
   findLabelValue,
@@ -1089,7 +1095,7 @@ export default {
       return value
     },
     syncSearchStatsToQuery() {
-      const skippedIds = ["memory_level", 'misc.ilvl', 'heist.heist_wings', 'heist.heist_max_wings']
+      const skippedIds = ["memory_level", 'misc.ilvl', 'heist.heist_wings', 'heist.heist_max_wings', ...ULTIMATUM_SEARCH_STAT_IDS]
       const searchStatIds = [...new Set(this.searchStats.map(element => element.id).filter(id => !skippedIds.includes(id)))]
 
       if (!this.searchJson.query.stats.length) {
@@ -1125,12 +1131,14 @@ export default {
         // 同一段敘述對應多個詞綴 ID（例：+#% 壓抑法術傷害率），物品實際只會索引其中一個，
         // 因此改用 count 群組讓任一 ID 命中即可
         const duplicateStat = this.duplicateStats.result.find(item => item.ids.some(id => id.includes(element.id)))
+        // 詞綴分析時已知的多重 ID（例：最後通牒詞綴「憤怒亡者 II」）優先於重複詞綴表
+        const duplicateIds = element.ids?.length > 1 ? element.ids : duplicateStat?.ids
 
-        if (duplicateStat) {
+        if (duplicateIds) {
           this.searchJson.query.stats.push({
             "type": "count",
             // 數值需寫在各 filter 上，群組的 value 只負責「至少符合 1 條」
-            "filters": duplicateStat.ids.map(id => ({
+            "filters": duplicateIds.map(id => ({
               "id": id,
               "value": value
             })),
@@ -1197,6 +1205,11 @@ export default {
           }
           return
         }
+
+        applyUltimatumSearchStat({ // 最後通牒的挑戰／獎勵／需求獻祭／區域等級皆為 query.filters
+          searchJson: this.searchJson,
+          stat: element
+        })
       })
       this.syncSearchStatsToQuery()
       this.fetchQueryID = ''
@@ -3120,6 +3133,19 @@ export default {
           this.mirroredStatsAnalysis(itemArray)
           this.isStatsCollapse = true
           return
+        } else if (item.indexOf(ULTIMATUM_DESCRIPTION) > -1) { // 最後通牒（試煉大師）判斷
+          const ultimatumSearch = buildUltimatumSearch({
+            searchJson: this.searchJson,
+            itemArray,
+            allStats: this.allStats,
+            translateType: this.replaceString
+          })
+
+          this.searchJson = ultimatumSearch.searchJson
+          this.searchStats = ultimatumSearch.searchStats
+          this.isStatsCollapse = true
+          this.searchTrade(this.searchJson)
+          return
         }
       } else if (Rarity === "寶石") {
         this.isGem = true
@@ -3388,6 +3414,10 @@ export default {
           case '熔火':
             return {
               'color': '#a83632'
+            }
+          case '通牒':
+            return {
+              'color': '#c14f9c'
             }
           case '傳奇':
             return {
