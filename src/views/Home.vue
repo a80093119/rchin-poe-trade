@@ -410,7 +410,11 @@ import {
   MAP_BASE_TYPE_FALLBACKS,
   MAP_QUERY_STAT_IDS
 } from "../utils/mapSearch";
-import { buildBlueprintSearch } from "../utils/heistSearch";
+import {
+  applyHeistSearchStat,
+  buildHeistSearch,
+  HEIST_STAT_ID_PREFIX
+} from "../utils/heistSearch";
 import {
   applyUltimatumSearchStat,
   buildUltimatumSearch,
@@ -1095,8 +1099,9 @@ export default {
       return value
     },
     syncSearchStatsToQuery() {
-      const skippedIds = ["memory_level", 'misc.ilvl', 'heist.heist_wings', 'heist.heist_max_wings', ...ULTIMATUM_SEARCH_STAT_IDS]
-      const searchStatIds = [...new Set(this.searchStats.map(element => element.id).filter(id => !skippedIds.includes(id)))]
+      // 這些 ID 不是詞綴，改由 searchTrade 寫入 query.filters
+      const isSkippedId = (id) => ["memory_level", 'misc.ilvl', ...ULTIMATUM_SEARCH_STAT_IDS].includes(id) || String(id).startsWith(HEIST_STAT_ID_PREFIX)
+      const searchStatIds = [...new Set(this.searchStats.map(element => element.id).filter(id => !isSkippedId(id)))]
 
       if (!this.searchJson.query.stats.length) {
         this.searchJson.query.stats = [{ "type": "and", "filters": [] }]
@@ -1123,7 +1128,7 @@ export default {
       }
 
       this.searchStats.forEach((element) => {
-        if (skippedIds.includes(element.id)) {
+        if (isSkippedId(element.id)) {
           return
         }
 
@@ -1185,24 +1190,11 @@ export default {
           return
         }
 
-        if (element.id === 'heist.heist_wings' || element.id === 'heist.heist_max_wings') {
-          if (!this.searchJson.query.filters.heist_filters) {
-            this.searchJson.query.filters.heist_filters = {
-              filters: {},
-              disabled: false
-            }
-          }
-
-          const filterKey = element.id.replace('heist.', '')
-
-          if (element.isSearch) {
-            this.searchJson.query.filters.heist_filters.filters[filterKey] = {
-              "min": _.isNumber(element.min) ? element.min : null,
-              "max": _.isNumber(element.max) ? element.max : null
-            }
-          } else {
-            delete this.searchJson.query.filters.heist_filters.filters[filterKey]
-          }
+        // 劫盜的目標價值／需求技能等級／側廂數量皆為 query.filters.heist_filters
+        if (applyHeistSearchStat({
+          searchJson: this.searchJson,
+          stat: element
+        })) {
           return
         }
 
@@ -3034,11 +3026,13 @@ export default {
       let itemBasicCount = 0
 
       // 先處理地圖/類地圖類型，避免名稱子字串誤判為其他類別（例如：九頭蛇冰窟 vs 九頭蛇屍體）
-      if (parsedItem.itemClass.startsWith('藍圖')) {
-        const blueprintSearch = buildBlueprintSearch({
+      // 藍圖與契約書同屬劫盜任務，複製文字的劫盜目標／需求技能／側廂結構一致
+      if (['藍圖', '契約書'].some(itemClass => parsedItem.itemClass.startsWith(itemClass))) {
+        const heistSearch = buildHeistSearch({
           searchJson: this.searchJson,
           item,
           itemArray,
+          rarity: Rarity,
           allStats: this.allStats,
           mapBasicOptions: this.mapBasic.option,
           newLine: this.newLine,
@@ -3046,23 +3040,23 @@ export default {
           translateType: this.replaceString
         })
 
-        this.isMap = blueprintSearch.uiState.isMap
-        this.isMapCollapse = blueprintSearch.uiState.isMapCollapse
-        this.raritySet.chosenObj = blueprintSearch.uiState.raritySet.chosenObj
-        this.raritySet.isSearch = blueprintSearch.uiState.raritySet.isSearch
-        this.itemLevel.min = blueprintSearch.uiState.itemLevel.min
-        this.itemLevel.max = blueprintSearch.uiState.itemLevel.max
-        this.itemLevel.isSearch = blueprintSearch.uiState.itemLevel.isSearch
-        this.mapBasic.chosenM = blueprintSearch.uiState.mapBasic.chosenM
-        this.mapBasic.isSearch = blueprintSearch.uiState.mapBasic.isSearch
-        this.searchJson = blueprintSearch.searchJson
-        this.searchStats = blueprintSearch.searchStats
+        this.isMap = heistSearch.uiState.isMap
+        this.isMapCollapse = heistSearch.uiState.isMapCollapse
+        this.raritySet.chosenObj = heistSearch.uiState.raritySet.chosenObj
+        this.raritySet.isSearch = heistSearch.uiState.raritySet.isSearch
+        this.itemLevel.min = heistSearch.uiState.itemLevel.min
+        this.itemLevel.max = heistSearch.uiState.itemLevel.max
+        this.itemLevel.isSearch = heistSearch.uiState.itemLevel.isSearch
+        this.mapBasic.chosenM = heistSearch.uiState.mapBasic.chosenM
+        this.mapBasic.isSearch = heistSearch.uiState.mapBasic.isSearch
+        this.searchJson = heistSearch.searchJson
+        this.searchStats = heistSearch.searchStats
         this.searchTrade(this.searchJson)
         return
       }
 
       if (
-        ['異界地圖', '地圖', '契約書', '聖域研究'].some(itemClass => parsedItem.itemClass.startsWith(itemClass)) ||
+        ['異界地圖', '地圖', '聖域研究'].some(itemClass => parsedItem.itemClass.startsWith(itemClass)) ||
         item.indexOf('釋界之邀：') > -1
       ) {
         this.mapAnalysis(item, itemArray, Rarity)
@@ -3418,6 +3412,10 @@ export default {
           case '通牒':
             return {
               'color': '#c14f9c'
+            }
+          case '劫盜':
+            return {
+              'color': '#4fb3c1'
             }
           case '傳奇':
             return {
