@@ -10,6 +10,9 @@ const RARITY_LABEL = '稀有度'
 const UNUSABLE_TEXT = '你無法使用這項裝備'
 const UNIDENTIFIED_TEXT = '未鑑定'
 const SET_STRING = /<(.+)>/g // <<set:MS>><<set:M>><<set:S>>
+// 季節性：「殘存」傳奇會在基底（有時是名稱）前綴「殘存」字樣，例如「殘存 荒野鎖鎧」，
+// 但官方 trade 的 name/type 皆不含此字樣，需移除後才能正確對應傳奇名稱與基底（下季可移除）
+const SEASONAL_NAME_PREFIX = /^殘存\s+/
 
 function isLabelLine(line, label) {
   return new RegExp(`^${label}\\s*[:：]`).test((line || '').trim())
@@ -20,7 +23,9 @@ function getLabelValue(line, label) {
 }
 
 function cleanNameLine(line) {
-  return typeof line === 'string' ? line.replace(SET_STRING, '').trim() : line
+  return typeof line === 'string'
+    ? line.replace(SET_STRING, '').trim().replace(SEASONAL_NAME_PREFIX, '').trim()
+    : line
 }
 
 export function splitCopyLines(copyText, newLine) {

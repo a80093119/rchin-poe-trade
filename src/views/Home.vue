@@ -2076,7 +2076,16 @@ export default {
           itemDisplayStats.push(text)
           text = stripStatTags(text) // 折行詞綴每行結尾都有標記，需整段移除才能與 stats.json 比對
           if (itemArray[index].indexOf('(implicit)') > -1) { // 固定屬性
-            tempStat.push(findBestStat(text, this.implicitStats))
+            // 「殘存」等機制會把本質為 explicit 的詞綴當固定詞綴附加，這些敘述不在 implicitStats，
+            // 只在 implicitStats 比對會誤配到相近的固定詞綴。改為同時在全域詞綴池(explicitStats)搜尋，
+            // 若全域池命中更相似，改用該筆並標記 __forceImplicit（stat 編號跨類別共用，稍後把 id 前綴改回 implicit）
+            let implicitMatch = findBestStat(text, this.implicitStats)
+            const globalMatch = findBestStat(text, this.explicitStats)
+            if (globalMatch.bestMatch.rating > implicitMatch.bestMatch.rating) {
+              implicitMatch = globalMatch
+              implicitMatch.__forceImplicit = true
+            }
+            tempStat.push(implicitMatch)
             tempStat[tempStat.length - 1].type = "固定"
           } else if (itemArray[index].indexOf('(fractured)') > -1) { // 破裂
             tempStat.push(findBestStat(text, this.fracturedStats))
@@ -2107,6 +2116,10 @@ export default {
       tempStat.forEach((element, idx, array) => { // 比對詞綴，抓出隨機數值與詞綴搜尋 ID
         let isStatSearch = false
         let statID = getStatId(element) // 詞綴ID
+        // 全域池命中的固定詞綴（如殘存附加詞綴）：id 前綴需由 explicit 等改回 implicit，stat 編號不變
+        if (element.__forceImplicit) {
+          statID = statID.replace(/^[a-z]+\./, 'implicit.')
+        }
         let apiStatText = element.bestMatch.target // API 抓回來的詞綴字串
         let itemStatText = itemDisplayStats[idx] // 物品上的詞綴字串
         switch (true) { // 詞綴 ID 例外處理
