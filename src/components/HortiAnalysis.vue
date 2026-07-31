@@ -21,7 +21,7 @@
       <b-col sm="12" class="my-1">
         <b-form-group label="POESESSID" label-cols-sm="4" label-align-sm="right" label-size="sm" class="mb-0">
           <b-input-group size="sm">
-            <b-form-input v-model="$store.state.POESESSID" :disabled="true" type="search" id="filterInput" placeholder="請輸入ID"></b-form-input>
+            <b-form-input v-model="$store.state.POESESSID" :disabled="true" type="password" id="filterInput" placeholder="請輸入ID"></b-form-input>
           </b-input-group>
         </b-form-group>
       </b-col>

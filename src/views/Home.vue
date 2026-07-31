@@ -1,5 +1,7 @@
 <template>
   <div class="home" ref="home">
+    <!-- 季節性：傭兵契約書 OCR 浮動面板（position:fixed，故放在最外層不受任何 collapse 影響；下季可整包移除） -->
+    <MercenaryContractOcr :detected-level="mercLevel" @search="searchMercenaryContract"></MercenaryContractOcr>
     <go-top :size="30" :bottom="50" :max-width="575" bg-color="#04a9f3" :boundary="10"></go-top>
     <hr>
     <b-alert v-if="isApiError" show variant="danger" style="margin-top: 5px;">
@@ -55,11 +57,35 @@
                 <el-button size="small" round @click="popPoedbWebsite(searchedText.us)" v-b-tooltip.hover.v-secondary :title="`點選開啟編年史網站`" :disabled="!searchedText">編</el-button>
               </b-col>
             </b-row>
+            <b-row class="lesspadding" style="padding-left: 2px;">
+              <b-col sm="12" style="padding-top: 10px;">
+                <b-button size="sm" variant="outline-success" @click="acquirePoesessid" :disabled="acquiringSid">
+                  {{ acquiringSid ? '登入視窗開啟中…' : '登入官網自動取得 POESESSID' }}
+                </b-button>
+                <b-button v-if="handlePOESESSID" size="sm" variant="outline-danger" style="margin-left:8px;" @click="clearPoesessid">清除</b-button>
+                <small class="text-muted" style="display:block; padding-left: 2px; padding-top: 4px;">
+                  目前：<b>{{ handlePOESESSID ? `已設定 ✓（${storeServerString}）` : '未設定 → 查詢為匿名，複雜查詢（如多技能傭兵）會被拒絕' }}</b><br>
+                  會開啟官網登入頁（已鎖官方網域、標題列顯示網址、只讀 POESESSID、不讀密碼）。分服：請用目前伺服器（{{ storeServerString }}）帳號登入。
+                </small>
+                <div style="padding-top: 8px;">
+                  <b-button size="sm" variant="outline-secondary" @click="openExternalLogin">改用外部瀏覽器登入（最保險）</b-button>
+                </div>
+                <b-input-group size="sm" style="padding-top: 8px; max-width: 460px;">
+                  <b-form-input v-model="manualSid" placeholder="或在此貼上 POESESSID（32 位英數）"></b-form-input>
+                  <b-input-group-append>
+                    <b-button variant="outline-primary" @click="saveManualSid" :disabled="!manualSid">儲存</b-button>
+                  </b-input-group-append>
+                </b-input-group>
+                <small class="text-muted" style="display:block; padding-left: 2px; padding-top: 4px;">
+                  外部瀏覽器登入後：F12 → Application/應用程式 → Cookies → 複製 POESESSID 貼上。app 完全不經手你的登入頁，信任成本最低。
+                </small>
+              </b-col>
+            </b-row>
             <b-row v-if="handlePOESESSID" class="lesspadding" style="padding-left: 2px;">
               <b-col sm="12" style="padding-top: 10px;">
                 <b-form-group label="POESESSID" label-cols-sm="5" label-align-sm="right" label-size="sm" class="mb-0">
                   <b-input-group size="sm">
-                    <b-form-input v-model="handlePOESESSID" disabled></b-form-input>
+                    <b-form-input v-model="handlePOESESSID" disabled type="password"></b-form-input>
                     <b-input-group-append>
                       <b-button @click="$store.commit('setPOESESSID', '')" :disabled="true">刪除</b-button>
                     </b-input-group-append>
@@ -68,6 +94,16 @@
               </b-col>
               <b-col sm="12" style="padding-top: 8px;">
                 <ChaosRecipe></ChaosRecipe>
+              </b-col>
+            </b-row>
+            <b-row class="lesspadding" style="padding-left: 2px;">
+              <b-col sm="12" style="padding-top: 10px;">
+                <b-form-checkbox v-model="mercOcrEnabled" @change="onMercOcrToggle" switch>
+                  啟用傭兵契約書技能辨識（截圖 OCR）
+                </b-form-checkbox>
+                <small class="text-muted" style="display:block; padding-left: 2px;">
+                  複製（Ctrl+C）傭兵契約書時，會擷取目前螢幕做文字辨識以帶出主技能。關閉時完全不截圖、不載入辨識模組；預設關閉。
+                </small>
               </b-col>
             </b-row>
           </b-card>
@@ -397,6 +433,7 @@
 // import hotkeys from "hotkeys-js";
 import PriceAnalysis from '@/components/PriceAnalysis.vue'
 import ChaosRecipe from '@/components/ChaosRecipe.vue'
+import MercenaryContractOcr from '@/components/MercenaryContractOcr.vue' // 季節性：下季可整包移除
 import GoTop from '@inotom/vue-go-top';
 
 import itemsData from "../assets/poe/items.json";
@@ -437,13 +474,15 @@ const _ = require('lodash');
 const stringSimilarity = require('string-similarity');
 const {
   clipboard,
-  shell
+  shell,
+  ipcRenderer
 } = require('electron')
 export default {
   name: 'home',
   components: {
     PriceAnalysis,
     ChaosRecipe,
+    MercenaryContractOcr,
     GoTop
   },
   data() {
@@ -454,6 +493,10 @@ export default {
       copyText: '',
       searchedText: '',
       testResponse: '',
+      mercLevel: null, // 季節性：剪貼簿解析到的傭兵等級，傳給 OCR 浮動面板
+      mercOcrEnabled: false, // 季節性：傭兵 OCR 功能總開關（隱私考量預設關閉；存 localStorage）
+      acquiringSid: false, // 是否正在開登入視窗取得 POESESSID
+      manualSid: '', // 手動貼上的 POESESSID（外部瀏覽器登入後複製回來）
       countTime: 0,
       baseUrl: 'https://pathofexile.tw',
       serverOptions: ['台服', '國際服'],
@@ -875,6 +918,9 @@ export default {
       this.cleanClipboard()
     }
     this.initLocalStorage()
+    // 季節性：載入傭兵 OCR 開關並同步給 main process（決定 capture_screen 是否放行截圖）
+    this.mercOcrEnabled = localStorage.getItem('mercOcrEnabled') === 'true'
+    ipcRenderer.send('set_merc_ocr_enabled', this.mercOcrEnabled)
     // 同步線上狀態預設值到查詢 JSON
     this.onlineStatusChange()
     this.isTwServer = this.storeServerString === '台服' ? true : false
@@ -1829,6 +1875,82 @@ export default {
       }
       this.searchTrade(this.searchJson)
     }, 500),
+    // 季節性：傭兵契約書 OCR 技能搜尋（下季可整包移除；配合 <MercenaryContractOcr>）
+    // payload = { groups: [{ skillId, supportIds: [...] }], levelMin: number|null }
+    // 每個技能各自一組 type:'mercenary'，group 內含「該技能 + 它自己的輔助」，綁在同一個
+    // mercenary 群組 → API 才會把輔助對到該技能（此為 trade 站台實際送出的格式）。
+    // 注意：務必保留 searchJson_Def 開頭那個空的 and 群組（首個群組固定為 and），
+    // mercenary 群組「接在其後」；先前改成覆蓋整個 stats／攤平成單一 and 群組都會查錯。
+    // 在 app 內開官方登入視窗，登入後自動抓取 POESESSID（免手動複製）。分服：用目前 baseUrl。
+    async acquirePoesessid() {
+      this.acquiringSid = true
+      try {
+        const sid = await ipcRenderer.invoke('acquire_poesessid', { baseUrl: this.baseUrl })
+        if (sid) {
+          this.$store.commit('setPOESESSID', sid)
+          this.$message({ type: 'success', duration: 3000, message: `已取得並儲存 POESESSID（${this.storeServerString}）` })
+        } else {
+          this.$message({ type: 'info', duration: 2500, message: '未取得 POESESSID（可能已取消或尚未完成登入）' })
+        }
+      } catch (e) {
+        this.$message({ type: 'error', message: '取得 POESESSID 失敗：' + ((e && e.message) || e) })
+      } finally {
+        this.acquiringSid = false
+      }
+    },
+    clearPoesessid() {
+      this.$store.commit('setPOESESSID', '')
+      this.$message({ type: 'info', duration: 2000, message: '已清除 POESESSID' })
+    },
+    // 最保險路徑：用「使用者自己的系統瀏覽器」登入官網（app 完全不經手登入頁），再手動貼回 POESESSID
+    openExternalLogin() {
+      shell.openExternal(`${this.baseUrl}/login`)
+      this.$message({ type: 'info', duration: 5000, message: '已用外部瀏覽器開啟官網登入；登入後按 F12 → Application/應用程式 → Cookies → 複製 POESESSID 回來貼上' })
+    },
+    saveManualSid() {
+      const sid = (this.manualSid || '').trim()
+      // POESESSID 通常為 32 位英數；放寬到一串合理長度的英數，避免誤貼到多餘字元才擋
+      if (!/^[A-Za-z0-9]{16,64}$/.test(sid)) {
+        this.$message({ type: 'error', message: 'POESESSID 格式看起來不對（應為一串英數，約 32 位）' })
+        return
+      }
+      this.$store.commit('setPOESESSID', sid)
+      this.manualSid = ''
+      this.$message({ type: 'success', duration: 3000, message: `已儲存 POESESSID（${this.storeServerString}）` })
+    },
+    // 季節性：切換傭兵 OCR 總開關 → 存 localStorage 並通知 main（決定 capture_screen 是否放行）
+    onMercOcrToggle(val) {
+      this.mercOcrEnabled = val
+      localStorage.setItem('mercOcrEnabled', val ? 'true' : 'false')
+      ipcRenderer.send('set_merc_ocr_enabled', val)
+    },
+    searchMercenaryContract(payload) {
+      const groups = payload && payload.groups
+      if (!groups || !groups.length) return
+      this.resetSearchData() // 每次查詢先重置搜尋畫面，避免與前一次結果混淆
+      // ⚠ resetSearchData() 會 this.mapCategory = { isShaper:false, ... }，這會觸發下方 watch 的
+      // 'mapCategory.is*' deep watcher；那些 watcher 在「下一個 tick」會把 this.searchJson.query.stats
+      // 洗回 [{and,[]}]。若在此同步建構 stats 會被它們蓋掉（實測：建構當下 7 組 → 送出只剩 and）。
+      // 故把「建構 stats + 設 searchJson + 送出」延到 $nextTick——待 watcher flush 完再建，才不被清掉。
+      this.$nextTick(() => {
+        const json = JSON.parse(JSON.stringify(this.searchJson_Def))
+        groups.forEach(g => {
+          json.query.stats.push({
+            type: 'mercenary',
+            filters: [{ id: g.skillId }, ...(g.supportIds || []).map(id => ({ id }))]
+          })
+        })
+        // 傭兵等級 → misc_filters.ilvl（實測傭兵契約的搜尋索引 ilvl == 傭兵等級）
+        if (payload.levelMin != null) {
+          json.query.filters.misc_filters.filters.ilvl = { min: payload.levelMin }
+        }
+        this.searchStats = [] // 清空詞綴，避免 syncSearchStatsToQuery 動到 filters
+        this.searchJson = json // isSearchJson 為 computed(!isEmpty(searchJson))，設值後自動為 true
+        const supportCount = groups.reduce((n, g) => n + (g.supportIds || []).length, 0)
+        this.searchName = `傭兵契約書（${groups.length} 技能${supportCount ? ` + ${supportCount} 輔助` : ''}${payload.levelMin != null ? ` · 等級≥${payload.levelMin}` : ''}）`
+        this.searchTrade(this.searchJson)
+      })
+    },
     isTimelessJewel() {
       return this.itemCategory.chosenObj.prop === 'jewel' && ['永恆珠寶', 'Timeless Jewel'].includes(this.itemBasic.text)
     },
@@ -3016,6 +3138,21 @@ export default {
       // 解析複製文字：移除進階敘述（Ctrl + Alt + C）的詞綴標題與隨機值範圍，itemArray 仍以稀有度為第一筆
       const parsedItem = parseItemCopyText(item, { newLine: NL })
       console.log(parsedItem);
+      // 季節性：傭兵契約書複製文字不含技能詞綴，改用 Ctrl+C 觸發截圖 OCR（下季連同 <MercenaryContractOcr> 一起移除）
+      if (parsedItem.name === '傭兵契約書') {
+        this.cleanClipboard()
+        this.cleanCopyText()
+        // 功能關閉（預設）：完全不截圖、不辨識，只提示使用者可去開啟
+        if (!this.mercOcrEnabled) {
+          this.$message({ type: 'info', duration: 2500, message: '傭兵契約書技能辨識未啟用，可到「附加功能」開啟' })
+          return
+        }
+        // 傭兵等級在複製文字裡就有（技能才需要 OCR）→ 抽出來傳給浮動面板當等級過濾預設值
+        const lvMatch = parsedItem.text.match(/傭兵等級\s*[:：]\s*(\d+)/)
+        this.mercLevel = lvMatch ? parseInt(lvMatch[1], 10) : null
+        ipcRenderer.invoke('capture_screen') // → main 截圖 → capture_done → 元件 OCR
+        return
+      }
       item = parsedItem.text
       let itemArray = parsedItem.lines
       let Rarity = parsedItem.rarity
@@ -3032,6 +3169,7 @@ export default {
           searchJson: this.searchJson,
           item,
           itemArray,
+          itemClass: parsedItem.itemClass,
           rarity: Rarity,
           allStats: this.allStats,
           mapBasicOptions: this.mapBasic.option,

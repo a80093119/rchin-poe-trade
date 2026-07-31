@@ -25,6 +25,8 @@ const HEIST_JOB_FILTERS = [
   { label: '開鎖', filterKey: 'heist_lockpicking' },
   { label: '蠻力', filterKey: 'heist_brute_force' },
   { label: '拆除', filterKey: 'heist_demolition' },
+  // 遊戲內契約書現以「靈敏」標示敏捷職業，舊有「靈巧」保留向下相容
+  { label: '靈敏', filterKey: 'heist_agility' },
   { label: '靈巧', filterKey: 'heist_agility' },
   { label: '詐欺', filterKey: 'heist_deception' },
   { label: '工程', filterKey: 'heist_engineering' }
@@ -51,7 +53,9 @@ const HEIST_ROOM_FILTERS = [
 
 const HEIST_OBJECTIVE_LINE = /^劫盜目標\s*[：:]\s*(.+)$/
 const HEIST_OBJECTIVE_VALUE = /[（(]([^（()）]+)[)）]\s*$/
-const HEIST_JOB_LINE = /^需要\s*(.+?)\s*[（(]\s*等級\s*(\d+)\s*[)）]\s*$/
+// 「需要 靈敏 (等級 4)」；等級後可能還帶狀態註記，如「(等級 4 (unmet))」表尚未達標，
+// 故取到等級數字即可，不再強求緊接的右括號與行尾（否則 (unmet) 會讓整行漏抓）
+const HEIST_JOB_LINE = /^需要\s*(.+?)\s*[（(]\s*等級\s*(\d+)/
 const HEIST_OBJECTIVE_STAT_ID = `${HEIST_STAT_ID_PREFIX}heist_objective_value`
 
 function flattenCopyLines(lines) {
@@ -332,6 +336,7 @@ export function buildHeistSearch({
   searchJson,
   item,
   itemArray,
+  itemClass,
   rarity,
   allStats,
   mapBasicOptions,
@@ -339,6 +344,9 @@ export function buildHeistSearch({
   isTwServer,
   translateType
 }) {
+  // 契約書的重要詞綴是「需要 XX 職業（等級）」，劫盜目標只是固定產出、非搜尋重點，
+  // 故契約書預設不勾選劫盜目標（藍圖仍以目標價值為主要搜尋軸，維持勾選）
+  const isContract = (itemClass || '').startsWith('契約書')
   const mapInfo = analyzeMapCopyText({
     item,
     itemArray,
@@ -397,7 +405,8 @@ export function buildHeistSearch({
       id: HEIST_OBJECTIVE_STAT_ID,
       text: `劫盜目標：${heistInfo.objectiveText}`,
       option: heistInfo.objectiveValueOption,
-      isValue: false
+      isValue: false,
+      isSearch: !isContract
     }))
   }
 
