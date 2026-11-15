@@ -415,7 +415,7 @@
         </div>
         <b-card-text style="padding-top: 20px;">
           <span>可點選複製以上物品字串至 </span>
-          <b-button @click="openLink(`https://github.com/rChinnnn/rchin-poe-trade/issues`)" size="sm" variant="outline-primary" class="mb-2">
+          <b-button @click="openLink(`https://github.com/a80093119/rchin-poe-trade/issues`)" size="sm" variant="outline-primary" class="mb-2">
             GitHub Issue
           </b-button> /
           <b-button @click="openLink(`https://forum.gamer.com.tw/C.php?bsn=18966&snA=123938`)" size="sm" variant="outline-primary" class="mb-2">
@@ -443,9 +443,12 @@ import duplicateStatsData from "../assets/poe/duplicateStats.json";
 import poedbTWJson from "../assets/poe/poedb-tw.json";
 import {
   analyzeMapCopyText,
+  analyzeChartCopyText,
+  buildChartLookup,
   GENERIC_MAP_BASE_TYPES,
   MAP_BASE_TYPE_FALLBACKS,
-  MAP_QUERY_STAT_IDS
+  MAP_QUERY_STAT_IDS,
+  MAP_FOUNDER_EXCLUSION_CANDIDATES
 } from "../utils/mapSearch";
 import {
   applyHeistSearchStat,
@@ -539,6 +542,7 @@ export default {
       // poedbTWClass: [], // 編年史物品種類
       categorizedItems: [], // 有分類的物品資料
       transfiguredGems: [], // 3.23 變異寶石資料
+      chartItems: [], // 海圖（Chart）對應表：中文基底名稱 → 官方 type / discriminator
       monstersItems: [], // 物品化怪物資料
       priceSetting: { // 價格設定
         option: [{
@@ -672,6 +676,8 @@ export default {
         isCitadel: false,
         isBlighted: false
       },
+      // 開創者記憶圖需排除的併存勢力（type:'not' 群組來源）；複製圖若已帶該勢力則不排除
+      mapFounderExclusions: [],
       mapElderGuard: { // 尊師守衛地圖
         option: [{
           label: "異界．奴役",
@@ -1042,6 +1048,7 @@ export default {
         isCitadel: false,
         isBlighted: false
       }
+      this.mapFounderExclusions = []
       this.mapElderGuard.chosenObj = {
         label: "無",
         prop: ''
@@ -1078,6 +1085,12 @@ export default {
     },
     hotkeyPressed() {
       this.searchTotal++
+    },
+    // 僅開發模式輸出除錯訊息；vue-cli 打包 production 時 process.env.NODE_ENV === 'production'，此判斷會被 dead-code 剔除，正式版不含這些 log
+    devLog(...args) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(...args)
+      }
     },
     scanCopy() {
       setInterval(() => {
@@ -1144,6 +1157,30 @@ export default {
 
       return value
     },
+    appendMapFounderExclusions() {
+      if (!this.mapFounderExclusions.length) {
+        return
+      }
+
+      const stats = this.searchJson.query.stats
+
+      this.mapFounderExclusions.forEach((exclusion) => {
+        const excludeId = `${exclusion.statId}|${exclusion.option}`
+        // 已有相同的 not 群組就不重複加入（重新搜尋時會再次呼叫）
+        const exists = stats.some(group => group.type === 'not' &&
+          (group.filters || []).some(filter => filter.id === excludeId))
+
+        if (exists) {
+          return
+        }
+
+        stats.push({
+          type: 'not',
+          disabled: false,
+          filters: [{ id: excludeId, value: {}, disabled: false }]
+        })
+      })
+    },
     syncSearchStatsToQuery() {
       // 這些 ID 不是詞綴，改由 searchTrade 寫入 query.filters
       const isSkippedId = (id) => ["memory_level", 'misc.ilvl', ...ULTIMATUM_SEARCH_STAT_IDS].includes(id) || String(id).startsWith(HEIST_STAT_ID_PREFIX)
@@ -1152,6 +1189,9 @@ export default {
       if (!this.searchJson.query.stats.length) {
         this.searchJson.query.stats = [{ "type": "and", "filters": [] }]
       }
+
+      // 開創者記憶圖的勢力排除群組要最後補上，才不會被 mapCategory 監聽器在 tick 中清掉 stats
+      this.appendMapFounderExclusions()
 
       if (!searchStatIds.length) {
         return
@@ -1261,6 +1301,11 @@ export default {
         .then((response) => {
           this.resultLength = response.data.resultLength
           this.searchTotal = response.data.total // 總共搜到幾項物品
+          this.devLog(
+            '%c[rChin 搜尋回應]',
+            'color:#9c27b0;font-weight:bold;font-size:13px',
+            '總筆數:', response.data.total, '| 本次取得:', response.data.resultLength, '| searchID:', response.data.id
+          )
           if (JSON.stringify(this.searchJson) == JSON.stringify(this.searchJson_Def)) { // 嘗試修復有時搜尋會無法代入條件的 bug
             this.copyText = ''
           }
@@ -1290,11 +1335,18 @@ export default {
           }
         })
         .catch(function (error) {
-          let errMsg = JSON.stringify(error.response.data)
-          if (error.response.status === 429) {
+          // error.response 可能不存在（連線失敗、timeout 等），需防呆，否則 catch 自己會丟錯導致畫面完全沒反應
+          let errMsg = error.response ? JSON.stringify(error.response.data) : String((error && error.message) || error)
+          vm.devLog(
+            '%c[rChin 搜尋失敗]',
+            'color:#f44336;font-weight:bold;font-size:13px',
+            '\nHTTP:', error.response && error.response.status,
+            '\n訊息:', errMsg
+          )
+          if (error.response && error.response.status === 429) {
             errMsg += `\n被 Server 限制發送需求了，請等待後再重試`
           }
-          vm.issueText = `Version: v1.329.1, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+          vm.issueText = `Version: v1.330.0, Server: ${vm.storeServerString}\n此次搜尋異常！\n${errMsg}\n\`\`\`\n${vm.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
           vm.itemsAPI()
           vm.isSupported = false
           vm.isStatsCollapse = false
@@ -1453,6 +1505,7 @@ export default {
       let azmeriIndex = 0
       this.categorizedItems.length = 0
       this.monstersItems.length = 0
+      this.chartItems.length = 0
       this.mapBasic.option.length = 0
       this.gemBasic.option.length = 0
       // this.axios.get(`https://pathofexile.tw/api/trade/data/items`, )
@@ -1732,6 +1785,11 @@ export default {
             this.categorizedItems.push(element)
           }
         });
+      }
+      // 海圖（Chart）：只建立中文名稱 → type/discriminator 對應表，貼上時由 chartAnalysis 使用
+      const chartGroupIndex = result.findIndex(e => e.id === "chart")
+      if (chartGroupIndex > -1) {
+        this.chartItems = buildChartLookup(result[chartGroupIndex].entries)
       }
       result[result.findIndex(e => e.id === "sanctum")].entries.forEach(element => { // "id": "sanctum"
         const basetype = ["香爐聖物", "聖域寶庫研究"]
@@ -2999,10 +3057,64 @@ export default {
         }
       }
       this.mapFixedStatsAnalysis(itemArray)
+      // 開創者的記憶圖：只搜「開創者」實心詞綴會夾帶與塑界者／尊師領域、壁壘結合的圖，
+      // 依複製圖實際帶有的勢力，把其餘勢力用 type:'not' 群組排除（於 syncSearchStatsToQuery 寫入）
+      if (Rarity !== "傳奇" && mapInfo.isFounderMemory) {
+        const controlProp = mapInfo.mapControlOption?.prop
+        const citadelProp = mapInfo.citadelGuardOption?.prop
+        this.mapFounderExclusions = MAP_FOUNDER_EXCLUSION_CANDIDATES.filter((candidate) => {
+          if (candidate.statId === MAP_QUERY_STAT_IDS.control) {
+            return controlProp !== candidate.option
+          }
+          if (candidate.statId === MAP_QUERY_STAT_IDS.citadelGuard) {
+            return citadelProp !== candidate.option
+          }
+          return true
+        })
+      }
       // else { // error handle
       //   this.status = `Oops! 尚未支援搜尋此種地圖`
       //   return
       // }
+      this.searchTrade(this.searchJson)
+    },
+    chartAnalysis(item, itemArray, Rarity) {
+      const chartInfo = analyzeChartCopyText({
+        item,
+        itemArray,
+        chartLookup: this.chartItems,
+        newLine: this.newLine
+      })
+
+      // 對應不到海圖基底時視為尚未支援，避免以空 type 查到全部物品
+      if (!chartInfo.matchedChart) {
+        this.itemsAPI()
+        this.issueText = `Version: v1.330.0\n尚未支援搜尋該海圖\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+        this.isSupported = false
+        this.isStatsCollapse = false
+        return
+      }
+
+      const { name, option, disc } = chartInfo.matchedChart
+      // 具名海圖官方 type 為英文代碼並需帶 discriminator: 'chart'；基底海圖比照地圖以中文基底字串查詢
+      this.searchJson.query.type = disc
+        ? { "option": option, "discriminator": disc }
+        : this.replaceString(option)
+      this.itemBasic.text = disc ? name : this.replaceString(option)
+      this.searchName = `物品名稱 <br>『${name}』`
+
+      // 階級／區域等級：海圖與地圖共用 map_filters
+      if (_.isNumber(chartInfo.mapTier)) {
+        this.mapLevel.min = chartInfo.mapTier
+        this.mapLevel.max = chartInfo.mapTier
+        this.mapLevel.isSearch = true
+        this.isMapLevelSearch()
+      } else if (_.isNumber(chartInfo.areaTier)) {
+        this.areaLevel.min = chartInfo.areaTier
+        this.areaLevel.isSearch = true
+        this.isAreaLevelSearch()
+      }
+
       this.searchTrade(this.searchJson)
     },
     isMapBasicSearch() {
@@ -3124,6 +3236,15 @@ export default {
   watch: {
     copyText: function () {
       let item = this.copyText;
+      // Debug：每次剪貼簿變動都印出，讓使用者在 DevTools 確認「有複製到東西」，避免誤以為沒反應
+      if (item) {
+        this.devLog(
+          '%c[rChin 複製偵測]',
+          'color:#4caf50;font-weight:bold;font-size:13px',
+          '\n伺服器:', this.storeServerString, '| isApiError:', this.isApiError, '| isCounting:', this.isCounting,
+          '\n內容:', item.replace(/\n/g, ' ／ ')
+        )
+      }
       if (['物品类别: ', '稀 有 度: ', 'Item Class: '].some(keyword => item.includes(keyword))) { // 繁體中文語系確認
         this.$message({
           duration: 2000,
@@ -3132,7 +3253,9 @@ export default {
         });
         return
       }
-      if (item.indexOf('稀有度: ') === -1 || !this.copyText || this.isApiError) { // POE 內的文字必定有稀有度
+      // 臟器（Viscera）複製文字沒有「稀有度」行，只有「物品種類: 臟器」，需特別放行
+      const isViscera = item.indexOf('物品種類: 臟器') > -1
+      if ((item.indexOf('稀有度: ') === -1 && !isViscera) || !this.copyText || this.isApiError) { // 一般 POE 文字必定有稀有度
         return
       }
       if (this.isCounting) {
@@ -3150,7 +3273,14 @@ export default {
       const NL = this.newLine
       // 解析複製文字：移除進階敘述（Ctrl + Alt + C）的詞綴標題與隨機值範圍，itemArray 仍以稀有度為第一筆
       const parsedItem = parseItemCopyText(item, { newLine: NL })
-      console.log(parsedItem);
+      this.devLog(
+        '%c[rChin 解析結果]',
+        'color:#2196f3;font-weight:bold;font-size:13px',
+        '\n稀有度:', parsedItem.rarity, '| 物品種類:', parsedItem.itemClass,
+        '\n名稱:', parsedItem.name, '| 基底:', parsedItem.baseType,
+        '\n(完整物件 ↓)'
+      )
+      this.devLog(parsedItem);
       // 季節性：傭兵契約書複製文字不含技能詞綴，改用 Ctrl+C 觸發截圖 OCR（下季連同 <MercenaryContractOcr> 一起移除）
       if (parsedItem.name === '傭兵契約書') {
         this.cleanClipboard()
@@ -3211,6 +3341,47 @@ export default {
         item.indexOf('釋界之邀：') > -1
       ) {
         this.mapAnalysis(item, itemArray, Rarity)
+        return
+      }
+
+      if (parsedItem.itemClass.startsWith('海圖')) {
+        this.chartAnalysis(item, itemArray, Rarity)
+        return
+      }
+
+      // 臟器（Viscera，3.30 巫影密會新增）：複製文字沒有稀有度，直接以名稱當 type 查詢。
+      // 臟器有品階，名稱會帶「高階」等前綴（例：高階 匪徒女巫之首），但官方 type 僅為基底名稱，
+      // 需比對 items.json 臟器清單取出基底（取最長的符合後綴，避免短名誤配）。
+      if (parsedItem.itemClass.startsWith('臟器')) {
+        let organType = searchName
+        const visceraGroup = this.allItems.result.find(g => g.id === 'viscera')
+        if (visceraGroup && !visceraGroup.entries.some(e => e.type === organType)) {
+          const base = visceraGroup.entries
+            .filter(e => organType.endsWith(e.type))
+            .sort((a, b) => b.type.length - a.type.length)[0]
+          if (base) organType = base.type
+        }
+        this.searchJson.query.type = this.replaceString(organType)
+        // 臟器的 implicit 詞綴即其品階數值來源；解析後加入搜尋條件（需 Ctrl+Alt+C 進階複製才帶 (implicit) 標記）
+        this.mapFixedStatsAnalysis(itemArray)
+        // 自動帶入當前骰值為 min：stripRollRanges 已移除 (15-20) 範圍、保留當前值，取敘述第一個數字即為該品階數值
+        this.searchStats.forEach((stat) => {
+          if (!_.isNumber(stat.min)) {
+            const valueMatch = (stat.text || '').match(/[+-]?\d+(?:\.\d+)?/)
+            if (valueMatch) {
+              stat.min = parseFloat(valueMatch[0])
+              stat.isValue = true
+            }
+          }
+        })
+        this.isStatsCollapse = true
+        this.devLog(
+          '%c[rChin 送出搜尋]',
+          'color:#ff9800;font-weight:bold;font-size:13px',
+          '\n(臟器) 原始名稱:', JSON.stringify(searchName), '→ 查詢 type:', JSON.stringify(this.searchJson.query.type),
+          '\n解析到的詞綴數:', this.searchStats.length
+        )
+        this.searchTrade(this.searchJson)
         return
       }
 
@@ -3353,11 +3524,17 @@ export default {
         return
       } else {
         this.itemsAPI()
-        this.issueText = `Version: v1.329.1\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
+        this.issueText = `Version: v1.330.0\n尚未支援搜尋該道具\n\`\`\`\n${this.copyText.replace('稀有度: ', 'Rarity: ')}\`\`\``
         this.isSupported = false
         this.isStatsCollapse = false
         return
       }
+      this.devLog(
+        '%c[rChin 送出搜尋]',
+        'color:#ff9800;font-weight:bold;font-size:13px',
+        '\n查詢 type:', JSON.stringify(this.searchJson.query.type),
+        '| name:', JSON.stringify(this.searchJson.query.name)
+      )
       this.searchTrade(this.searchJson)
     },
     isPriceCollapse: function () {
