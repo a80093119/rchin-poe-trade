@@ -235,6 +235,25 @@ export default {
     handleCaptureError(_event, msg) {
       this.error = msg
     },
+    // 由 Home 的「傭兵契約書複製文字解析」結果灌入面板（取代 OCR 截圖）：
+    // 技能/輔助都預設勾選，使用者可取消不需要的再按搜尋。
+    loadFromContract(payload) {
+      this.error = ''
+      this.busy = false
+      this.minimized = false
+      this.result = { matches: (payload && payload.groups) || [], ms: 0, ocrText: '（傭兵契約書複製文字解析）', previewDataURL: null }
+      this.candidates = ((payload && payload.groups) || []).map(g => ({
+        id: g.skillId,
+        text: g.skillText,
+        score: null,
+        on: true,
+        supports: (g.supports || []).map(s => ({ id: s.id, text: s.text, on: true })),
+        adding: false,
+        supportPick: ''
+      }))
+      this.levelMin = payload ? payload.levelMin : null
+      this.useLevel = !!(payload && payload.levelMin != null)
+    },
     addManualSkill() {
       const text = (this.manualPick || '').trim()
       this.manualPick = ''

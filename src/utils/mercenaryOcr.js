@@ -70,9 +70,75 @@ export function buildSkillIndex(statsJson) {
   return buildMercenaryIndex(statsJson, 'mercenary.skill_')
 }
 
-// 由 stats.json 建立輔助寶石索引：[{ id, text, norm }]（OCR 讀不到圖示，僅供手動加入）
+// 由 stats.json 建立輔助寶石索引：[{ id, text, norm, nameNorm, tier }]
+// 輔助詞綴文字格式為「名稱 (階級 N)」，另拆出 nameNorm（只留漢字的名稱）與 tier（階級數字），
+// 供複製文字的「名稱(階層：N)」依「名稱 + 階級」精準對應（normalizeSkillText 會丟掉數字，無法只靠 norm 區分階級）。
 export function buildSupportIndex(statsJson) {
-  return buildMercenaryIndex(statsJson, 'mercenary.support_')
+  return buildMercenaryIndex(statsJson, 'mercenary.support_').map(entry => {
+    const m = (entry.text || '').match(/^(.+?)\s*[（(]\s*階級\s*(\d+)\s*[）)]\s*$/)
+    return {
+      ...entry,
+      nameNorm: m ? normalizeSkillText(m[1]) : entry.norm,
+      tier: m ? m[2] : null
+    }
+  })
+}
+
+// 複製文字的輔助行（例：「多重打擊(階層：2)」）→ 對應的輔助索引項目（依名稱 + 階級比對）。
+// 階層數字必不可少（用來區分低階/高階同名輔助的階級）；找不到回傳 null。
+export function matchSupportLine(line, supportIndex) {
+  const tierMatch = (line || '').match(/[（(]\s*階層\s*[：:]\s*(\d+)\s*[）)]\s*$/)
+  if (!tierMatch) return null
+  const tier = tierMatch[1]
+  const name = normalizeSkillText(line.slice(0, tierMatch.index))
+  if (name.length < 2) return null
+  const exact = supportIndex.find(e => e.tier === tier && e.nameNorm === name)
+  if (exact) return exact
+  // 退回前綴比對（容忍名稱細微差異），但仍要求階級相同
+  return supportIndex.find(e => e.tier === tier && (e.nameNorm.startsWith(name) || name.startsWith(e.nameNorm))) || null
+}
+
+// 解析傭兵契約書複製文字 → { groups: [{ skillId, skillText, supports: [{ id, text }] }], levelMin }
+// （帶 text 供面板顯示/勾選；面板送查時再轉成 { skillId, supportIds }）
+// 3.30 起複製文字已含技能/輔助詞綴，結構為：
+//   ...（物品種類/稀有度/名稱、傭兵名）── 流派/傭兵等級 ── 各技能區塊（首行主技能＋其輔助）── 右鍵說明
+// 技能區塊 = 「傭兵等級」區段之後、footer（查看傭兵細節/試煉之地）之前，以 -------- 分隔的每一段。
+export function parseMercenaryContract(copyText, { skillIndex = [], supportIndex = [], newLine = '\n' } = {}) {
+  void newLine // 一律容忍 \r\n / \n
+  const sections = (copyText || '')
+    .split(/-{3,}/)
+    .map(block => block.split(/\r?\n/).map(l => l.trim()).filter(Boolean))
+
+  let levelMin = null
+  for (const sec of sections) {
+    for (const l of sec) {
+      const m = l.match(/傭兵等級\s*[：:]\s*(\d+)/)
+      if (m) { levelMin = parseInt(m[1], 10); break }
+    }
+    if (levelMin != null) break
+  }
+
+  const startIdx = sections.findIndex(sec => sec.some(l => /傭兵等級/.test(l)))
+  let endIdx = sections.findIndex(sec => sec.some(l => /查看傭兵細節|試煉之地/.test(l)))
+  if (endIdx === -1) endIdx = sections.length
+
+  const groups = []
+  if (startIdx !== -1) {
+    for (const sec of sections.slice(startIdx + 1, endIdx)) {
+      if (!sec.length) continue
+      const skill = findEntryByText(sec[0], skillIndex) || matchSkillLine(sec[0], skillIndex, 0.6)
+      if (!skill) continue
+      const supports = []
+      const seen = new Set()
+      for (const l of sec.slice(1)) {
+        const sup = matchSupportLine(l, supportIndex)
+        if (sup && !seen.has(sup.id)) { seen.add(sup.id); supports.push({ id: sup.id, text: sup.text }) }
+      }
+      groups.push({ skillId: skill.id, skillText: skill.text, supports })
+    }
+  }
+
+  return { groups, levelMin }
 }
 
 // 手動輸入的文字 → 索引項目（供「手動加入技能／輔助」用）。

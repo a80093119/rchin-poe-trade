@@ -1,7 +1,7 @@
 <template>
   <div class="home" ref="home">
-    <!-- 季節性：傭兵契約書 OCR 浮動面板（position:fixed，故放在最外層不受任何 collapse 影響；下季可整包移除） -->
-    <MercenaryContractOcr :detected-level="mercLevel" @search="searchMercenaryContract"></MercenaryContractOcr>
+    <!-- 傭兵契約書面板：複製契約書後，解析結果灌入此面板供勾選（技能/輔助/等級），再按搜尋 -->
+    <MercenaryContractOcr ref="mercPanel" :detected-level="mercLevel" @search="searchMercenaryContract"></MercenaryContractOcr>
     <go-top :size="30" :bottom="50" :max-width="575" bg-color="#04a9f3" :boundary="10"></go-top>
     <hr>
     <b-alert v-if="isApiError" show variant="danger" style="margin-top: 5px;">
@@ -94,16 +94,6 @@
               </b-col>
               <b-col sm="12" style="padding-top: 8px;">
                 <ChaosRecipe></ChaosRecipe>
-              </b-col>
-            </b-row>
-            <b-row class="lesspadding" style="padding-left: 2px;">
-              <b-col sm="12" style="padding-top: 10px;">
-                <b-form-checkbox v-model="mercOcrEnabled" @change="onMercOcrToggle" switch>
-                  啟用傭兵契約書技能辨識（截圖 OCR）
-                </b-form-checkbox>
-                <small class="text-muted" style="display:block; padding-left: 2px;">
-                  複製（Ctrl+C）傭兵契約書時，會擷取目前螢幕做文字辨識以帶出主技能。關閉時完全不截圖、不載入辨識模組；預設關閉。
-                </small>
               </b-col>
             </b-row>
           </b-card>
@@ -433,7 +423,8 @@
 // import hotkeys from "hotkeys-js";
 import PriceAnalysis from '@/components/PriceAnalysis.vue'
 import ChaosRecipe from '@/components/ChaosRecipe.vue'
-import MercenaryContractOcr from '@/components/MercenaryContractOcr.vue' // 季節性：下季可整包移除
+import MercenaryContractOcr from '@/components/MercenaryContractOcr.vue'
+import { parseMercenaryContract, buildSkillIndex, buildSupportIndex } from '../utils/mercenaryOcr'
 import GoTop from '@inotom/vue-go-top';
 
 import itemsData from "../assets/poe/items.json";
@@ -497,8 +488,9 @@ export default {
       copyText: '',
       searchedText: '',
       testResponse: '',
-      mercLevel: null, // 季節性：剪貼簿解析到的傭兵等級，傳給 OCR 浮動面板
-      mercOcrEnabled: false, // 季節性：傭兵 OCR 功能總開關（隱私考量預設關閉；存 localStorage）
+      mercLevel: null, // 傭兵契約書解析到的等級，傳給面板
+      mercSkillIndex: [], // 傭兵技能索引（由 stats.json 建立，供複製文字解析對應）
+      mercSupportIndex: [], // 傭兵輔助索引（含名稱/階級，供「名稱(階層：N)」對應）
       acquiringSid: false, // 是否正在開登入視窗取得 POESESSID
       manualSid: '', // 手動貼上的 POESESSID（外部瀏覽器登入後複製回來）
       countTime: 0,
@@ -925,14 +917,14 @@ export default {
       this.cleanClipboard()
     }
     this.initLocalStorage()
-    // 季節性：載入傭兵 OCR 開關並同步給 main process（決定 capture_screen 是否放行截圖）
-    this.mercOcrEnabled = localStorage.getItem('mercOcrEnabled') === 'true'
-    ipcRenderer.send('set_merc_ocr_enabled', this.mercOcrEnabled)
     // 同步線上狀態預設值到查詢 JSON
     this.onlineStatusChange()
     this.isTwServer = this.storeServerString === '台服' ? true : false
     this.baseUrl = this.isTwServer ? 'https://pathofexile.tw' : 'https://www.pathofexile.com'
     this.poedbTWItems = this.poedbTWJson.data.filter(item => item.type !== "Class")
+    // 傭兵契約書：由 stats.json 建立技能/輔助索引，供複製文字解析對應詞綴 id
+    this.mercSkillIndex = buildSkillIndex(this.allStats)
+    this.mercSupportIndex = buildSupportIndex(this.allStats)
     // this.poedbTWClass = this.poedbTWJson.data.filter(item => item.type === "Class")
   },
   mounted() {
@@ -1344,6 +1336,18 @@ export default {
             '\nHTTP:', error.response && error.response.status,
             '\n訊息:', errMsg
           )
+          // 傭兵契約書：查詢過於複雜（未登入或登入未生效時 filter 數超限）→ 自動降級為「僅主技能」重試一次
+          const tooComplex = /too complex|reduce the amount of filters/i.test(errMsg)
+          const reducibleMerc = vm.searchJson && vm.searchJson.query && Array.isArray(vm.searchJson.query.stats) &&
+            vm.searchJson.query.stats.some(g => g.type === 'mercenary' && (g.filters || []).length > 1)
+          if (tooComplex && reducibleMerc) {
+            vm.searchJson.query.stats = vm.searchJson.query.stats.map(g =>
+              g.type === 'mercenary' ? { ...g, filters: (g.filters || []).slice(0, 1) } : g
+            )
+            vm.$message({ type: 'info', duration: 4000, message: '查詢過於複雜，已自動改以「僅主技能」查詢。取得 POESESSID 登入後可查更完整（含輔助）' })
+            vm.searchTrade(vm.searchJson)
+            return
+          }
           if (error.response && error.response.status === 429) {
             errMsg += `\n被 Server 限制發送需求了，請等待後再重試`
           }
@@ -1977,12 +1981,6 @@ export default {
       this.manualSid = ''
       this.$message({ type: 'success', duration: 3000, message: `已儲存 POESESSID（${this.storeServerString}）` })
     },
-    // 季節性：切換傭兵 OCR 總開關 → 存 localStorage 並通知 main（決定 capture_screen 是否放行）
-    onMercOcrToggle(val) {
-      this.mercOcrEnabled = val
-      localStorage.setItem('mercOcrEnabled', val ? 'true' : 'false')
-      ipcRenderer.send('set_merc_ocr_enabled', val)
-    },
     searchMercenaryContract(payload) {
       const groups = payload && payload.groups
       if (!groups || !groups.length) return
@@ -1993,6 +1991,7 @@ export default {
       // 故把「建構 stats + 設 searchJson + 送出」延到 $nextTick——待 watcher flush 完再建，才不被清掉。
       this.$nextTick(() => {
         const json = JSON.parse(JSON.stringify(this.searchJson_Def))
+        // 使用者已於面板勾選要查的技能/輔助，依其選擇送出；若超過查詢上限，searchTrade 會自動降級為僅主技能重試
         groups.forEach(g => {
           json.query.stats.push({
             type: 'mercenary',
@@ -3282,19 +3281,28 @@ export default {
         '\n(完整物件 ↓)'
       )
       this.devLog(parsedItem);
-      // 季節性：傭兵契約書複製文字不含技能詞綴，改用 Ctrl+C 觸發截圖 OCR（下季連同 <MercenaryContractOcr> 一起移除）
+      // 3.30 起傭兵契約書複製文字已含技能/輔助詞綴 → 直接解析複製文字查詢（不再截圖 OCR）
       if (parsedItem.name === '傭兵契約書') {
+        const mercPayload = parseMercenaryContract(item, {
+          skillIndex: this.mercSkillIndex,
+          supportIndex: this.mercSupportIndex,
+          newLine: this.newLine
+        })
         this.cleanClipboard()
         this.cleanCopyText()
-        // 功能關閉（預設）：完全不截圖、不辨識，只提示使用者可去開啟
-        if (!this.mercOcrEnabled) {
-          this.$message({ type: 'info', duration: 2500, message: '傭兵契約書技能辨識未啟用，可到「附加功能」開啟' })
+        this.devLog(
+          '%c[rChin 傭兵契約書]',
+          'color:#ff9800;font-weight:bold;font-size:13px',
+          '\n技能組數:', mercPayload.groups.length, '| 傭兵等級:', mercPayload.levelMin,
+          '\n', mercPayload.groups
+        )
+        if (!mercPayload.groups.length) {
+          this.$message({ type: 'warning', duration: 2500, message: '無法從傭兵契約書解析出技能，請確認為繁體中文客戶端並以 Ctrl+C 複製' })
           return
         }
-        // 傭兵等級在複製文字裡就有（技能才需要 OCR）→ 抽出來傳給浮動面板當等級過濾預設值
-        const lvMatch = parsedItem.text.match(/傭兵等級\s*[:：]\s*(\d+)/)
-        this.mercLevel = lvMatch ? parseInt(lvMatch[1], 10) : null
-        ipcRenderer.invoke('capture_screen') // → main 截圖 → capture_done → 元件 OCR
+        // 灌入面板供勾選（技能/輔助/等級），使用者取消不需要的後，由面板 @search 送出查詢
+        this.mercLevel = mercPayload.levelMin
+        this.$refs.mercPanel.loadFromContract(mercPayload)
         return
       }
       item = parsedItem.text
