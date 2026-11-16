@@ -470,6 +470,7 @@ import {
   parseItemCopyText,
   resolveLocalStatId,
   splitHybridStatLines,
+  stripRollRanges,
   stripStatTags
 } from "../utils/copyText";
 
@@ -3364,15 +3365,26 @@ export default {
         this.searchJson.query.type = this.replaceString(organType)
         // 臟器的 implicit 詞綴即其品階數值來源；解析後加入搜尋條件（需 Ctrl+Alt+C 進階複製才帶 (implicit) 標記）
         this.mapFixedStatsAnalysis(itemArray)
-        // 自動帶入當前骰值為 min：stripRollRanges 已移除 (15-20) 範圍、保留當前值，取敘述第一個數字即為該品階數值
+        // 只對「有骰值範圍 (x-y)」的詞綴帶入當前骰值為 min；固定詞綴（無範圍，如部分高階臟器詞綴）不帶值，
+        // 僅比對「有這條詞綴」，避免把固定值誤當成可比大小的門檻而誤判。
+        const rawFixedLines = (this.copyText || '')
+          .split(/\r?\n/)
+          .filter(line => /\((implicit|enchant)\)/.test(line))
+        const ROLL_RANGE_VALUE = /([+-]?\d+(?:\.\d+)?)\s*\(\s*[+-]?\d+(?:\.\d+)?\s*[-–~至]\s*[+-]?\d+(?:\.\d+)?\s*\)/
         this.searchStats.forEach((stat) => {
-          if (!_.isNumber(stat.min)) {
-            const valueMatch = (stat.text || '').match(/[+-]?\d+(?:\.\d+)?/)
-            if (valueMatch) {
-              stat.min = parseFloat(valueMatch[0])
-              stat.isValue = true
-            }
+          if (_.isNumber(stat.min)) {
+            return
           }
+          // 找出與此詞綴對應的原始行（移除範圍與標記後與 stat.text 相同）
+          const rawLine = rawFixedLines.find(line =>
+            stripRollRanges(line).replace(/\s*\((implicit|enchant)\)\s*$/, '').trim() === stat.text
+          )
+          const rangeMatch = rawLine && rawLine.match(ROLL_RANGE_VALUE)
+          if (rangeMatch) { // 有範圍 → 可骰詞綴，帶入緊鄰範圍前的當前骰值
+            stat.min = parseFloat(rangeMatch[1])
+            stat.isValue = true
+          }
+          // 無範圍 → 固定詞綴，保持 min 空白
         })
         this.isStatsCollapse = true
         this.devLog(

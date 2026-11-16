@@ -8,6 +8,8 @@ const ADVANCED_MOD_HEADER_CONTENT = /^\{\s*(.*?)\s*\}$/
 const AFFIX_TIER = /[（(]階層[：:]\s*(\d+)[）)]/
 const AFFIX_NAME = /["“](.+?)["”]/
 const AFFIX_TAGS = /[—–]\s*([^—–]+?)\s*$/
+// 詞綴行尾的進階複製註記（例如「— 無法使用的值」「— 丟置」），需移除後才能與 stats.json 比對
+const STAT_INLINE_TAG = /\s*[—–]\s*[^—–]+?\s*$/
 const ROLL_RANGE = /\((?:[+-]?\d+(?:\.\d+)?)(?:\s*[-–~至]\s*[+-]?\d+(?:\.\d+)?)?\)/g
 const STAT_TAG = /\((augmented|implicit|enchant|crafted|fractured|scourge|unmet)\)\s*$/
 // 全形括號整行包起來的說明文字，例如：（ 附加的天賦點不會被其它珠寶視為範圍內 ）
@@ -117,7 +119,7 @@ export function normalizeCopyLine(line) {
   const text = (line || '')
     .split('\n')
     .filter(subLine => !isAdvancedModHeader(subLine) && !isDescriptionLine(subLine))
-    .map(subLine => stripRollRanges(subLine).replace(/\s+$/, ''))
+    .map(subLine => stripRollRanges(subLine).replace(STAT_INLINE_TAG, '').replace(/\s+$/, ''))
     .join('\n')
 
   return appendAffixTypeTag(text, getAdvancedModHeaders(line))
